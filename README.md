@@ -1,4 +1,4 @@
-# MindGarden v3.2.3 — Sports, Tourism & City Life
+# MindGarden v3.2.4 — Sports, Tourism & City Life
 
 A lightweight browser-playable city game with optional PWA installation.
 
@@ -12,18 +12,17 @@ A lightweight browser-playable city game with optional PWA installation.
 - Traffic samples homes across neighbourhoods, favours different destinations, and uses congestion-weighted road routing. A single connecting road can still be busy; this is not a full intersection-level simulation.
 - No external graphics downloads, libraries, accounts or advertisements.
 
-## v3.2.3 usability updates
-- Expand City moved into a collapsed **City administration** section above the city missions.
-- Expansion requires explicit confirmation before charging RM 6,000.
-- Road traffic spreads over distinct connected residences, employment sites, and less-used routes.
-- Existing saved progress, missions, language selection, and PWA update behaviour preserved.
-
-## v3.2.3 fixes
-- Commuter vehicles have varied slow, medium and faster movement; buses and freight trucks have distinct speeds.
-- Speed is adjusted by road route length, so long journeys no longer move like snails.
-- Road, Inspect and Bulldozer remain in the pinned quick buttons and are not repeated in the scrollable building catalogue.
-- Visual vehicle movement remains separate from manual Next Day.
-- Existing city saves and four language choices remain compatible.
+## v3.2.4 stability audit & fixes
+- Correctly separate the *current mission* from a viewed past mission. History shows a review label and a return button; a completed day shows **10/10** instead of stale earlier mission details.
+- Correct stale **All 5 missions** messages in all four languages; the game now consistently uses ten missions per day.
+- Harden saved mission records: deduplicate journals, repair invalid pending/finished state, and avoid counting down after the tenth mission.
+- Rebalance healthcare using hospital and clinic capacity relative to city population and water service conditions, so adding healthcare visibly improves the score in a large city.
+- Rebalance public safety using police, fire and sensor capacity relative to population and congestion.
+- Recalculate tourism using the **current day's** public safety and congestion, avoiding stale-one-turn visitor results.
+- Speed up water/electricity road-network coverage calculations for large cities.
+- Show basic healthcare and safety capacity/demand diagnostics in the population section.
+- Keep a one-time pre-update backup in browser storage and provide **Export city backup** under City administration. City saves are not intentionally reset.
+- No changes to missions count (10), manual Next Day or the existing city save key.
 
 ## Deploy
 Upload all files in this folder to GitHub Pages root. Do not omit `service-worker.js`, manifest, `version.json`, or icons. Use HTTPS for optional offline PWA.

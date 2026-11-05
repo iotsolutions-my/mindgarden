@@ -1,5 +1,5 @@
 {
-  "version": "3.2.3",
-  "build": "3.2.3",
-  "notes": "Cars, buses and delivery trucks use varied tile-based speeds; duplicate Road and Bulldozer catalogue buttons removed; fixed quick controls preserved."
+  "version": "3.2.4",
+  "build": "3.2.4",
+  "notes": "Long-running city stability: mission history/summary consistency, scalable healthcare and safety, tourist calculation, faster utility networks, save export"
 }
