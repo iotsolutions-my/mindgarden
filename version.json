@@ -1,5 +1,5 @@
 {
-  "version": "2.8",
-  "build": "2.8.0",
-  "notes": "Malaysia multicultural city buildings, terrain, 8 missions/day and more local events"
+  "version": "3.2.3",
+  "build": "3.2.3",
+  "notes": "Cars, buses and delivery trucks use varied tile-based speeds; duplicate Road and Bulldozer catalogue buttons removed; fixed quick controls preserved."
 }

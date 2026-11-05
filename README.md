@@ -1,20 +1,33 @@
-# MindGarden v2.8 — Malaysia Smart City
+# MindGarden v3.2.3 — Sports, Tourism & City Life
 
-Browser-first, no login, no ads. Installation remains optional.
+A lightweight browser-playable city game with optional PWA installation.
 
-## What is new
-- **Eight missions each city day**: 3 construction, 3 incidents and 2 events; 15-second rest between missions; Next Day remains manual.
-- **New city buildings**: mosque/surau, temple, church, community hall, food court, pasar malam, playground, sports centre and scenic lookout. No advantage is assigned to any religion over another.
-- **Malaysian community events**: Hari Raya, CNY, Deepavali, Merdeka, Christmas, Thaipusam, open house, school holidays, plus existing expo, comic convention and night market. Events are randomized; they do not automatically follow a real calendar.
-- **Extra incidents**: flash floods, slope movement, dengue, haze, accidents, illegal dumping, vandalism and bus delays.
-- **Lightweight hills and slopes** near outer edges. Steep mountain tiles are limited to scenic lookout construction; existing saved buildings remain untouched. Terrain is stylized and deterministic.
-- **Four languages**: English, Malay, simplified and traditional Chinese, including new mission/event texts.
+## Features
+- Ten missions per manual day (3 construction, 4 incidents, 3 events) with 15-second breaks, no response deadline.
+- Sports arena, swimming pool, business centre, zoo, aquarium, cinema, river and camping site.
+- Small ambient drones above logistics hubs, airports and business centres; decorative, not controllable.
+- Sticky quick controls for Road, Inspect, Bulldozer; search and filter building catalogue.
+- Language selector: English, Bahasa Melayu, 简体中文, 繁體中文.
+- Existing unified city save preserved; eight-mission days migrate by adding two missions.
+- Traffic samples homes across neighbourhoods, favours different destinations, and uses congestion-weighted road routing. A single connecting road can still be busy; this is not a full intersection-level simulation.
+- No external graphics downloads, libraries, accounts or advertisements.
 
-## Save compatibility
-Existing v2.x unified city saves use the same localStorage key. An active five-mission day is extended with three additional missions, preserving current completed slots. Before publishing, back up your prior package.
+## v3.2.3 usability updates
+- Expand City moved into a collapsed **City administration** section above the city missions.
+- Expansion requires explicit confirmation before charging RM 6,000.
+- Road traffic spreads over distinct connected residences, employment sites, and less-used routes.
+- Existing saved progress, missions, language selection, and PWA update behaviour preserved.
 
-## Deployment
-Upload *all* contents of this folder to the root of the GitHub Pages deployment, including icons, version.json and service-worker.js. HTTPS is required for PWA installation but browser play works without installing.
+## v3.2.3 fixes
+- Commuter vehicles have varied slow, medium and faster movement; buses and freight trucks have distinct speeds.
+- Speed is adjusted by road route length, so long journeys no longer move like snails.
+- Road, Inspect and Bulldozer remain in the pinned quick buttons and are not repeated in the scrollable building catalogue.
+- Visual vehicle movement remains separate from manual Next Day.
+- Existing city saves and four language choices remain compatible.
 
-## Limits
-The terrain is stylized 3D geometry, not a terrain physics system. Events and incidents are fictional game scenarios; no real emergency data is used. Device-specific WebGL performance must be tested on phones before public release.
+## Deploy
+Upload all files in this folder to GitHub Pages root. Do not omit `service-worker.js`, manifest, `version.json`, or icons. Use HTTPS for optional offline PWA.
+
+## Notes
+- Always back up existing releases before replacing.
+- Game is recreational and does not prevent, diagnose, or treat dementia or other medical conditions.
