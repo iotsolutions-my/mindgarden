@@ -1,5 +1,5 @@
 {
-  "version": "3.2.4",
-  "build": "3.2.4",
-  "notes": "Long-running city stability: mission history/summary consistency, scalable healthcare and safety, tourist calculation, faster utility networks, save export"
+  "version": "3.2.5",
+  "build": "3.2.5",
+  "notes": "Traffic milestone and congestion formula fixes, longer commutes, emergency road vehicles and helicopters, full MindGarden README"
 }

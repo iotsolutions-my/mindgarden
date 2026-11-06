@@ -1,63 +1,34 @@
-# MindGarden v3.2.4 — Sports, Tourism & City Life
+# MindGarden v3.2.5 — Free, ad-free multilingual brain games and Smart City
 
-A lightweight browser-playable city game with optional PWA installation.
+MindGarden began as a small relaxing web puzzle playground (v0.9). **Smart City is one game mode, not the entire product.** Open `index.html` and choose a game. There is no registration, advertising, fee, or installation requirement. The optional PWA supports offline play after caching.
 
-## Features
-- Ten missions per manual day (3 construction, 4 incidents, 3 events) with 15-second breaks, no response deadline.
-- Sports arena, swimming pool, business centre, zoo, aquarium, cinema, river and camping site.
-- Small ambient drones above logistics hubs, airports and business centres; decorative, not controllable.
-- Sticky quick controls for Road, Inspect, Bulldozer; search and filter building catalogue.
-- Language selector: English, Bahasa Melayu, 简体中文, 繁體中文.
-- Existing unified city save preserved; eight-mission days migrate by adding two missions.
-- Traffic samples homes across neighbourhoods, favours different destinations, and uses congestion-weighted road routing. A single connecting road can still be busy; this is not a full intersection-level simulation.
-- No external graphics downloads, libraries, accounts or advertisements.
+## MindGarden games (from the original v0.9 and subsequent editions)
 
-## v3.2.4 stability audit & fixes
-- Correctly separate the *current mission* from a viewed past mission. History shows a review label and a return button; a completed day shows **10/10** instead of stale earlier mission details.
-- Correct stale **All 5 missions** messages in all four languages; the game now consistently uses ten missions per day.
-- Harden saved mission records: deduplicate journals, repair invalid pending/finished state, and avoid counting down after the tenth mission.
-- Rebalance healthcare using hospital and clinic capacity relative to city population and water service conditions, so adding healthcare visibly improves the score in a large city.
-- Rebalance public safety using police, fire and sensor capacity relative to population and congestion.
-- Recalculate tourism using the **current day's** public safety and congestion, avoiding stale-one-turn visitor results.
-- Speed up water/electricity road-network coverage calculations for large cities.
-- Show basic healthcare and safety capacity/demand diagnostics in the population section.
-- Keep a one-time pre-update backup in browser storage and provide **Export city backup** under City administration. City saves are not intentionally reset.
-- No changes to missions count (10), manual Next Day or the existing city save key.
+- **Word Trails / 詞語小徑** — connect neighbouring letters or characters to solve a clue; no jumping.
+- **Memory Garden / 記憶花園** — find matching pairs and train attention.
+- **Number Steps / 數字階梯** — complete missing number patterns.
+- **Sharp Eyes / 眼力挑戰** — notice differences and missing items.
+- **Chinese Character Hunt / 漢字尋寶** — discover components within larger Chinese characters, with replayable levels.
+- **Idiom Workshop / 成語研習室** — interpret idioms and their context, with translated language-specific equivalents.
+- **Logic Squares / 邏輯方格** — reasoning and number placement puzzles.
+- **Gem Garden / 寶石花園** — shape-and-colour match-three puzzle.
+- **Air Traffic Controller / 空中協調員** — plan safe aircraft movements.
+- **Smart City 3D / 智慧城市挑戰** — a longer-running Malaysian city-building simulation with ten daily missions.
 
-## Deploy
-Upload all files in this folder to GitHub Pages root. Do not omit `service-worker.js`, manifest, `version.json`, or icons. Use HTTPS for optional offline PWA.
+Some games were added after v0.9; the list describes the current MindGarden collection, with the v0.9 foundation explicitly acknowledged. Puzzle availability and exact display names may vary by selected language.
 
-## Notes
-- Always back up existing releases before replacing.
-- Game is recreational and does not prevent, diagnose, or treat dementia or other medical conditions.
+## v3.2.5 Smart City fixes
 
-## v1.1 — Sky Coordinator
-- Ninth game: original real-time air traffic coordination with three runways and traffic separation.
-- Tap aircraft then matching destination runway; pause, resume, step or restart anytime.
-- Difficulty changes goal and aircraft movement speed.
-- Included in all four UI languages. No adverts and no lives.
+- **Congestion responds to development.** Fixed a near-permanent 96% cap; capacity now matters throughout the range.
+- **Daily congestion milestones:** pass by meeting the target percentage **or** adding a material amount of transport capacity (roads, bus terminal, subway station or traffic lights). Existing unfinished traffic goals receive a new baseline when loaded.
+- **Longer journeys:** commuter and freight destinations favour broader connected trips rather than always short nearby trips. Travel remains on the road network.
+- **Emergency activity:** ambulances, fire engines and police cars travel along connected road routes from their corresponding facilities; small police/medical helicopters orbit relevant facilities. Decorative movements are not yet dispatched to specific mission incident coordinates.
+- **Preserved:** ten daily missions, 15-second intermission, no time pressure, manual Next Day, four languages, saved city format, offline PWA.
 
-## v1.0.1 hotfix
-Restored the missing Word Trails Check button label in all four languages.
-v1.0.2 hotfix
-Restored Idiom Lab data and shuffle function inadvertently removed in v1.0, causing blank game rendering when loading a saved Idiom Lab session. Startup rendering smoke-tested for all eight games in all four languages. Existing local progress key unchanged.
+## Publishing
 
-## v1.0
-- Word Trails now shows a prominent clue and target length before the board.
-- Character Hunt upgraded to 100 harder curated Chinese character puzzles without using the whole big character as an answer.
-- Gem Garden now uses high-contrast shapes as well as colours for easier recognition.
+Upload the **contents** of this package folder to the root of the GitHub Pages repository. Include `service-worker.js`, `manifest.webmanifest`, `version.json` and the icons. Keep a copy of your existing files before replacing them.
 
-## MindGarden v0.9
-- Free, static, ad-free multilingual browser puzzle playground. Open `index.html` in a browser or host at GitHub Pages.
-## What's new
-- Word Trails: clue shown above the neighbour-connected letter board before any hint is requested.
-- Chinese Character Hunt: expanded from 50 to 100 curated component puzzles, including 50 more complex characters, with saved progress and replayable shuffled journeys.
-- Gem Garden: new match-three game. Tap one gem, then a neighbouring gem to swap. 
-- Matches of three or more score points and refill the board. No countdown or lives.
-- All previous games, languages, optional hints, and penalty-free skip remain.
+## Privacy and accessibility
 
-## Notes
-- Existing progress uses browser localStorage and remains tied to the browser/device.
-- This is original gameplay, not a reproduction of Candy Crush assets or branding.
-- This prototype still needs hands-on browser accessibility and gameplay QA before a public launch.
-
+Game progress is stored locally in the current browser. Export a city backup from City Administration before clearing browser data. Suitable as casual entertainment; not a diagnostic, prevention or treatment for dementia or Alzheimer's disease.
