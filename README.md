@@ -1,8 +1,8 @@
-# MindGarden v3.2.17 — Smart City regression repairs
+# MindGarden v3.2.18 — Smart City regression repairs
 
 MindGarden is a **free, ad-free, browser-playable collection of ten recreational games**. Installation is optional. Languages: English, Bahasa Melayu, 简体中文 and 繁體中文.
 
-## Important changes in v3.2.17
+## Important changes in v3.2.18
 
 - Restored **the green map edge and consistent green land plot grid**, including when zoomed out on large maps. The blue background is again the environment, while editable sea tiles remain the navigable water in the map.
 - Redrew **Road Bridge** as a low road-height supported causeway with shoreline access and guardrails, rather than a raised floating block. A bridge is constructed by selecting Road on sea; cost RM480. Removing a bridge restores sea.
@@ -51,3 +51,7 @@ See `SECURITY.md` and the official repository licence for the full legal terms a
 - SHA-256 file checksums in `SHA256SUMS.txt`
 
 Browser tests do **not** establish complete compatibility with every Android WebGL device. Players should test their city backup and live map before replacing a public deployment.
+
+
+## v3.2.18 Planning diagnostics
+The Mayor's Office shows measured electricity supply/demand, ESG and pollution. The congestion milestone help displays demand/capacity and approximate what-if scenarios. These estimates are not guarantees; road connectivity and later construction can change the result.

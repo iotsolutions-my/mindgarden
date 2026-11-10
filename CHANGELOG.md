@@ -1,5 +1,11 @@
 # MindGarden Changelog
 
+## v3.2.18 — Planning transparency and milestone diagnostics
+- Show traffic demand, transport capacity, current congestion, milestone target, and policy effects.
+- Add scenario previews for roads, bus terminals, signals, subway and transport policy.
+- Replace generic green-energy prompts with measurable power deficit, pollution and ESG summaries.
+- Preserve existing helicopter and WebGL rendering code unchanged.
+
 ## v3.2.17 — Grid, mission and bridge repairs
 - Restore green perimeter and grid tiles at all zoom levels.
 - Replace high floating bridge slabs with supported near-road-level decks and visible access plates.
