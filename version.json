@@ -1,5 +1,5 @@
 {
-  "version": "3.2.5",
-  "build": "3.2.5",
-  "notes": "Traffic milestone and congestion formula fixes, longer commutes, emergency road vehicles and helicopters, full MindGarden README"
+  "version": "3.2.17",
+  "build": "3.2.17",
+  "notes": "Restored solid green map border and land grids; low supported bridges; mission repair; exact aircraft renderer preserved."
 }
