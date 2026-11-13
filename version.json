@@ -1,5 +1,5 @@
 {
-  "version": "3.2.18",
-  "build": "3.2.18",
-  "notes": "Restored solid green map border and land grids; low supported bridges; mission repair; exact aircraft renderer preserved."
+  "version": "3.2.19",
+  "build": "3.2.19",
+  "notes": "Correct connected utility warning vs shortfall; demand-weighted residential coverage; policy-specific income; high-rise upgrades; no changes to aircraft or map renderer."
 }

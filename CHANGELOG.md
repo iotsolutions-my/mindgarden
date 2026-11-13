@@ -1,5 +1,13 @@
 # MindGarden Changelog
 
+## v3.2.19 — Connected utilities, policy economics and high-rise redevelopment
+- Removed false disconnected-plant warnings caused by city-wide percentage checks.
+- Report active plant/substation counts, connected residents and production shortfalls separately.
+- Add residential-density report with high-rise and apartment populations; allow in-place upgrades.
+- Add differentiated income from Mayor policies based on visitors, employed residents, housing served by utilities and commuting.
+- Cap city happiness and healthcare under extreme environmental pollution so serious hazards have real quality-of-life consequences.
+- Preserve helicopter/aircraft rendering and complete city-save format.
+
 ## v3.2.18 — Planning transparency and milestone diagnostics
 - Show traffic demand, transport capacity, current congestion, milestone target, and policy effects.
 - Add scenario previews for roads, bus terminals, signals, subway and transport policy.

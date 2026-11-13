@@ -1,8 +1,21 @@
-# MindGarden v3.2.18 — Smart City regression repairs
+# MindGarden v3.2.19 — Connected utilities, high-rise density and Mayor economics
 
 MindGarden is a **free, ad-free, browser-playable collection of ten recreational games**. Installation is optional. Languages: English, Bahasa Melayu, 简体中文 and 繁體中文.
 
-## Important changes in v3.2.18
+## Important changes in v3.2.19
+
+- Municipal supply warnings distinguish **built source**, **road connectivity**, **residential coverage**, and **supply shortage**. A connected plant is no longer falsely reported as disconnected because some residents are not covered.
+- All residential coverage calculations weight high-density buildings by the number of residents: homes (12), apartments (48), and condos (84).
+- Inspecting a building shows whether it touches a connected road; the utility panel also shows resident reach and production capacity.
+- Homes can be upgraded in place to apartments or condominiums, and apartments to condominiums, paying only the construction-price difference. This avoids demolishing existing homes.
+- Mayor policies affect daily activity income differently. Tourist promotion benefits from actual visitors, industry from road-accessible employment, housing from utility-served residents, and transport from commuters. Effects are recalculated per day; Mayor decisions cannot create income from zero relevant activity.
+- Finance preview shows estimated policy activity return in addition to the policy cost and municipal tax.
+- Extreme pollution now limits achievable happiness and healthcare levels; tourism also responds to pollution, keeping environmental management meaningful.
+- More realistic warnings do not require changing the long-running city save key.
+- Existing helicopter, drone, sea, bridges, ship, map, missions, and WebGL rendering sections were not modified in this release.
+
+**Limitations:** Statistics remain simplified estimates, not a real-world engineering or municipal economic model. New high-rise upgrades are player-directed rather than automatically replacing old houses.
+
 
 - Restored **the green map edge and consistent green land plot grid**, including when zoomed out on large maps. The blue background is again the environment, while editable sea tiles remain the navigable water in the map.
 - Redrew **Road Bridge** as a low road-height supported causeway with shoreline access and guardrails, rather than a raised floating block. A bridge is constructed by selecting Road on sea; cost RM480. Removing a bridge restores sea.
@@ -53,5 +66,5 @@ See `SECURITY.md` and the official repository licence for the full legal terms a
 Browser tests do **not** establish complete compatibility with every Android WebGL device. Players should test their city backup and live map before replacing a public deployment.
 
 
-## v3.2.18 Planning diagnostics
+## v3.2.19 Planning diagnostics
 The Mayor's Office shows measured electricity supply/demand, ESG and pollution. The congestion milestone help displays demand/capacity and approximate what-if scenarios. These estimates are not guarantees; road connectivity and later construction can change the result.
