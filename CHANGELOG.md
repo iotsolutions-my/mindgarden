@@ -1,3 +1,9 @@
+## v3.2.22 — Scaled event attendance and rewards
+- Replaced fixed 12× mall/fun-fair event multiplier with event-specific facility capacity and estimated attendance.
+- Added localized event-readiness information showing venue count, capacity and demand.
+- Kept voluntary temporary venues and Skip; missions still have no time-pressure penalty.
+- Preserved Smart City helicopter and map rendering code, existing saves, and other games.
+
 ## v3.2.21 — Word Trails logic and hint repair
 
 - Expanded curated Word Trails questions in English, Malay, Simplified and Traditional Chinese.

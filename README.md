@@ -1,8 +1,8 @@
-# MindGarden v3.2.21 — Word Trails question logic & hint overhaul
+# MindGarden v3.2.22 — Word Trails question logic & hint overhaul
 
 MindGarden is a **free, ad-free, browser-playable collection of ten recreational games**. Installation is optional. Languages: English, Bahasa Melayu, 简体中文 and 繁體中文.
 
-## New in v3.2.21
+## New in v3.2.22
 
 - Word Trails now rotates through 60+ unique answers in **each language and difficulty mode** before any repeat. The question bank covers environments, society, reasoning, technology, local community and professional topics.
 - A three-step hint ladder replaces recycled clues: (1) final letter plus vowel count (or final character in Chinese); (2) starting letter and row/column; (3) full connected-tile path.
@@ -74,5 +74,8 @@ See `SECURITY.md` and the official repository licence for the full legal terms a
 Browser tests do **not** establish complete compatibility with every Android WebGL device. Players should test their city backup and live map before replacing a public deployment.
 
 
-## v3.2.21 Planning diagnostics
+## v3.2.22 Planning diagnostics
 The Mayor's Office shows measured electricity supply/demand, ESG and pollution. The congestion milestone help displays demand/capacity and approximate what-if scenarios. These estimates are not guarantees; road connectivity and later construction can change the result.
+
+## v3.2.22 — Event rewards and demand
+Community-event rewards now depend on suitable venue capacity, realistic attendance estimates, road access, congestion and safety. Unrelated buildings no longer multiply camping or sports events. Rewards have diminishing returns as attendance approaches demand.

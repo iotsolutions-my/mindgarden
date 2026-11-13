@@ -1,0 +1,21 @@
+const assert = require('node:assert/strict');
+const fs=require('node:fs');
+const src=fs.readFileSync(require('node:path').join(__dirname,'..','city.html'),'utf8');
+const start=src.indexOf('const EVENT_VENUES=');
+const end=src.indexOf('function finishMission(',start);
+assert(start>0&&end>start);
+const code=src.slice(start,end);
+const factory=new Function('city','count','lang','return (function(){'+code+' return {eventAttendanceEstimate};})()');
+function make(counts, population=2000, tourists=400){const city={population,tourists,traffic:35,safety:95,roadCoverage:100};return factory(city,k=>counts[k]||0,'en').eventAttendanceEstimate;}
+const noVenues=make({mall:200,fair:200});
+assert.equal(noVenues('ecotour').attendance,0,'Malls/fairs must not boost camping');
+const twoCamps=make({camp:2});
+const fourCamps=make({camp:4});
+assert(fourCamps('ecotour').attendance>twoCamps('ecotour').attendance,'More matching venues increase attendance');
+const manyCamps=make({camp:30},500,100);
+assert(manyCamps('ecotour').attendance<=Math.round(35+500*.1+100*.42),'Attendance limited by demand');
+assert(make({arena:1})('sportsday').attendance>0,'Sports event uses arena');
+assert.equal(make({camp:10})('sportsday').attendance,0,'Camps do not boost sports day');
+assert(make({})('ecotour',1).attendance>0,'Temporary venue allows an alternative');
+assert(Number.isFinite(make({mall:1})('expo').attendance),'Finite results');
+console.log('Event economy regression tests passed');
