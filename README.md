@@ -1,8 +1,16 @@
-# MindGarden v3.2.19 — Connected utilities, high-rise density and Mayor economics
+# MindGarden v3.2.21 — Word Trails question logic & hint overhaul
 
 MindGarden is a **free, ad-free, browser-playable collection of ten recreational games**. Installation is optional. Languages: English, Bahasa Melayu, 简体中文 and 繁體中文.
 
-## Important changes in v3.2.19
+## New in v3.2.21
+
+- Word Trails now rotates through 60+ unique answers in **each language and difficulty mode** before any repeat. The question bank covers environments, society, reasoning, technology, local community and professional topics.
+- A three-step hint ladder replaces recycled clues: (1) final letter plus vowel count (or final character in Chinese); (2) starting letter and row/column; (3) full connected-tile path.
+- Each generated board contains the answer as a contiguous route of non-repeating neighbouring tiles, including diagonals.
+- Number Steps now offers an additional plausible option.
+- Existing Sentence Detective passages, idioms, games, saved progress, PWA and Smart City aircraft/renderer remain unchanged.
+
+## Previously introduced city features (unchanged)
 
 - Municipal supply warnings distinguish **built source**, **road connectivity**, **residential coverage**, and **supply shortage**. A connected plant is no longer falsely reported as disconnected because some residents are not covered.
 - All residential coverage calculations weight high-density buildings by the number of residents: homes (12), apartments (48), and condos (84).
@@ -66,5 +74,5 @@ See `SECURITY.md` and the official repository licence for the full legal terms a
 Browser tests do **not** establish complete compatibility with every Android WebGL device. Players should test their city backup and live map before replacing a public deployment.
 
 
-## v3.2.19 Planning diagnostics
+## v3.2.21 Planning diagnostics
 The Mayor's Office shows measured electricity supply/demand, ESG and pollution. The congestion milestone help displays demand/capacity and approximate what-if scenarios. These estimates are not guarantees; road connectivity and later construction can change the result.

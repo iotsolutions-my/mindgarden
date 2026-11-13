@@ -1,6 +1,19 @@
+## v3.2.21 — Word Trails logic and hint repair
+
+- Expanded curated Word Trails questions in English, Malay, Simplified and Traditional Chinese.
+- Replaced short repeating modulo cycles with deterministic full-pool rotations; repeats only after a whole pool is exhausted.
+- Added three useful hint levels: final letter/vowel count; first tile location; full solution path.
+- Expanded Number Steps answer options to make guesses less trivial.
+- Preserved saved progress, Skip, four languages and all Smart City graphics/aircraft code.
+
+## v3.2.21 — Sentence Detective content overhaul
+- Replace the repeated 10-passage × 5-blanks model with 50 independently authored scenarios each for English and Bahasa Melayu.
+- Four contextually plausible options for each puzzle; each puzzle has its own targeted hint.
+- Existing level progress, skip and resume are preserved. No changes to Smart City helicopter or map rendering.
+
 # MindGarden Changelog
 
-## v3.2.19 — Connected utilities, policy economics and high-rise redevelopment
+## v3.2.21 — Connected utilities, policy economics and high-rise redevelopment
 - Removed false disconnected-plant warnings caused by city-wide percentage checks.
 - Report active plant/substation counts, connected residents and production shortfalls separately.
 - Add residential-density report with high-rise and apartment populations; allow in-place upgrades.
