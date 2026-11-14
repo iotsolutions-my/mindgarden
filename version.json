@@ -1,5 +1,5 @@
 {
-  "version": "3.2.22",
-  "build": "3.2.22",
-  "notes": "Event-specific venue capacity, demand-limited attendance and scalable event rewards; other games and helicopter rendering unchanged."
+  "version": "3.2.30",
+  "build": "3.2.30",
+  "notes": "Traffic diagnostic reconciliation, taxi stops and fuel access reliability. Preserved aircraft renderer."
 }

@@ -1,8 +1,21 @@
-# MindGarden v3.2.22 — Word Trails question logic & hint overhaul
+# MindGarden v3.2.30 — City health and indicator correction
 
 MindGarden is a **free, ad-free, browser-playable collection of ten recreational games**. Installation is optional. Languages: English, Bahasa Melayu, 简体中文 and 繁體中文.
 
-## New in v3.2.22
+## New in v3.2.30
+
+- **Green-city gameplay:** parks, urban forests and wetlands reduce local environmental pressure; the pollution breakdown shows the calculated reduction.
+- **Energy choices:** nuclear adds a separately labeled environmental-risk game penalty while remaining a low operational air-emission source. Renewable solar, wind and hydro can reduce the modeled risk.
+- Scores represent gameplay only, not physical air-quality measurements or a claim that nuclear is a high-carbon generator.
+
+
+- Removed the absolute healthcare ceiling that kept health at exactly 76% whenever pollution reached 100%.
+- Displayed medical adequacy, road reach, clean-water contribution, green benefit and pollution penalty in an expandable health report.
+- Identified when healthcare or safety supply already exceeds demand, instead of recommending infinite new buildings.
+- Normalised pollution against urban activity and green mitigation so it no longer automatically saturates in larger cities.
+- Preserved the WebGL visuals, aircraft shapes, saves, mission logic and standalone offline support.
+
+## Existing puzzle improvements
 
 - Word Trails now rotates through 60+ unique answers in **each language and difficulty mode** before any repeat. The question bank covers environments, society, reasoning, technology, local community and professional topics.
 - A three-step hint ladder replaces recycled clues: (1) final letter plus vowel count (or final character in Chinese); (2) starting letter and row/column; (3) full connected-tile path.
@@ -74,8 +87,27 @@ See `SECURITY.md` and the official repository licence for the full legal terms a
 Browser tests do **not** establish complete compatibility with every Android WebGL device. Players should test their city backup and live map before replacing a public deployment.
 
 
-## v3.2.22 Planning diagnostics
+## v3.2.30 Planning diagnostics
 The Mayor's Office shows measured electricity supply/demand, ESG and pollution. The congestion milestone help displays demand/capacity and approximate what-if scenarios. These estimates are not guarantees; road connectivity and later construction can change the result.
 
-## v3.2.22 — Event rewards and demand
+## v3.2.30 — Event rewards and demand
 Community-event rewards now depend on suitable venue capacity, realistic attendance estimates, road access, congestion and safety. Unrelated buildings no longer multiply camping or sports events. Rewards have diminishing returns as attendance approaches demand.
+
+### v3.2.30: pollution and clean industry
+Pollution details list the emitting facilities and the NW/NE/SW/SE map quadrants, read using the on-map north compass. An existing factory can be upgraded in place to a Clean-tech / robotics factory for the incremental construction cost. Low-carbon energy is modelled as low operating air emissions, not as an automatic pollution sink. All figures are illustrative simulation scores rather than real-world measurements.
+
+
+## v3.2.30 Milestone hotfix
+Already-achieved numeric milestone targets (including congestion targets) now complete automatically during normal UI refresh and save reload. Rewards are awarded only once.
+
+
+## v3.2.30: Malaysia-inspired city life
+
+Build event halls and a World Trade Centre. Celebrate Hari Raya, Chinese New Year, Thaipusam and Deepavali through city events. Choose an appropriate street celebration; if a safe bypass exists, the city temporarily closes the road and reroutes traffic until the next city day. Mayor City Operations lets you fund short-term improvements without changing your Mayor policy.
+
+## v3.2.30 — Malaysian city venues and mature-city planning
+Event & Convention Hall and World Trade Centre now render as distinct buildings and participate in randomly selected construction missions and event-related incidents. Venue event outcomes depend on building availability and player choices. Mayor guidance now takes apartments, condominiums, population and tourism venues into account.
+
+
+### v3.2.30 public Malaysian cultural celebrations
+Public festivals use city residents, visiting participants, public outdoor space, roads, safety and transport—not convention-hall seats. Temporary street events have a safe crowd capacity and do not require an event hall. Exhibition missions retain their indoor venue model. Existing saves remain compatible.
