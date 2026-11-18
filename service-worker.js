@@ -1,7 +1,7 @@
-/* MindGarden v3.11.4 — self-contained PWA cache; usable without installation. */
+/* MindGarden v3.12.0 — self-contained PWA cache; usable without installation. */
 'use strict';
-const CACHE_NAME='mindgarden-v3.11.4-pwa';
-const SHELL=['./','./index.html','./city.html','./mahjong.html','./tower.html','./chess.html','./xiangqi.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./version.json'];
+const CACHE_NAME='mindgarden-v3.12.0-pwa';
+const SHELL=['./','./index.html','./city.html','./mahjong.html','./tower.html','./chess.html','./xiangqi.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./version.json','./favicon.ico','./social-preview.png'];
 self.addEventListener('install',event=>event.waitUntil(
   caches.open(CACHE_NAME).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting())
 ));
@@ -14,7 +14,7 @@ self.addEventListener('fetch',event=>{
  if(req.method!=='GET'||new URL(req.url).origin!==self.location.origin)return;
  const path=new URL(req.url).pathname;
  if(path.endsWith('version.json')){
-   event.respondWith(fetch(req,{cache:'no-store'}).catch(()=>caches.match('./version.json')));return;
+   event.respondWith(fetch(req,{cache:'no-store'}).catch(()=>caches.match('./version.json','./favicon.ico','./social-preview.png')));return;
  }
  if(req.mode==='navigate'){
    event.respondWith(fetch(req).then(response=>{

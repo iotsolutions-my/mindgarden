@@ -1,7 +1,7 @@
 {
-  "name": "MindGarden v3.11.4",
+  "name": "MindGarden",
   "short_name": "MindGarden",
-  "description": "Fourteen free multilingual, ad-free browser games including Chinese Chess, Western Chess, Mahjong and Smart City.",
+  "description": "Free, ad-free brain games and puzzles for all ages, with senior-friendly controls.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

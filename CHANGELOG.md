@@ -1,33 +1,28 @@
-# v3.2.31 — Live traffic diagnostics consistency hotfix
+# MindGarden changelog
 
-- Keep the dashboard, congestion diagnostics, and daily milestone checks on the same calculated city traffic value.
-- Clear previous-day diagnostics during Next Day; refresh an open diagnostic when city values change.
-- Record congestion at milestone completion and show it separately from the current live reading.
-- Keep each RM120 milestone reward idempotent across saves, reloads, and subsequent traffic increases.
-- Preserve city saves, traffic gameplay balance, and the existing helicopter renderer.
+## v3.12.0 — Public launch readiness
+- Player-facing metadata and PWA name simplified to “MindGarden”; development build remains in `version.json`.
+- Added local Open Graph / Twitter preview artwork and favicon.
+- Added fully translated main-page introduction in four languages.
+- Improved mobile language-selector sizing, homepage text contrast and readability.
+- Gave Relax mode easier introductory English/Malay Sentence Detective paragraphs; other difficulties unchanged.
+- Rewrote README for visitors, added three screenshot references and clear wellness notice.
+- Retained all 14 games, standalone HTML pages, existing game progress keys and offline shell.
 
-## v3.2.31 — Taxi stops and transport reliability
-- Added buildable taxi stops, connected to roads and contributing transport capacity.
-- Petrol stations now support a road-vehicle fuel-access score rather than being only commercial buildings.
-- Congestion diagnostic previews include fuel constraints and all active transport-operation discounts.
-- New petrol/ taxi service demand and modest economic upkeep. No vehicle permanently stops when fuel access is low.
-- Preserved the existing helicopters and map artwork.
+## v3.11.4 — Chess difficulty
+Three amateur computer strengths (Novice / Intermediate / Advanced) for Western Chess and Xiangqi.
 
-## v3.2.31 — Malaysian Cultural Festival Turnout Fix
+## v3.11.3 — Xiangqi rules
+Corrected cannon check-detection rule and tested blocked/empty cannon attacks.
 
-- Public events (Merdeka, Chinese New Year, Hari Raya bazaars, Thaipusam, Deepavali, Christmas and multicultural open houses) no longer use exhibition-seat limits.
-- Audience estimates combine resident participation, outside visitors, street/public-space capacity, traffic safety and accessibility.
-- Temporary street celebrations no longer default to an unrealistic 75 attendees.
-- Displays public-capacity and resident/visitor estimates; notifications no longer report irrelevant exhibition venue counts.
-- Cultural event first choice does not require a convention hall.
-- Cultural-event rewards use a capped public-event formula instead of multiplying large crowds by exhibition ticket rates.
-- Preserves city save schema, other games and helicopter renderer.
+## v3.11.2 — Standalone chess switch
+In-page switching between Western Chess and Xiangqi.
 
-# MindGarden v3.2.31 — Venue Rendering and Dynamic City Planning
+## v3.10.2 — Tower Escape Arcade-only
+Preserved compact viewport and 36 levels; removed Puzzle mode.
 
-- Fixed invisible Event & Convention Hall and World Trade Centre on the 3D map. Both remain single-tile structures in the current lightweight renderer.
-- Venue inspections now show specific jobs, tourism and event benefits.
-- Added new building missions for Event Hall and World Trade Centre.
-- Added occasional crowd, power and freight-management incidents for cities that have event venues, with three actionable responses and differing outcomes.
-- Mayor advice now recognises high-density housing, mature cities and tourism venues rather than endlessly recommending ordinary houses.
-- All other existing city systems and aircraft rendering code unchanged.
+## v3.8.0 — Mahjong strategy
+Deeper layered Mahjong with harder early and middle-game choices.
+
+## Earlier development
+MindGarden developed from an original multilingual, no-ad word-and-memory game collection (v0.9 onward), adding Smart City, Mahjong Garden, Tower Escape and chess games over subsequent releases. Older release notes are archived in Git history.
