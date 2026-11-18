@@ -1,116 +1,105 @@
-# MindGarden v3.2.31 — City health and indicator correction
+# MindGarden v3.8.0 — Progressive Layered Mahjong Garden
 
-MindGarden is a **free, ad-free, browser-playable collection of ten recreational games**. Installation is optional. Languages: English, Bahasa Melayu, 简体中文 and 繁體中文.
+## New in v3.8.0 — Strategy Challenge
+- One Mahjong challenge mode with progressive **3-, 4- and 5-layer** boards (unchanged board dimensions).
+- Fourteen extra distinctive tile faces (29 in total) reduce the number of obvious opening matches and demand closer attention. The layout remains readable with large tiles.
+- Tiles are arranged using a *known legal solution*, but alternative matches may create a dead end. Losses are never forced.
+- When no moves remain, the game shows a clear, friendly message and players may **Try same board**, **Undo last pair**, **Rearrange**, or **Skip** without cost.
+- Retry count is shown as an optional feedback indicator, without rankings, timers or penalties. Finishing a board unlocks the next puzzle.
+- Autosaves now include the retry starting board and undo history. Older Mahjong schema 4 saves migrate using the current state as their retry starting point; Smart City saves stay untouched.
+- Language support for English, Bahasa Melayu, 简体中文 and 繁體中文, including new challenge and retry messages.
+- Browser-playable standalone HTML and optional offline PWA; no external scripts, audio, advertisements or accounts.
 
-## New in v3.2.31
+### QA notes
+- Generated boards are checked against their legal solution sequence, and all starting layouts must contain at least one matching free pair.
+- Validate Android touch controls, visually inspect tile overlaps and back up existing saves before deployment. Local Chromium automation was tested using in-memory HTML because direct `file://` navigation is restricted.
 
-- **Green-city gameplay:** parks, urban forests and wetlands reduce local environmental pressure; the pollution breakdown shows the calculated reduction.
-- **Energy choices:** nuclear adds a separately labeled environmental-risk game penalty while remaining a low operational air-emission source. Renewable solar, wind and hydro can reduce the modeled risk.
-- Scores represent gameplay only, not physical air-quality measurements or a claim that nuclear is a high-carbon generator.
+# MindGarden v3.8.0 — Mahjong Garden Layered Challenge
 
+A lightweight browser-playable city game with optional PWA installation.
 
-- Removed the absolute healthcare ceiling that kept health at exactly 76% whenever pollution reached 100%.
-- Displayed medical adequacy, road reach, clean-water contribution, green benefit and pollution penalty in an expandable health report.
-- Identified when healthcare or safety supply already exceeds demand, instead of recommending infinite new buildings.
-- Normalised pollution against urban activity and green mitigation so it no longer automatically saturates in larger cities.
-- Preserved the WebGL visuals, aircraft shapes, saves, mission logic and standalone offline support.
+## MindGarden games (from the early v0.9 concept onward)
+MindGarden is a free, ad-free browser collection, not only a city simulator. The main page offers:
 
-## Existing puzzle improvements
+1. **Word Trails** — connect or select letters to build words.
+2. **Memory Garden** — uncover and match picture pairs.
+3. **Number Steps** — find missing numbers in sequences.
+4. **Sharp Eyes** — remember scenes and spot a missing item.
+5. **Sentence Detective** / **Chinese Character Hunt** — context and character puzzles by language.
+6. **Idiom Lab** — interpret proverbs, idioms and 成语.
+7. **Logic Grid** — solve short logic and number puzzles.
+8. **Gem Garden** — shape- and colour-supported matching game.
+9. **Air Traffic Coordinator** — guide aircraft and exercise coordination.
+10. **Smart City 3D** — one persistent Malaysian city with missions, transport and infrastructure.
+11. **Mahjong Garden** — an original, accessible Mahjong Solitaire-style pair-matching game, with large tiles, hints, rearrange, skip and autosave.
 
-- Word Trails now rotates through 60+ unique answers in **each language and difficulty mode** before any repeat. The question bank covers environments, society, reasoning, technology, local community and professional topics.
-- A three-step hint ladder replaces recycled clues: (1) final letter plus vowel count (or final character in Chinese); (2) starting letter and row/column; (3) full connected-tile path.
-- Each generated board contains the answer as a contiguous route of non-repeating neighbouring tiles, including diagonals.
-- Number Steps now offers an additional plausible option.
-- Existing Sentence Detective passages, idioms, games, saved progress, PWA and Smart City aircraft/renderer remain unchanged.
+Available languages: English, Bahasa Melayu, 简体中文 and 繁體中文. Games have friendly hints and options to skip where supported. MindGarden is for enjoyable recreation, not medical diagnosis or treatment.
 
-## Previously introduced city features (unchanged)
+## v3.3.0 — New Mahjong Garden
+- Standalone `mahjong.html` linked directly from the MindGarden homepage, playable online and offline after PWA caching.
+- Original Mahjong-style tile faces with no third-party game images, audio, libraries, advertisements or tracking.
+- Four language options, one balanced challenge mode, senior-friendly controls, hint, shuffle, skip, and automatic local progress saves.
+- No timing pressure or losing penalties; game is recreation and cannot claim to prevent or treat cognitive disorders.
 
-- Municipal supply warnings distinguish **built source**, **road connectivity**, **residential coverage**, and **supply shortage**. A connected plant is no longer falsely reported as disconnected because some residents are not covered.
-- All residential coverage calculations weight high-density buildings by the number of residents: homes (12), apartments (48), and condos (84).
-- Inspecting a building shows whether it touches a connected road; the utility panel also shows resident reach and production capacity.
-- Homes can be upgraded in place to apartments or condominiums, and apartments to condominiums, paying only the construction-price difference. This avoids demolishing existing homes.
-- Mayor policies affect daily activity income differently. Tourist promotion benefits from actual visitors, industry from road-accessible employment, housing from utility-served residents, and transport from commuters. Effects are recalculated per day; Mayor decisions cannot create income from zero relevant activity.
-- Finance preview shows estimated policy activity return in addition to the policy cost and municipal tax.
-- Extreme pollution now limits achievable happiness and healthcare levels; tourism also responds to pollution, keeping environmental management meaningful.
-- More realistic warnings do not require changing the long-running city save key.
-- Existing helicopter, drone, sea, bridges, ship, map, missions, and WebGL rendering sections were not modified in this release.
+## v3.2.5 expansion and city-life fixes
+- Map can expand by 12 tiles per side up to **144×144** instead of silently stopping at 96×96. A precise message distinguishes maximum map size, insufficient developed plots and insufficient funds.
+- Each expansion writes a pre-expansion browser backup; existing buildings, terrain clearing, signals and sensors remain mapped to their new locations.
+- More ambient drones and lightweight helicopters around airports, tourist sites, arenas, hotels and other attractions.
+- Emergency vehicles (ambulance, fire engine and police patrol) travel along connected roads where routes exist.
+- Commuter/freight routing considers farther destinations, and congestion uses a demand/capacity ratio that responds better in larger cities.
+- No downloadable models, textures or new external dependencies.
 
-**Limitations:** Statistics remain simplified estimates, not a real-world engineering or municipal economic model. New high-rise upgrades are player-directed rather than automatically replacing old houses.
+## v3.8.0 — Mahjong Garden single-mode challenge
+- Replaced mirrored rows with five varied, irregular board designs, each with 56 tiles (28 matching pairs).
+- Removed the difficulty dropdown: one balanced challenge appropriate for adults and seniors.
+- Each new arrangement is constructed with a valid full removal sequence; stuck players may use unlimited hints and rearranging.
+- Saves puzzle progress using schema 2; old schema 1 automatically keeps the puzzle number and starts a fresh challenge board, without touching other games.
+- No timers, pressure, sound, third-party resources or installation requirements.
 
+## Features
+- Ten missions per manual day (3 construction, 4 incidents, 3 events) with 15-second breaks, no response deadline.
+- Sports arena, swimming pool, business centre, zoo, aquarium, cinema, river and camping site.
+- Small ambient drones above logistics hubs, airports and business centres; decorative, not controllable.
+- Sticky quick controls for Road, Inspect, Bulldozer; search and filter building catalogue.
+- Language selector: English, Bahasa Melayu, 简体中文, 繁體中文.
+- Existing unified city save preserved; eight-mission days migrate by adding two missions.
+- Traffic samples homes across neighbourhoods, favours different destinations, and uses congestion-weighted road routing. A single connecting road can still be busy; this is not a full intersection-level simulation.
+- No external graphics downloads, libraries, accounts or advertisements.
 
-- Restored **the green map edge and consistent green land plot grid**, including when zoomed out on large maps. The blue background is again the environment, while editable sea tiles remain the navigable water in the map.
-- Redrew **Road Bridge** as a low road-height supported causeway with shoreline access and guardrails, rather than a raised floating block. A bridge is constructed by selecting Road on sea; cost RM480. Removing a bridge restores sea.
-- Fixed unclear **IoT sensor and traffic-light construction missions**. IoT sensors must be installed on an existing building or road; traffic lights on existing roads. Additional safeguards recover interrupted mission state and prevent missing translations from breaking mission rendering.
-- **Kept the exact helicopter and drone rendering section from v3.2.16.** No aircraft redesign or flight behaviour change.
-- Kept your saved city, manual Next Day, sea editing, connected ship routing, port placement and island/coast expansion logic.
+## v3.2.4 stability audit & fixes
+- Correctly separate the *current mission* from a viewed past mission. History shows a review label and a return button; a completed day shows **10/10** instead of stale earlier mission details.
+- Correct stale **All 5 missions** messages in all four languages; the game now consistently uses ten missions per day.
+- Harden saved mission records: deduplicate journals, repair invalid pending/finished state, and avoid counting down after the tenth mission.
+- Rebalance healthcare using hospital and clinic capacity relative to city population and water service conditions, so adding healthcare visibly improves the score in a large city.
+- Rebalance public safety using police, fire and sensor capacity relative to population and congestion.
+- Recalculate tourism using the **current day's** public safety and congestion, avoiding stale-one-turn visitor results.
+- Speed up water/electricity road-network coverage calculations for large cities.
+- Show basic healthcare and safety capacity/demand diagnostics in the population section.
+- Keep a one-time pre-update backup in browser storage and provide **Export city backup** under City administration. City saves are not intentionally reset.
+- No changes to missions count (10), manual Next Day or the existing city save key.
 
-## Games (from the original v0.9 concept onward)
+## Deploy
+Upload all files in this folder to GitHub Pages root. Do not omit `service-worker.js`, manifest, `version.json`, or icons. Use HTTPS for optional offline PWA.
 
-1. **Word Trails** — build connected words from neighbouring tiles.
-2. **Memory Garden** — match picture pairs.
-3. **Number Steps** — find the missing numbers.
-4. **Sharp Eyes** — observation and missing-item puzzles.
-5. **Sentence Detective / Chinese Character Hunt** — language-specific context and character puzzles.
-6. **Idiom Lab** — idioms, proverbs and 成语.
-7. **Logic Grid** — number and logic challenges.
-8. **Gem Garden** — matching shapes and colours.
-9. **Air Traffic Coordinator** — flight coordination exercises.
-10. **Smart City 3D** — build and manage one persistent Malaysian city with missions, roads, housing, jobs, utilities, Mayor's Office, tourism, ports and sea.
+## Notes
+- Always back up existing releases before replacing.
+- Game is recreational and does not prevent, diagnose, or treat dementia or other medical conditions.
 
-MindGarden is recreational software, not a treatment for dementia or Alzheimer's disease.
+## v3.8.0 — Two-layer Mahjong Garden (layer-ready engine)
+- Earlier version used 56 tiles: 48 lower-layer plus 8 upper-layer tiles. Upper tiles physically overlap and block lower tiles.
+- Only tiles with no tile above AND a free left/right side on the same layer can be matched.
+- Five placement layouts with one balanced senior-friendly challenge mode. No timers or penalties.
+- Generator assigns pairs in a legal removal order, ensuring at least one complete solution. Unlimited hints, rearranging and skip remain available.
+- New save schema 3 stores layered tiles; existing puzzle number is retained while schema 2 unfinished board is refreshed (other games untouched).
+- General layer coordinates and tile-availability rules already accept up to five layers (z=0..4); this release exposes two layers only. Three-, four- and five-layer layouts are future additions and are not advertised as playable yet.
+- No third-party artwork, audio or remote dependencies.
 
-## Smart City gameplay
+## Mahjong Garden v3.8.0
 
-- One city, saved automatically on the device; up to 144×144 tiles.
-- Ten missions per manual day, a 15-second pause between missions, no real-time response deadline.
-- An optional PWA, and standalone HTML can be opened offline where supported.
-- Place **Sea** on empty land for RM0; bulldoze sea for RM0. Seaports and marinas require sea connected to the map edge.
-- Place **Road** on an existing sea tile to build a road bridge (RM480). Roads and bridges carry cars, while sea/bridge tiles remain traversable to ships. Water geometry and ship clearance are simplified low-poly graphics.
-- Aircraft activity is controlled by the preserved earlier helicopter/drone model code.
-- Save backups are JSON data only. Export before updating and verify official releases before installing third-party files.
+Puzzle 1–2 use four-layer layouts and Puzzle 3 onward uses five-layer layouts. Covered tile faces remain concealed until revealed, encouraging planning; the board generator preserves a legal solution. No timer or penalties; unlimited undo, retry, hint, rearrange and skip. The current puzzle number carries forward. Existing unfinished older-layout puzzles are regenerated rather than silently altered.
 
-## Publishing
-
-Upload the complete contents of this release folder into the root of your existing GitHub Pages repository. Include `city.html`, `index.html`, `manifest.webmanifest`, `service-worker.js`, `version.json`, and `icons/`. Do not delete browser site data during an update, as that can remove local saves. Export your current city before upgrading.
-
-## Security and licensing
-
-See `SECURITY.md` and the official repository licence for the full legal terms and Security Baseline v1.0. No audio, ads, remote asset dependencies, accounts, automatic redirects or telemetry are required for the game. The application and its save data are provided "AS IS" without warranties to the extent allowed by law; mandatory rights remain unaffected.
-
-## Checks
-
-- `node tests/sea-bridge-regression.test.js`
-- `node --check` on extracted inline game JavaScript
-- In-memory Chromium test of IoT mission progression and all four language switches
-- SHA-256 file checksums in `SHA256SUMS.txt`
-
-Browser tests do **not** establish complete compatibility with every Android WebGL device. Players should test their city backup and live map before replacing a public deployment.
-
-
-## v3.2.31 Planning diagnostics
-The Mayor's Office shows measured electricity supply/demand, ESG and pollution. The congestion milestone help displays demand/capacity and approximate what-if scenarios. These estimates are not guarantees; road connectivity and later construction can change the result.
-
-## v3.2.31 — Event rewards and demand
-Community-event rewards now depend on suitable venue capacity, realistic attendance estimates, road access, congestion and safety. Unrelated buildings no longer multiply camping or sports events. Rewards have diminishing returns as attendance approaches demand.
-
-### v3.2.31: pollution and clean industry
-Pollution details list the emitting facilities and the NW/NE/SW/SE map quadrants, read using the on-map north compass. An existing factory can be upgraded in place to a Clean-tech / robotics factory for the incremental construction cost. Low-carbon energy is modelled as low operating air emissions, not as an automatic pollution sink. All figures are illustrative simulation scores rather than real-world measurements.
-
-
-## v3.2.31 Milestone hotfix
-Already-achieved numeric milestone targets (including congestion targets) now complete automatically during normal UI refresh and save reload. Rewards are awarded only once.
-
-
-## v3.2.31: Malaysia-inspired city life
-
-Build event halls and a World Trade Centre. Celebrate Hari Raya, Chinese New Year, Thaipusam and Deepavali through city events. Choose an appropriate street celebration; if a safe bypass exists, the city temporarily closes the road and reroutes traffic until the next city day. Mayor City Operations lets you fund short-term improvements without changing your Mayor policy.
-
-## v3.2.31 — Malaysian city venues and mature-city planning
-Event & Convention Hall and World Trade Centre now render as distinct buildings and participate in randomly selected construction missions and event-related incidents. Venue event outcomes depend on building availability and player choices. Mayor guidance now takes apartments, condominiums, population and tourism venues into account.
-
-
-### v3.2.31 public Malaysian cultural celebrations
-Public festivals use city residents, visiting participants, public outdoor space, roads, safety and transport—not convention-hall seats. Temporary street events have a safe crowd capacity and do not require an event hall. Exhibition missions retain their indoor venue model. Existing saves remain compatible.
-
-## v3.2.31 Traffic display consistency
-The congestion diagnostics panel now refreshes with live city calculations. A completed congestion milestone shows its achieved score separately from today’s traffic, and the earned reward remains in place if congestion rises later.
+## v3.8.0 Mahjong Garden
+- Board-generation scoring now considers accessible matches during early and middle phases of a precomputed legal solution.
+- Personal Garden tracks completed puzzles and independent clears, without timers or penalizing help.
+- Undo, hint, retry, skip and rearrange remain available. Existing Mahjong saves migrate from schema 4/5 to 6.
+- One challenge mode, 4–5 layers, browser play without installation or external runtime services.

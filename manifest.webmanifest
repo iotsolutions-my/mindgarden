@@ -1,7 +1,7 @@
 {
-  "name": "MindGarden v3.2.29",
+  "name": "MindGarden v3.8.0",
   "short_name": "MindGarden",
-  "description": "Ten free multilingual brain games, including a separate interactive 3D Smart City game.",
+  "description": "Eleven free multilingual brain games, including a separate interactive 3D Smart City game.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
