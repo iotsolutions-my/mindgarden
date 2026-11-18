@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#164c3c"><meta name="mindgarden-build" content="3.14.0">
+<meta name="theme-color" content="#164c3c"><meta name="mindgarden-build" content="3.15.0">
 <title>MindGarden — Mahjong Garden</title><meta name="description" content="Relaxing Mahjong solitaire with real tiles: 100 levels, a daily puzzle, stars and a garden that grows. English, Bahasa Melayu and Chinese. No ads.">
 <meta property="og:type" content="website"><meta property="og:site_name" content="MindGarden"><meta property="og:title" content="MindGarden — Mahjong Garden"><meta property="og:description" content="Relaxing Mahjong solitaire with real tiles: 100 levels, a daily puzzle, stars and a garden that grows. English, Bahasa Melayu and Chinese. No ads.">
 <meta property="og:image" content="./social-preview.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
@@ -71,6 +71,10 @@ details{margin-top:4px}summary{font-weight:750;cursor:pointer;min-height:44px;di
 @keyframes fall{to{transform:translateY(110vh) rotate(260deg)}}
 @media (prefers-reduced-motion:reduce){.tile,.lvl.next,.tile.hint,.stars .on{animation:none;transition:none}}
 @media(max-width:440px){.wrap{padding:8px 6px 32px}.hero h1{font-size:1.45rem}.lvls{gap:6px}.lvl{min-height:58px}}
+.prog h2{font-size:1.2rem}.dots{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;margin:10px 0 4px}
+.dots span{min-height:34px;border-radius:10px;background:#f1ecdc;display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#b9ad8a;letter-spacing:-1px}
+.dots span.done{background:#fff3cf;color:#d39400}.dots span.here{background:#1f6d50;color:#fff;font-size:.95rem}
+.nextup{color:#4f6a5b;font-size:.98rem;margin-top:4px}
 </style></head>
 <body>
 <div id="home" class="wrap">
@@ -80,7 +84,7 @@ details{margin-top:4px}summary{font-weight:750;cursor:pointer;min-height:44px;di
 <p id="allDone" class="alldone" hidden></p>
 <section class="card daily"><div class="row"><h2 id="dailyTitle"></h2><span id="streak" class="streak"></span></div><button type="button" id="dailyBtn"></button></section>
 <section class="card"><h2 id="gardenTitle"></h2><div id="gardenStars"></div><div class="bar"><i id="gardenBar"></i></div><div id="gardenFlowers" class="flowers"></div></section>
-<div id="chapters"></div>
+<section class="card prog"><h2 id="progTitle"></h2><div class="bar"><i id="progBar"></i></div><div id="progChapter"></div><div id="progDots" class="dots"></div><div id="progNext" class="nextup"></div></section>
 <details class="card"><summary id="howTitle"></summary><p id="howText" class="note"></p></details>
 <p id="notice" class="notice"></p>
 </div>
@@ -95,7 +99,7 @@ details{margin-top:4px}summary{font-weight:750;cursor:pointer;min-height:44px;di
 <div id="win" class="overlay" hidden><div id="petals"></div><div class="dialog"><div id="winStars" class="stars"></div><h2 id="winTitle"></h2><p id="winNote"></p><button type="button" id="winNext" class="go"></button><button type="button" id="winHome"></button></div></div>
 </div>
 <noscript><p style="text-align:center">Please enable JavaScript to play.</p></noscript>
-<script>
+<script id="core-src">
 /* MindGarden Mahjong Solitaire core v3 — stacked (half-offset) layouts, 100 seeded levels,
    generation that is always solvable, solver, smart hints. Offline, deterministic (integer RNG). */
 'use strict';
@@ -146,8 +150,9 @@ function trim(P,target,rnd){P=P.slice();while(P.length>target){
   const kill=c[Math.floor(rnd()*c.length)];P.splice(P.indexOf(kill),1);}return P;}
 /* Level settings: size, layers, stacking style, how tricky the pairing is. */
 function params(level){const n=Math.max(1,Math.min(LEVELS,level|0));
- return {n,target:2*Math.round((18+0.86*(n-1))/2),maxLayers:Math.min(5,1+Math.floor((n+3)/8)),
-  style:n<8?'aligned':['offset','aligned','mixed'][n%3],spread:n<15?1:n<45?2:3,distinct:n<10?1:n<40?0.8:0.65,open:n<10?[4,7]:n<40?[3,5]:[2,4]};}
+ return {n,target:2*Math.round((32+0.86*(n-1))/2),maxLayers:Math.min(5,2+Math.floor(n/8)),
+  style:n<4?'aligned':['offset','mixed','aligned'][n%3],spread:n<10?2:3,distinct:n<10?0.75:n<40?0.62:0.52,open:n<10?[3,4]:[2,3],
+  hard:1+n/25};}
 function layoutFor(p,rnd){const opts=[];for(const name of SHAPE_NAMES){const cells=parse(SHAPES[name]);const full=stack(cells,p.maxLayers,p.style);if(full.length>=p.target)opts.push({name,cells,full,area:cells.length});}
  let pick;if(opts.length){opts.sort((a,b)=>a.area-b.area||(a.name<b.name?-1:1));const k=Math.min(3,opts.length);pick=opts[Math.floor(rnd()*k)];}
  else{let best=null;for(const name of SHAPE_NAMES){const cells=parse(SHAPES[name]);const full=stack(cells,5,'mixed');if(!best||full.length>best.full.length)best={name,cells,full};}pick=best;}
@@ -158,15 +163,19 @@ class Board{
  constructor(P,F){this.P=P;this.F=F;const N=P.length;this.N=N;
   this.covers=[...Array(N)].map(()=>[]);this.lblk=[...Array(N)].map(()=>[]);this.rblk=[...Array(N)].map(()=>[]);
   this.ac=new Int16Array(N);this.lc=new Int16Array(N);this.rc=new Int16Array(N);this.alive=new Uint8Array(N).fill(1);this.left=N;
+  this.zl=new Int32Array(N);this.zh=new Int32Array(N);const r=rng(N*977+13);for(let i=0;i<N;i++){this.zl[i]=(r()*4294967296)|0;this.zh[i]=(r()*4294967296)|0;}this.hl=0;this.hh=0;
   for(let i=0;i<N;i++)for(let j=0;j<N;j++){if(i===j)continue;const a=P[i],b=P[j];
    if(b.z>a.z&&overlaps(a,b)){this.covers[j].push(i);this.ac[i]++;}
    if(b.z===a.z&&Math.abs(a.y-b.y)<2){if(b.x===a.x-2){this.lblk[j].push(i);this.lc[i]++;}if(b.x===a.x+2){this.rblk[j].push(i);this.rc[i]++;}}}}
  free(i){return this.alive[i]&&!this.ac[i]&&(!this.lc[i]||!this.rc[i]);}
- remove(i){this.alive[i]=0;this.left--;for(const k of this.covers[i])this.ac[k]--;for(const k of this.lblk[i])this.lc[k]--;for(const k of this.rblk[i])this.rc[k]--;}
- restore(i){this.alive[i]=1;this.left++;for(const k of this.covers[i])this.ac[k]++;for(const k of this.lblk[i])this.lc[k]++;for(const k of this.rblk[i])this.rc[k]++;}
+ remove(i){this.alive[i]=0;this.left--;this.hl^=this.zl[i];this.hh^=this.zh[i];for(const k of this.covers[i])this.ac[k]--;for(const k of this.lblk[i])this.lc[k]--;for(const k of this.rblk[i])this.rc[k]--;}
+ restore(i){this.alive[i]=1;this.left++;this.hl^=this.zl[i];this.hh^=this.zh[i];for(const k of this.covers[i])this.ac[k]++;for(const k of this.lblk[i])this.lc[k]++;for(const k of this.rblk[i])this.rc[k]++;}
  frees(){const o=[];for(let i=0;i<this.N;i++)if(this.free(i))o.push(i);return o;}
  matches(){const by=new Map(),out=[];for(const i of this.frees()){const f=this.F[i];if(!by.has(f))by.set(f,[]);by.get(f).push(i);}
   for(const l of by.values())for(let a=0;a<l.length;a++)for(let b=a+1;b<l.length;b++)out.push([l[a],l[b]]);return out;}
+ hkey(){return this.hl*4294967296+(this.hh>>>11);}
+ /* tiles this tile is currently holding down (covering or blocking a side) */
+ weight(i){return this.covers[i].length*2+this.lblk[i].length+this.rblk[i].length+this.P[i].z;}
  key(){let s='';for(let i=0;i<this.N;i+=30){let w=0;for(let k=i;k<Math.min(i+30,this.N);k++)w=w*2+this.alive[k];s+=w.toString(36)+'.';}return s;}
 }
 /* Simulate a legal clearing order; returns pairs of tile indexes. spread>1 pairs recently-freed tiles, so players must uncover partners. */
@@ -179,34 +188,43 @@ function removalOrder(board,rnd,spread){for(let attempt=0;attempt<60;attempt++){
   if(ok)return pairs;}return null;}
 function assignFaces(board,rnd,spread,distinct,facePairs){const order=removalOrder(board,rnd,spread);if(!order)return null;let faces;
  if(facePairs){faces=facePairs.slice();}else{const kinds=[...Array(NFACES).keys()];shuffle(kinds,rnd);const k=Math.max(1,Math.min(NFACES,Math.ceil(order.length*distinct)));faces=kinds.slice(0,k);const extra=shuffle(faces.slice(),rnd);let j=0;while(faces.length<order.length)faces.push(extra[j++%extra.length]);}
- shuffle(faces,rnd);const F=board.F.slice();order.forEach((pr,i)=>{F[pr[0]]=faces[i];F[pr[1]]=faces[i];});return F;}
+ shuffle(faces,rnd);const F=board.F.slice();order.forEach((pr,i)=>{F[pr[0]]=faces[i];F[pr[1]]=faces[i];});return {F,order};}
 function shuffle(a,rnd){for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));const t=a[i];a[i]=a[j];a[j]=t;}return a;}
 /* Build a level (1..100) or a daily puzzle (seed = yyyymmdd). Always the same board for the same level. */
 function make(kind,id){const p=kind==='daily'?Object.assign(params(30+(id%41)),{n:0}):params(id);const rnd=rng(kind==='daily'?id*2654435761:id*7919+17);
  const {shape,P}=layoutFor(p,rnd);let best=null,bestScore=-1e9;
- for(let t=0;t<16;t++){const B=new Board(P,new Array(P.length).fill(-1));const F=assignFaces(B,rnd,p.spread,p.distinct);if(!F)continue;const m=new Board(P,F).matches().length;
-  const sc=-(m<p.open[0]?(p.open[0]-m)*3:m>p.open[1]?m-p.open[1]:0);if(sc>bestScore){best=F;bestScore=sc;}if(sc===0)break;}
- return {shape,P,F:best,params:p};}
+ // Build several solvable candidates and keep the trickiest: few obvious pairs at the start,
+ // and a high chance that careless play runs into a dead end (still always solvable).
+ for(let t=0;t<14;t++){const B=new Board(P,new Array(P.length).fill(-1));const AF=assignFaces(B,rnd,p.spread,p.distinct);if(!AF)continue;const F=AF.F;const m=new Board(P,F).matches().length;
+  let dead=0;const R=8;for(let k=0;k<R;k++){const X=new Board(P,F);for(;;){const ms=X.matches();if(!ms.length)break;const q=ms[Math.floor(rnd()*ms.length)];X.remove(q[0]);X.remove(q[1]);}if(X.left)dead++;}
+  const sc=-(m<p.open[0]?(p.open[0]-m)*3:m>p.open[1]?(m-p.open[1])*1.5:0)+p.hard*dead/R*4;if(sc>bestScore){best=AF;bestScore=sc;}}
+ return {shape,P,F:best.F,solution:best.order,params:p};}
 /* Solver: depth-first with memo and safe moves (all remaining copies of a face free). true / false / null (gave up). */
 function solvable(board,limit){limit=limit||40000;const B=board;const remain=new Map();for(let i=0;i<B.N;i++)if(B.alive[i])remain.set(B.F[i],(remain.get(B.F[i])||0)+1);
- const dead=new Set();let nodes=0;
- function rec(){if(!B.left)return true;const k=B.key();if(dead.has(k))return false;if(++nodes>limit)throw 0;
+ const dead=new Set();let nodes=0;const path=[];solvable.path=null;
+ function rec(){if(!B.left)return true;const k=B.hkey();if(dead.has(k))return false;if(++nodes>limit)throw 0;
   const by=new Map();for(const i of B.frees()){const f=B.F[i];if(!by.has(f))by.set(f,[]);by.get(f).push(i);}
-  for(const [f,l] of by){const n=remain.get(f);if(l.length===n&&n>=2){for(const i of l)B.remove(i);remain.set(f,0);const r=rec();for(const i of l)B.restore(i);remain.set(f,n);if(r)return true;dead.add(k);return false;}}
-  for(const [f,l] of by){if(l.length<2)continue;for(let a=0;a<l.length;a++)for(let b=a+1;b<l.length;b++){B.remove(l[a]);B.remove(l[b]);remain.set(f,remain.get(f)-2);const r=rec();B.restore(l[a]);B.restore(l[b]);remain.set(f,remain.get(f)+2);if(r)return true;}}
+  for(const [f,l] of by){const n=remain.get(f);if(l.length===n&&n>=2){for(const i of l)B.remove(i);remain.set(f,0);for(let q=0;q<l.length;q+=2)path.push([l[q],l[q+1]]);const r=rec();for(const i of l)B.restore(i);remain.set(f,n);if(r)return true;for(let q=0;q<l.length;q+=2)path.pop();dead.add(k);return false;}}
+  const moves=[];for(const [f,l] of by){if(l.length<2)continue;for(let a=0;a<l.length;a++)for(let b=a+1;b<l.length;b++)moves.push([l[a],l[b],f,B.weight(l[a])+B.weight(l[b])]);}
+  moves.sort((x,y)=>y[3]-x[3]); // unblock the most tiles first
+  for(const [a,b,f] of moves){B.remove(a);B.remove(b);remain.set(f,remain.get(f)-2);path.push([a,b]);const r=rec();B.restore(a);B.restore(b);remain.set(f,remain.get(f)+2);if(r)return true;path.pop();}
   dead.add(k);return false;}
- const snap=B.alive.slice();try{return rec();}catch(e){for(let i=0;i<B.N;i++)if(B.alive[i]!==snap[i])(snap[i]?B.restore(i):B.remove(i));return null;}}
+ const snap=B.alive.slice();try{const r=rec();if(r)solvable.path=path.slice();return r;}catch(e){for(let i=0;i<B.N;i++)if(B.alive[i]!==snap[i])(snap[i]?B.restore(i):B.remove(i));return null;}}
 /* Smart hint: a pair that keeps the board clearable; otherwise how many pairs to undo. */
-function hint(B,history,budgetMs){const t0=Date.now(),budget=budgetMs||700;const ms=B.matches();let unknown=null;
- for(const [a,b] of ms){if(Date.now()-t0>budget){if(!unknown)unknown=[a,b];break;}B.remove(a);B.remove(b);const s=solvable(B,12000);B.restore(a);B.restore(b);if(s===true)return {pair:[a,b]};if(s===null&&!unknown)unknown=[a,b];}
+function hint(B,history,budgetMs,sol){if(sol&&sol.length&&B.free(sol[0][0])&&B.free(sol[0][1]))return {pair:sol[0].slice(),sol};const t0=Date.now(),budget=budgetMs||900;const ms=B.matches().sort((x,y)=>(B.weight(y[0])+B.weight(y[1]))-(B.weight(x[0])+B.weight(x[1])));let unknown=null;
+ for(const [a,b] of ms){if(Date.now()-t0>budget){if(!unknown)unknown=[a,b];break;}B.remove(a);B.remove(b);const s=solvable(B,30000);B.restore(a);B.restore(b);if(s===true)return {pair:[a,b],sol:[[a,b]].concat(solvable.path)};if(s===null&&!unknown)unknown=[a,b];}
  if(unknown)return {pair:unknown};
  const undone=[];let k=0,res={deadEnd:true,undo:0,noMoves:!ms.length};
  for(k=1;k<=history.length;k++){const [a,b]=history[history.length-k];B.restore(a);B.restore(b);undone.push([a,b]);if(solvable(B,20000)!==false){res.undo=k;break;}}
  for(const [a,b] of undone){B.remove(a);B.remove(b);}return res;}
 /* Re-deal the faces of the remaining tiles into a clearable layout. */
 function reshuffle(B,seed){const rnd=rng(seed>>>0);const cnt=new Map();for(let i=0;i<B.N;i++)if(B.alive[i])cnt.set(B.F[i],(cnt.get(B.F[i])||0)+1);
- const fp=[];for(const [f,n] of cnt)for(let k=0;k<n/2;k++)fp.push(f);return assignFaces(B,rnd,2,1,fp);}
-return {NFACES,LEVELS,SHAPES,params,make,Board,solvable,hint,reshuffle,rng};
+ const fp=[];for(const [f,n] of cnt)for(let k=0;k<n/2;k++)fp.push(f);return assignFaces(B,rnd,2,1,fp);} // {F, order}
+/* After the player removes (a,b): if it is a pair of the winning path, the rest of the path stays valid
+   (removing tiles earlier never blocks anything that path needs). Otherwise ask the solver for a new path. */
+function advance(B,sol,a,b){if(sol){const k=sol.findIndex(p=>(p[0]===a&&p[1]===b)||(p[0]===b&&p[1]===a));if(k>=0)return {sol:sol.slice(0,k).concat(sol.slice(k+1)),state:true};}
+ const r=solvable(B,40000);return {sol:r?solvable.path:null,state:r};}
+return {advance,NFACES,LEVELS,SHAPES,params,make,Board,solvable,hint,reshuffle,rng};
 })();
 if(typeof module!=='undefined')module.exports=MJ;
 </script>
@@ -263,7 +281,7 @@ if(typeof module!=='undefined')module.exports=MJTiles;
 'use strict';
 (function(){
 const TXT={
-en:{title:'Mahjong Garden',sub:'Relaxing tile matching. No timer, no penalties.',language:'Language',
+en:{progOf:'{n} of 100 levels cleared',chapterN:'Chapter {n}',nextUp:'Next: level {n}',title:'Mahjong Garden',sub:'Relaxing tile matching. No timer, no penalties.',language:'Language',
  cont:'Continue',level:'Level',playLevel:'Play level {n}',resume:'Resume level {n}',daily:'Today’s puzzle',dailyPlay:'Play today’s puzzle',dailyDone:'Done for today ✓ — come back tomorrow!',
  streak:'{n}-day streak',noStreak:'Play daily to build a streak',garden:'My garden',stars:'stars',allDone:'All 100 levels cleared — wonderful! Replay any level or try today’s puzzle.',
  levels:'Levels',pairs:'{n} pairs left',hint:'Hint',undo:'Undo',shuffle:'Shuffle',restart:'Restart',
@@ -271,12 +289,12 @@ en:{title:'Mahjong Garden',sub:'Relaxing tile matching. No timer, no penalties.'
  blocked:'That tile is blocked. A tile can be used when nothing is on top of it and its left or right side is open.',hintMsg:'Try these two: {name}',
  deadEnd:'From here the board can no longer be cleared.',undoN:'↶ Undo {n}',reshuffled:'Tiles shuffled — this layout can be cleared.',restarted:'Level restarted.',undone:'Last pair put back.',
  stuckTitle:'No more matches',stuckText:'Shuffle the remaining tiles, or undo a few moves.',
- won:'Garden cleared!',wonDaily:'Today’s puzzle done!',next:'Next level ▶',toLevels:'All levels',home:'Home',starNote:['','Cleared with help','Only a little help — 2 stars','No help at all — 3 stars!'],
+ won:'Garden cleared!',wonDaily:'Today’s puzzle done!',next:'Next level ▶',toLevels:'All levels',home:'Home',starNote:['','Cleared with help','A little help (up to 2) — 2 stars','No help at all — 3 stars!'],
  how:'How to play',howText:'Remove all tiles in pairs. Tap two identical tiles to remove them. Only bright tiles can be used: a tile is free when no tile lies on top of it and its left or right side is open. Tiles stacked higher must be cleared first. Hint always shows a pair that still lets you finish. Earn 3 stars by clearing a level without Hint, Undo, Shuffle or Restart; every star plants a flower in your garden.',
  notice:'No ads, no timers, no sound. Progress is saved on this device. For recreation, not medical treatment.',
  stages:['Seedling','Sprout','Budding garden','Blossoming garden','Flower grove','Garden paradise','Master gardener'],
  chapters:['Jasmine Path','Orchid Valley','Hibiscus Hill','Lotus Pond','Plum Blossom Court','Chrysanthemum Terrace','Rose Garden','Peony Pavilion','Sunflower Field','Lily Lake']},
-ms:{title:'Taman Mahjong',sub:'Padankan jubin dengan santai. Tiada pemasa, tiada penalti.',language:'Bahasa',
+ms:{progOf:'{n} daripada 100 tahap selesai',chapterN:'Bab {n}',nextUp:'Seterusnya: tahap {n}',title:'Taman Mahjong',sub:'Padankan jubin dengan santai. Tiada pemasa, tiada penalti.',language:'Bahasa',
  cont:'Teruskan',level:'Tahap',playLevel:'Main tahap {n}',resume:'Sambung tahap {n}',daily:'Teka-teki hari ini',dailyPlay:'Main teka-teki hari ini',dailyDone:'Selesai hari ini ✓ — datang lagi esok!',
  streak:'{n} hari berturut-turut',noStreak:'Main setiap hari untuk kumpul rentetan',garden:'Taman saya',stars:'bintang',allDone:'Semua 100 tahap selesai — hebat! Main semula mana-mana tahap atau cuba teka-teki hari ini.',
  levels:'Tahap',pairs:'{n} pasangan lagi',hint:'Petunjuk',undo:'Undur',shuffle:'Kocok',restart:'Mula semula',
@@ -289,7 +307,7 @@ ms:{title:'Taman Mahjong',sub:'Padankan jubin dengan santai. Tiada pemasa, tiada
  notice:'Tiada iklan, tiada pemasa, tiada bunyi. Kemajuan disimpan dalam peranti ini. Untuk rekreasi, bukan rawatan perubatan.',
  stages:['Benih','Tunas','Taman berputik','Taman berbunga','Rimbunan bunga','Taman syurga','Pakar taman'],
  chapters:['Laluan Melati','Lembah Orkid','Bukit Bunga Raya','Kolam Teratai','Laman Bunga Plum','Teres Kekwa','Taman Ros','Wakaf Peoni','Ladang Bunga Matahari','Tasik Lili']},
-zh:{title:'麻将花园',sub:'轻松配对，无计时，无惩罚。',language:'语言',
+zh:{progOf:'已完成 {n} / 100 关',chapterN:'第{n}章',nextUp:'下一关：第{n}关',title:'麻将花园',sub:'轻松配对，无计时，无惩罚。',language:'语言',
  cont:'继续',level:'第{n}关',playLevel:'开始第{n}关',resume:'继续第{n}关',daily:'今日一局',dailyPlay:'玩今日一局',dailyDone:'今天已完成 ✓ 明天再来！',
  streak:'连续{n}天',noStreak:'每天玩一局，累积连续天数',garden:'我的花园',stars:'颗星',allDone:'100关全部完成，太棒了！可以重玩任何一关，或玩今日一局。',
  levels:'关卡',pairs:'剩{n}对',hint:'提示',undo:'撤销',shuffle:'洗牌',restart:'重来',
@@ -302,7 +320,7 @@ zh:{title:'麻将花园',sub:'轻松配对，无计时，无惩罚。',language:
  notice:'无广告、无计时、无声音。进度保存在本设备。仅供休闲，不作医疗用途。',
  stages:['种子','发芽','含苞待放','花开满园','百花丛','花园天堂','园艺大师'],
  chapters:['茉莉小径','兰花谷','大红花山','莲花池','梅花庭','菊花台','玫瑰园','牡丹亭','向日葵田','百合湖']},
-zt:{title:'麻將花園',sub:'輕鬆配對，無計時，無懲罰。',language:'語言',
+zt:{progOf:'已完成 {n} / 100 關',chapterN:'第{n}章',nextUp:'下一關：第{n}關',title:'麻將花園',sub:'輕鬆配對，無計時，無懲罰。',language:'語言',
  cont:'繼續',level:'第{n}關',playLevel:'開始第{n}關',resume:'繼續第{n}關',daily:'今日一局',dailyPlay:'玩今日一局',dailyDone:'今天已完成 ✓ 明天再來！',
  streak:'連續{n}天',noStreak:'每天玩一局，累積連續天數',garden:'我的花園',stars:'顆星',allDone:'100關全部完成，太棒了！可以重玩任何一關，或玩今日一局。',
  levels:'關卡',pairs:'剩{n}對',hint:'提示',undo:'撤銷',shuffle:'洗牌',restart:'重來',
@@ -341,6 +359,21 @@ function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'null');
  else{const v1=JSON.parse(localStorage.getItem('mindgarden-mahjong-v1')||'null');if(v1&&v1.completedRecords)cleared=Object.keys(v1.completedRecords).length;}
  prog.unlocked=Math.max(1,Math.min(MJ.LEVELS,1+cleared));}catch(e){}}
 const totalStars=()=>Object.values(prog.stars).reduce((a,b)=>a+b,0);
+/* ---------- background solver (keeps the screen responsive) ---------- */
+let worker=null,reqId=0;const waiting=new Map();
+try{const src=document.getElementById('core-src').textContent+`
+onmessage=function(e){var d=e.data,B=new MJ.Board(d.P,d.F),i;for(i=0;i<B.N;i++)if(!d.alive[i])B.remove(i);
+ var r=MJ.solvable(B,d.limit),path=r?MJ.solvable.path:null,undo=0;
+ if(r===false){var h=d.history;for(var k=1;k<=h.length;k++){B.restore(h[h.length-k][0]);B.restore(h[h.length-k][1]);if(MJ.solvable(B,d.limit)!==false){undo=k;break;}}}
+ postMessage({id:d.id,state:r,path:path,undo:undo});};`;
+ worker=new Worker(URL.createObjectURL(new Blob([src],{type:'text/javascript'})));worker.onmessage=e=>{const cb=waiting.get(e.data.id);waiting.delete(e.data.id);if(cb)cb(e.data);};
+}catch(e){worker=null;}
+function pathOK(sol){if(!G||!sol)return false;const B=new MJ.Board(G.P,G.F);for(let i=0;i<B.N;i++)if(!G.B.alive[i])B.remove(i);for(const [a,b] of sol){if(!B.alive[a]||!B.alive[b]||!B.free(a)||!B.free(b)||G.F[a]!==G.F[b])return false;B.remove(a);B.remove(b);}return B.left===0;}
+function analyse(cb){if(!G)return;const id=++reqId;const msg={id,P:G.P,F:G.F,alive:Array.from(G.B.alive),history:G.history,limit:worker?400000:60000};
+ const done=r=>{if(id===reqId&&G)cb(r);};
+ if(worker){waiting.set(id,done);worker.postMessage(msg);}
+ else setTimeout(()=>{const B=new MJ.Board(msg.P,msg.F);for(let i=0;i<B.N;i++)if(!msg.alive[i])B.remove(i);const r=MJ.solvable(B,msg.limit);const path=r?MJ.solvable.path:null;let undo=0;
+  if(r===false){const h=msg.history;for(let k=1;k<=h.length;k++){B.restore(h[h.length-k][0]);B.restore(h[h.length-k][1]);if(MJ.solvable(B,msg.limit)!==false){undo=k;break;}}}done({state:r,path,undo});},40);}
 /* ---------- game state ---------- */
 let G=null; // {kind,id,P,F,B,history,helps,dims}
 let selected=-1,hinted=[],busy=false,warnUndo=0,warnShown=false,els=[];
@@ -348,7 +381,7 @@ function startGame(kind,id,resume){$('win').hidden=true;$('petals').innerHTML=''
  if(g&&Array.isArray(g.F)&&g.F.length===L.P.length&&g.F.every(f=>Number.isInteger(f)&&f>=0&&f<MJ.NFACES))F=g.F.slice();
  const B=new MJ.Board(L.P,F);const history=[];let helps=0;
  if(g&&Array.isArray(g.removed)){for(const p of g.removed){if(!Array.isArray(p)||p.length!==2)break;const [a,b]=p;if(!(a>=0&&b>=0&&a<B.N&&b<B.N&&a!==b&&B.free(a)&&B.free(b)&&F[a]===F[b]))break;B.remove(a);B.remove(b);history.push([a,b]);}helps=Math.max(0,g.helps|0);}
- G={kind,id,P:L.P,F,B,history,helps,chapter:kind==='level'?Math.floor((id-1)/10):0};selected=-1;hinted=[];busy=false;warnUndo=0;
+ G={kind,id,P:L.P,F,B,history,helps,chapter:kind==='level'?Math.floor((id-1)/10):0,sol:(history.length||F!==L.F)?null:L.solution.map(p=>p.slice()),solStack:[]};selected=-1;hinted=[];busy=false;warnUndo=0;
  prog.game={kind,id,F,removed:history,helps};save();show('game');buildBoard();setMsg(history.length?'':T().start);render();checkDead();}
 function persist(){if(!G)return;prog.game={kind:G.kind,id:G.id,F:G.F,removed:G.history,helps:G.helps};save();}
 /* ---------- screens ---------- */
@@ -366,12 +399,12 @@ function renderHome(){const t=T();document.documentElement.lang=lang==='zh'?'zh-
  $('gardenBar').style.width=Math.min(100,ts/3)+'%';
  const fl=[];for(let c=0;c<10;c++){let s=0;for(let n=c*10+1;n<=c*10+10;n++)s+=prog.stars[n]||0;const bloom=Math.floor(s/6);for(let k=0;k<bloom;k++)fl.push(CH_EMOJI[c]);}
  $('gardenFlowers').textContent=fl.length?fl.join(''):'🌱';
- const L=[];for(let c=0;c<10;c++){let s=0;for(let n=c*10+1;n<=c*10+10;n++)s+=prog.stars[n]||0;
-  L.push(`<section class="chapter" style="--tint:${CH_TINT[c]}"><h3>${CH_EMOJI[c]} ${c+1}. ${t.chapters[c]} <small>★ ${s}/30</small></h3><div class="lvls">`);
-  for(let n=c*10+1;n<=c*10+10;n++){const lock=n>prog.unlocked,stars=prog.stars[n]||0,isNext=n===prog.unlocked&&!stars;
-   L.push(`<button type="button" class="lvl${lock?' locked':''}${isNext?' next':''}" data-lvl="${n}" ${lock?'disabled':''} aria-label="${levelLabel(n)}${lock?' 🔒':''}"><b>${lock?'🔒':n}</b><span>${lock?'':'★'.repeat(stars)+'☆'.repeat(3-stars)}</span></button>`);}
-  L.push('</div></section>');}
- $('chapters').innerHTML=L.join('');$('howTitle').textContent=t.how;$('howText').textContent=t.howText;$('notice').textContent=t.notice;}
+ const cleared=Object.keys(prog.stars).length,nextLv=Math.min(prog.unlocked,MJ.LEVELS),ch=Math.floor((nextLv-1)/10);
+ $('progTitle').textContent=(lang==='zh'||lang==='zt')?fmt(t.progOf,{n:cleared}):fmt(t.progOf,{n:cleared});$('progBar').style.width=cleared+'%';
+ let dots='';for(let n=ch*10+1;n<=ch*10+10;n++){const st=prog.stars[n]||0;dots+=`<span class="${st?'done':n===nextLv?'here':''}" title="${levelLabel(n)}">${st?'★'.repeat(st):n===nextLv?'▶':'·'}</span>`;}
+ $('progChapter').innerHTML=`${CH_EMOJI[ch]} <b>${fmt(t.chapterN,{n:ch+1})} · ${t.chapters[ch]}</b>`;$('progDots').innerHTML=dots;
+ $('progNext').textContent=prog.stars[MJ.LEVELS]?'':fmt(t.nextUp,{n:nextLv});
+$('howTitle').textContent=t.how;$('howText').textContent=t.howText;$('notice').textContent=t.notice;}
 /* ---------- board layout ---------- */
 function buildBoard(){const root=$('board');root.innerHTML='';els=[];
  const order=G.P.map((p,i)=>i).sort((a,b)=>G.P[a].z-G.P[b].z||G.P[a].y-G.P[b].y||G.P[a].x-G.P[b].x);
@@ -405,23 +438,27 @@ function tap(i){if(busy||!G)return;const B=G.B;if(!B.alive[i])return;
  if(selected===i){selected=-1;setMsg('');render();return;}
  if(G.F[selected]!==G.F[i]){setMsg(T().notMatch);wiggle(i);selected=i;render();return;}
  const a=selected,b=i;selected=-1;hinted=[];busy=true;els[a].classList.add('gone');els[b].classList.add('gone');
- setTimeout(()=>{B.remove(a);B.remove(b);els[a].hidden=els[b].hidden=true;els[a].classList.remove('gone');els[b].classList.remove('gone');G.history.push([a,b]);busy=false;setMsg(T().match);warnUndo=0;warnShown=false;persist();
+ setTimeout(()=>{B.remove(a);B.remove(b);els[a].hidden=els[b].hidden=true;els[a].classList.remove('gone');els[b].classList.remove('gone');G.history.push([a,b]);reqId++;G.solStack.push(G.sol);if(G.sol){const k=G.sol.findIndex(p=>(p[0]===a&&p[1]===b)||(p[0]===b&&p[1]===a));G.sol=k>=0?G.sol.slice(0,k).concat(G.sol.slice(k+1)):null;}busy=false;setMsg(T().match);warnUndo=0;warnShown=false;persist();
   if(!B.left){win();return;}render();setTimeout(checkDead,30);},260);}
 function wiggle(i){const e=els[i];e.classList.remove('wig');void e.offsetWidth;e.classList.add('wig');}
-function checkDead(){if(!G||!G.B.left)return;const B=G.B;if(!B.matches().length){render();return;}
- if(MJ.solvable(B,15000)===false){const h=MJ.hint(B,G.history,500);warnUndo=h.undo||0;warnShown=true;render();}}
-function undo(n){if(busy||!G)return;n=n||1;for(let k=0;k<n&&G.history.length;k++){const [a,b]=G.history.pop();G.B.restore(a);G.B.restore(b);}G.helps++;selected=-1;hinted=[];warnUndo=0;warnShown=false;setMsg(T().undone);persist();render();setTimeout(checkDead,30);}
+function checkDead(){if(!G||!G.B.left||G.sol)return;if(!G.B.matches().length){render();return;}
+ analyse(r=>{if(r.state===true){if(pathOK(r.path))G.sol=r.path;}else if(r.state===false){warnUndo=r.undo||0;warnShown=true;render();}});}
+function undo(n){if(busy||!G)return;n=n||1;for(let k=0;k<n&&G.history.length;k++){const [a,b]=G.history.pop();G.B.restore(a);G.B.restore(b);G.sol=G.solStack.length?G.solStack.pop():null;}reqId++;G.helps++;selected=-1;hinted=[];warnUndo=0;warnShown=false;setMsg(T().undone);persist();render();setTimeout(checkDead,30);}
 function restart(){if(busy||!G)return;for(const [a,b] of G.history){G.B.restore(a);G.B.restore(b);}G.history=[];G.helps++;
  // restore the level's original faces too (undoing any shuffle)
- const L=MJ.make(G.kind,G.id);G.F=L.F;G.B=new MJ.Board(G.P,G.F);for(let i=0;i<G.B.N;i++)els[i].innerHTML=MJTiles.svg(G.F[i]);
+ const L=MJ.make(G.kind,G.id);G.F=L.F;G.B=new MJ.Board(G.P,G.F);G.sol=L.solution.map(p=>p.slice());G.solStack=[];reqId++;for(let i=0;i<G.B.N;i++)els[i].innerHTML=MJTiles.svg(G.F[i]);
  selected=-1;hinted=[];warnUndo=0;warnShown=false;setMsg(T().restarted);persist();render();}
-function shuffleTiles(){if(busy||!G||!G.B.left)return;const NF=MJ.reshuffle(G.B,(Date.now()^(G.B.left*7919))>>>0);if(!NF)return;
+function shuffleTiles(){if(busy||!G||!G.B.left)return;const RS=MJ.reshuffle(G.B,(Date.now()^(G.B.left*7919))>>>0);if(!RS)return;const NF=RS.F;G.sol=RS.order;G.solStack=[];reqId++;
  for(let i=0;i<G.B.N;i++)if(G.B.alive[i]&&NF[i]!==G.F[i]){G.F[i]=NF[i];els[i].innerHTML=MJTiles.svg(NF[i]);}
  G.B.F=G.F;G.history=[];G.helps++;selected=-1;hinted=[];warnUndo=0;warnShown=false;setMsg(T().reshuffled);persist();render();}
-function hint(){if(busy||!G||!G.B.left)return;G.helps++;const h=MJ.hint(G.B,G.history,700);
- if(h.pair){hinted=h.pair;selected=-1;setMsg(fmt(T().hintMsg,{name:MJTiles.name(G.F[h.pair[0]],lang)}));}
- else{hinted=[];warnUndo=h.undo||0;warnShown=true;}persist();render();}
-function win(){const t=T();const stars=G.helps===0?3:G.helps<=3?2:1;
+function showHint(pair){hinted=pair;selected=-1;setMsg(fmt(T().hintMsg,{name:MJTiles.name(G.F[pair[0]],lang)}));render();}
+function hint(){if(busy||!G||!G.B.left)return;G.helps++;persist();
+ if(G.sol&&G.sol.length&&G.B.free(G.sol[0][0])&&G.B.free(G.sol[0][1])){showHint(G.sol[0].slice());return;}
+ setMsg('…');render();
+ analyse(r=>{if(r.state===true&&pathOK(r.path)){G.sol=r.path;showHint(G.sol[0].slice());}
+  else if(r.state===false){hinted=[];warnUndo=r.undo||0;warnShown=true;setMsg('');render();}
+  else{const h=MJ.hint(G.B,G.history,600);if(h.pair){if(h.sol)G.sol=h.sol;showHint(h.pair);}else{warnUndo=h.undo||0;warnShown=true;render();}}});}
+function win(){const t=T();const stars=G.helps===0?3:G.helps<=2?2:1;
  if(G.kind==='level'){prog.stars[G.id]=Math.max(prog.stars[G.id]||0,stars);prog.unlocked=Math.min(MJ.LEVELS,Math.max(prog.unlocked,G.id+1));}
  else{const d=prog.daily;if(d.last!==today()){d.streak=d.last===yesterday()?d.streak+1:1;d.last=today();d.best=Math.max(d.best,d.streak);}}
  prog.game=null;save();
@@ -436,7 +473,6 @@ function petals(){const box=$('petals');box.innerHTML='';if(window.matchMedia&&m
 $('lang').addEventListener('change',e=>{lang=e.target.value;writeLang(lang);renderHome();});
 $('contBtn').addEventListener('click',()=>{const g=prog.game;if(g&&g.kind==='level'&&g.removed&&g.removed.length)startGame('level',g.id,true);else startGame('level',Math.min(prog.unlocked,MJ.LEVELS),true);});
 $('dailyBtn').addEventListener('click',()=>startGame('daily',today(),true));
-$('chapters').addEventListener('click',e=>{const b=e.target.closest('[data-lvl]');if(!b||b.disabled)return;startGame('level',+b.dataset.lvl,true);});
 $('backBtn').addEventListener('click',()=>{persist();G=null;show('home');});
 $('hintBtn').addEventListener('click',hint);$('undoBtn').addEventListener('click',()=>undo(1));$('shufBtn').addEventListener('click',shuffleTiles);$('restBtn').addEventListener('click',restart);
 $('warnBtn').addEventListener('click',()=>undo(warnUndo));$('stuckShuf').addEventListener('click',shuffleTiles);$('stuckUndo').addEventListener('click',()=>undo(1));
@@ -444,7 +480,7 @@ $('winNext').addEventListener('click',()=>{$('win').hidden=true;startGame('level
 $('winHome').addEventListener('click',()=>{$('win').hidden=true;G=null;show('home');});
 /* ---------- start ---------- */
 load();show('home');
-window.MG_MAHJONG={get G(){return G},tap,startGame,hint:()=>MJ.hint(G.B,G.history),prog:()=>prog};
+window.MG_MAHJONG={get G(){return G},tap,startGame,checkDead:()=>checkDead(),analyse:cb=>analyse(cb),hint:()=>MJ.hint(G.B,G.history),prog:()=>prog};
 if('serviceWorker' in navigator&&location.protocol==='https:')window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
 })();
 </script>

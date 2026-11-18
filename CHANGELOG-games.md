@@ -57,3 +57,18 @@
 - Big "Continue" button resumes exactly where you left off. Petal celebration when a board is cleared.
 - Dead-end warning with a one-tap "Undo n" button; "No more matches" offers Shuffle or Undo.
 - Players of earlier versions start further ahead (levels unlocked from their earlier clears).
+
+
+# Mahjong Garden — v3.15.0
+
+## Harder
+- Bigger boards from level 1 (32 tiles, 2 layers) up to about 118 tiles on up to 5 layers by level 100.
+- More identical tiles (as in real mahjong), so picking the wrong pair can block you later.
+- For every level the trickiest of 14 solvable candidate boards is chosen. Careless play now gets stuck
+  about 24% of the time in levels 1–5, 61% in 6–15, 75% in 16–30, 90% in 31–60 and 97% in 61–100 (previously 0–51%).
+- 2 stars now allow at most 2 helps (was 3).
+
+## Changed
+- Home screen shows progress instead of a grid of 100 level buttons: levels cleared, the current chapter and the next level.
+- Hints are instant and always correct: the game keeps a known winning path and updates it after every move.
+- The dead-end check runs in the background, so the screen never freezes, and it now catches dead ends the quick check missed.
