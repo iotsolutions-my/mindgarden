@@ -1,11 +1,19 @@
-## v3.2.30 — Taxi stops and transport reliability
+# v3.2.31 — Live traffic diagnostics consistency hotfix
+
+- Keep the dashboard, congestion diagnostics, and daily milestone checks on the same calculated city traffic value.
+- Clear previous-day diagnostics during Next Day; refresh an open diagnostic when city values change.
+- Record congestion at milestone completion and show it separately from the current live reading.
+- Keep each RM120 milestone reward idempotent across saves, reloads, and subsequent traffic increases.
+- Preserve city saves, traffic gameplay balance, and the existing helicopter renderer.
+
+## v3.2.31 — Taxi stops and transport reliability
 - Added buildable taxi stops, connected to roads and contributing transport capacity.
 - Petrol stations now support a road-vehicle fuel-access score rather than being only commercial buildings.
 - Congestion diagnostic previews include fuel constraints and all active transport-operation discounts.
 - New petrol/ taxi service demand and modest economic upkeep. No vehicle permanently stops when fuel access is low.
 - Preserved the existing helicopters and map artwork.
 
-## v3.2.30 — Malaysian Cultural Festival Turnout Fix
+## v3.2.31 — Malaysian Cultural Festival Turnout Fix
 
 - Public events (Merdeka, Chinese New Year, Hari Raya bazaars, Thaipusam, Deepavali, Christmas and multicultural open houses) no longer use exhibition-seat limits.
 - Audience estimates combine resident participation, outside visitors, street/public-space capacity, traffic safety and accessibility.
@@ -15,7 +23,7 @@
 - Cultural-event rewards use a capped public-event formula instead of multiplying large crowds by exhibition ticket rates.
 - Preserves city save schema, other games and helicopter renderer.
 
-# MindGarden v3.2.30 — Venue Rendering and Dynamic City Planning
+# MindGarden v3.2.31 — Venue Rendering and Dynamic City Planning
 
 - Fixed invisible Event & Convention Hall and World Trade Centre on the 3D map. Both remain single-tile structures in the current lightweight renderer.
 - Venue inspections now show specific jobs, tourism and event benefits.
