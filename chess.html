@@ -1,182 +1,552 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#164c3c"><meta name="mindgarden-build" content="3.11.4"><title>MindGarden · Chess</title><style>
-:root{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#234436;background:#f3f7f1;font-size:17px}*{box-sizing:border-box}body{margin:0}button,select{font:inherit}button{cursor:pointer;touch-action:manipulation}button:focus-visible,select:focus-visible{outline:3px solid #efb261;outline-offset:2px}.wrap{max-width:720px;margin:auto;padding:16px 13px 55px}.hero{border-radius:24px;padding:22px;color:white;background:linear-gradient(120deg,#164c3c,#328161)}.back{display:inline-block;color:white;text-decoration:none;background:#ffffff2a;border-radius:12px;padding:8px 13px;margin-bottom:9px}.heading{font-weight:800;font-size:1.65rem;margin:3px 0}.subtitle{margin:5px 0}.controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:15px 0}.ctrl{display:flex;flex-direction:column;gap:4px;font-size:.9rem}.ctrl select{width:100%;border:2px solid #c7dacb;border-radius:12px;background:#fff;padding:10px 6px;color:#294d3c}.card{background:#fff;border:1px solid #dfebdd;border-radius:22px;padding:15px;margin-top:14px;box-shadow:0 6px 18px #274b3311}.stats{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}.state{font-weight:750;font-size:1.1rem}.board{display:grid;margin:0 auto;max-width:570px;width:100%;border:4px solid #aac4a9;border-radius:9px;overflow:hidden;background:#e1c99b;user-select:none;-webkit-user-select:none}.square{padding:0;border:0;aspect-ratio:1/1;position:relative;display:grid;place-items:center;min-width:0;background:transparent;overflow:visible}.square.light{background:#f1e0be}.square.dark{background:#83aa93}.square.xiang{background:#ead3a6;border-right:1px solid #b89d69;border-bottom:1px solid #b89d69}.square.xiang.north{background:#eedbb9}.square.xiang.south{background:#e6cda0}.square.xiang:nth-child(9n+5){border-left:1px dashed #cfb887}.square.xiang:nth-child(n+37):nth-child(-n+45){border-bottom:2px solid #b69d6c}.square.chosen{box-shadow:inset 0 0 0 4px #2a7b60;z-index:2}.square.target{box-shadow:inset 0 0 0 3px #e0ac3d}.square.hint{box-shadow:inset 0 0 0 4px #c1851a}.square.last:not(.chosen){background:#cae2b3}.piece{line-height:1;position:relative;z-index:1}.square:not(.xiang) .piece{font-size:clamp(21px,8vw,56px)}.square.xiang .piece{width:90%;height:90%;background:#f7e9cb;border:2px solid #b99861;border-radius:100%;display:grid;place-items:center;font-size:clamp(18px,5.5vw,38px);font-family:serif;font-weight:800;box-shadow:1px 2px 2px #6a593d55}.square.xiang .piece.positive{color:#ae322b}.square.xiang .piece.negative{color:#22362f}.piece.positive{color:#fefcf3;text-shadow:0 1px 3px #1b271b,0 0 1px #000}.piece.negative{color:#14251e;text-shadow:0 0 2px #fff}.square.xiang .piece{ text-shadow:none }.dot{width:27%;height:27%;border-radius:50%;background:#256b4c88}.actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}.actions button{border:2px solid #bdd8c2;border-radius:13px;background:#e8f4eb;padding:14px 4px;font-weight:750;color:#225840}.actions button:disabled{opacity:.45}.note{font-size:.87rem;line-height:1.5;color:#526b5a}.history{overflow-wrap:anywhere;max-height:120px;overflow:auto;font-size:.84rem;color:#415849}.promotion{background:#edf7ee;border:1px solid #a2c8aa;border-radius:14px;padding:12px;margin-top:12px}.promotion button{margin:3px;padding:9px;border-radius:10px;border:1px solid #b2c5af;background:white}.minor{color:#536f5e;font-size:.86rem}.ctrl[hidden],.promotion[hidden]{display:none!important}details{margin-top:14px}summary{font-weight:750;cursor:pointer}#message{min-height:20px}.strength-select{display:flex;align-items:center;gap:12px;background:#e7f1e9;border:1px solid #c7dacb;border-radius:15px;padding:10px 12px}.strength-select .ctrl{min-width:44%;max-width:190px}.strength-select .minor{flex:1}@media(max-width:440px){.wrap{padding:9px 7px 30px}.hero{padding:16px}.controls{grid-template-columns:1fr 1fr}.card{padding:8px}.square.xiang .piece{border-width:1px}.actions button{font-size:.86rem;padding:11px 2px}}
-</style></head><body data-kind="chess"><div class="wrap"><header class="hero"><a class="back" href="./index.html">← MindGarden</a><h1 class="heading" id="title"></h1><p id="subtitle" class="subtitle"></p></header><div class="controls"><label class="ctrl"><span id="langlabel">🌐 Language</span><select id="lang"><option value="en">English</option><option value="ms">Bahasa Melayu</option><option value="zh">简体中文</option><option value="zt">繁體中文</option></select></label><label class="ctrl"><span id="gamelabel"></span><select id="game"><option value="chess">Western Chess</option><option value="xiangqi">Chinese Chess</option></select></label><label class="ctrl"><span id="sidelabel"></span><select id="player"></select></label></div><div class="strength-select"><label class="ctrl"><span id="difficultyLabel">Computer level</span><select id="difficulty"><option value="novice">Novice</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select></label><span class="minor" id="difficultyExplain"></span></div><section class="card"><div class="stats"><div id="status" class="state" aria-live="polite"></div><span class="minor">#<span id="turnnum">1</span></span></div><div id="board" class="board" aria-label="Chess board"></div><div id="promotion" class="promotion" hidden><strong id="promotionTitle"></strong><div><button data-promo="q">♕</button><button data-promo="r">♖</button><button data-promo="b">♗</button><button data-promo="n">♘</button><button id="cancelPromotion"></button></div></div><div class="actions"><button id="undoBtn"></button><button id="hintBtn"></button><button id="newBtn"></button></div><p id="message" class="minor" aria-live="polite"></p><details><summary id="movestitle"></summary><p id="moves" class="history"></p></details><details><summary id="helpsummary"></summary><p id="rules" class="note"></p></details></section><p id="notice" class="minor"></p></div><script>
-/* MindGarden Chess engine v3.11.1 - original, local-only, no network */
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#164c3c"><meta name="mindgarden-build" content="3.13.0">
+<title>MindGarden — Western Chess</title><meta name="description" content="Play Western Chess free against a friendly computer opponent. Three levels, hints and undo. English, Bahasa Melayu and Chinese. No ads.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="MindGarden"><meta property="og:title" content="MindGarden — Western Chess"><meta property="og:description" content="Play Western Chess free against a friendly computer opponent. Three levels, hints and undo. English, Bahasa Melayu and Chinese. No ads.">
+<meta property="og:image" content="./social-preview.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="MindGarden — Western Chess"><meta name="twitter:description" content="Play Western Chess free against a friendly computer opponent. Three levels, hints and undo. English, Bahasa Melayu and Chinese. No ads."><meta name="twitter:image" content="./social-preview.png">
+<link rel="icon" href="./favicon.ico" sizes="any"><link rel="manifest" href="./manifest.webmanifest">
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#22392f;background:#f3f7f1;font-size:17px;-webkit-text-size-adjust:100%}
+*{box-sizing:border-box}body{margin:0}button,select{font:inherit;color:inherit}button{cursor:pointer;touch-action:manipulation}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #eeaf64;outline-offset:2px}
+.wrap{max-width:680px;margin:auto;padding:14px 12px 48px}
+.hero{border-radius:22px;padding:16px 18px 18px;color:#fff;background:linear-gradient(120deg,#164c3c,#2f7b5c)}
+.hero-top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.back{display:inline-flex;align-items:center;min-height:44px;color:#fff;text-decoration:none;background:#ffffff26;border-radius:12px;padding:8px 14px;font-weight:650}
+.hero h1{font-size:1.7rem;margin:12px 0 2px}.hero p{margin:4px 0 0;color:#e3f2dc}
+.settings{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.ctrl{display:flex;flex-direction:column;gap:5px;font-size:.95rem;font-weight:650;color:#2c4e3f}
+.ctrl select{width:100%;min-height:48px;border:2px solid #c3d8c7;border-radius:12px;background:#fff;padding:8px 10px;color:#22392f}
+.ctrl small{font-weight:400;color:#4f6a5b;font-size:.9rem;line-height:1.35}
+.ctrl.wide{grid-column:1/-1}
+.card{background:#fff;border:1px solid #dcebd9;border-radius:22px;padding:14px;box-shadow:0 6px 18px #274b3312}
+.statusbar{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+.status{font-size:1.3rem;font-weight:800;line-height:1.25}.status.alert{color:#b3261e}.status.busy{color:#4c6d5e}
+.status.win{color:#1d7a4c}.status.lose{color:#8a4b14}.status.drawn{color:#35576e}
+.substatus{color:#4f6a5b;font-size:1rem;margin-top:2px}.turn{color:#4f6a5b;font-size:1rem;white-space:nowrap}
+.caps{min-height:30px;font-size:.95rem;color:#3e5a4c;display:flex;align-items:center;flex-wrap:wrap;gap:2px;margin:4px 0}
+.caps b{margin-right:6px;font-weight:650}
+.message{min-height:1.4em;margin:8px 2px;font-size:1rem;line-height:1.45;color:#2c4e3f}
+.board{margin:0 auto;display:grid;user-select:none;-webkit-user-select:none;width:100%;position:relative}
+.cell{border:0;padding:0;margin:0;position:relative;display:grid;place-items:center;background:transparent;min-width:0;min-height:0;-webkit-tap-highlight-color:transparent}
+.cell>*{grid-area:1/1}
+/* Western chess board */
+.board.cb{grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);aspect-ratio:1/1;max-width:560px;border:6px solid #5f8a6c;border-radius:10px;overflow:hidden}
+.cb .cell.light{background:#f2e3c4}.cb .cell.dark{background:#86ab8f}
+.cb .pc{font-family:"Segoe UI Symbol","Noto Sans Symbols 2","Noto Sans Symbols2","DejaVu Sans","Apple Symbols",serif;font-size:min(9.6vw,52px);line-height:1;z-index:2;position:relative}
+.pc.w{color:#fff;text-shadow:0 0 1px #111,1px 1px 0 #1d2a24,-1px -1px 0 #1d2a24,1px -1px 0 #1d2a24,-1px 1px 0 #1d2a24,0 2px 3px #0006}
+.pc.b{color:#16221c;text-shadow:0 0 2px #ffffffaa}
+.cb .rk,.cb .fl{position:absolute;font-style:normal;font-size:min(2.6vw,13px);font-weight:700;color:#2f5140;opacity:.8;z-index:1}
+.cb .rk{top:2px;left:3px}.cb .fl{bottom:1px;right:4px}
+.cb .cell.last::before{content:"";position:absolute;inset:0;background:#f7d65c73}
+.cb .cell.sel::before{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 4px #1f6d50;background:#bfe3c855}
+.cb .cell.dot::after{content:"";width:30%;height:30%;border-radius:50%;background:#1f5f45a6;z-index:3}
+.cb .cell.cap::after{content:"";position:absolute;inset:4%;border-radius:50%;border:4px solid #1f5f45b3;z-index:3}
+.cb .cell.hint::before{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 5px #d18b12;background:#ffd36a66;animation:pulse 1.2s ease-in-out infinite alternate}
+.cb .cell.check::before{content:"";position:absolute;inset:0;background:radial-gradient(circle,#ff3b30cc 0,#ff3b3055 45%,transparent 72%)}
+/* Chinese chess board: pieces on intersections */
+.board.xq{grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(10,1fr);aspect-ratio:9/10;max-width:560px;background:#ebcd96;border:6px solid #b08550;border-radius:12px;box-shadow:inset 0 0 0 2px #f5dfb2}
+.xq-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.xq-lines line,.xq-lines polyline{stroke:#6f5128;stroke-width:3;fill:none}.xq-lines .xq-frame{stroke:#6f5128;stroke-width:6;fill:none}
+.xq-lines .river{font:700 58px "Songti SC","STKaiti","KaiTi","Noto Serif CJK SC","Noto Serif CJK TC",serif;fill:#7d5d2f;opacity:.75;text-anchor:middle;dominant-baseline:middle}
+.xq .pc{width:90%;height:90%;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#fff7e4,#efd9ad 70%,#d9bb82);
+ font:800 min(6vw,32px)/1 "Songti SC","STKaiti","KaiTi","Noto Serif CJK SC","Noto Serif CJK TC","PMingLiU",serif;box-shadow:0 2px 3px #4a361a80,inset 0 0 0 2px #fff4dc,inset 0 0 0 4px currentColor;position:relative;z-index:2;text-shadow:none}
+.xq .pc.w{color:#b3261e}.xq .pc.b{color:#1e2b26}
+.xq .cell.dot::after{content:"";width:28%;height:28%;border-radius:50%;background:#1f6d50cc;z-index:3;box-shadow:0 0 0 3px #ffffffaa}
+.xq .cell.cap .pc{box-shadow:0 0 0 4px #1f6d50,inset 0 0 0 2px #fff4dc,inset 0 0 0 4px currentColor}
+.xq .cell.sel .pc{transform:translateY(-3px) scale(1.06);box-shadow:0 0 0 4px #1f6d50,0 6px 8px #4a361a80,inset 0 0 0 2px #fff4dc,inset 0 0 0 4px currentColor}
+.xq .cell.last::before{content:"";position:absolute;width:86%;height:86%;border-radius:50%;border:3px dashed #2f7b5c;z-index:1}
+.xq .cell.hint::before{content:"";position:absolute;width:96%;height:96%;border-radius:50%;background:#ffd36a99;box-shadow:0 0 0 4px #d18b12;z-index:1;animation:pulse 1.2s ease-in-out infinite alternate}
+.xq .cell.check .pc{box-shadow:0 0 0 5px #ff3b30,0 0 14px 4px #ff3b30aa,inset 0 0 0 2px #fff4dc,inset 0 0 0 4px currentColor}
+@keyframes pulse{from{opacity:.55}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.cell.hint::before{animation:none}}
+.pc.mini{font-size:1.35rem;line-height:1}.xq .pc.mini,.kind-xiangqi .pc.mini{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;font-size:16px;background:#f2dfb5;box-shadow:inset 0 0 0 2px currentColor;font-family:"Songti SC","STKaiti","Noto Serif CJK SC",serif;font-weight:800;text-shadow:none}
+.kind-xiangqi .pc.w{color:#b3261e;text-shadow:none}.kind-xiangqi .pc.b{color:#1e2b26;text-shadow:none}
+.actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
+.btn{min-height:54px;border:2px solid #b9d5bf;border-radius:14px;background:#e9f4ec;padding:10px 6px;font-weight:750;color:#1f5540;font-size:1rem}
+.btn:disabled{opacity:.45;cursor:default}.btn.primary{background:#1f6d50;border-color:#1f6d50;color:#fff}
+.panel{background:#f1f8f1;border:2px solid #a9cdb1;border-radius:16px;padding:12px;margin:10px 0}.panel p{margin:0 0 10px;font-weight:650;font-size:1.05rem}
+.panel .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.promo-row{grid-template-columns:repeat(4,1fr)!important;margin-bottom:8px}
+.promo-row .btn{display:flex;flex-direction:column;align-items:center;gap:2px}.promo-row .pc{font-size:2rem;font-family:"Segoe UI Symbol","Noto Sans Symbols 2","DejaVu Sans",serif}.promo-row small{font-size:.8rem}
+details{margin-top:12px;border-top:1px solid #e1ece0;padding-top:10px}summary{font-weight:750;cursor:pointer;min-height:40px;display:flex;align-items:center;font-size:1.05rem}
+.note{line-height:1.6;color:#2f4b3e}.history{line-height:1.8;color:#2f4b3e;font-size:1rem;word-spacing:2px}
+details h3{font-size:1.05rem;margin:14px 0 8px}
+.guide{display:grid;gap:10px}.g-row{display:flex;gap:10px;align-items:center;line-height:1.45}
+.g-pc{flex:none;display:inline-grid;place-items:center;width:44px;height:44px;font-size:30px;border-radius:10px;background:#86ab8f}
+.kind-xiangqi .g-pc{border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff7e4,#efd9ad 70%,#d9bb82);font:800 24px/1 "Songti SC","STKaiti","Noto Serif CJK SC",serif;box-shadow:inset 0 0 0 3px currentColor}
+.notice{color:#4f6a5b;font-size:.95rem;text-align:center;margin-top:16px}
+[hidden]{display:none!important}
+@media(max-width:440px){.wrap{padding:8px 6px 32px}.hero{padding:12px 14px 14px}.hero h1{font-size:1.45rem}.card{padding:10px 6px}.btn{font-size:.95rem}.xq .pc{box-shadow:0 1px 2px #4a361a80,inset 0 0 0 1px #fff4dc,inset 0 0 0 3px currentColor}}
+</style></head>
+<body class="kind-chess"><div class="wrap">
+<header class="hero"><div class="hero-top"><a id="backLink" class="back" href="./index.html">← MindGarden</a><a id="otherLink" class="back" href="./xiangqi.html"></a></div><h1 id="title"></h1><p id="subtitle"></p></header>
+<section class="settings">
+<label class="ctrl"><span id="langLabel">Language</span><select id="lang"><option value="en">English</option><option value="ms">Bahasa Melayu</option><option value="zh">简体中文</option><option value="zt">繁體中文</option></select></label>
+<label class="ctrl"><span id="sideLabel"></span><select id="side"></select></label>
+<label class="ctrl wide"><span id="levelLabel"></span><select id="level"></select><small id="levelDesc"></small></label>
+</section>
+<section class="card">
+<div class="statusbar"><div><div id="status" class="status" aria-live="polite"></div><div id="substatus" class="substatus"></div></div><span id="turn" class="turn"></span></div>
+<div class="caps" id="capComp"></div>
+<div id="board" class="board" role="grid"></div>
+<div class="caps" id="capYou"></div>
+<p id="message" class="message" aria-live="polite"></p>
+<div id="confirm" class="panel" hidden><p id="confirmText"></p><div class="row"><button type="button" id="confirmYes" class="btn primary"></button><button type="button" id="confirmNo" class="btn"></button></div></div>
+<div id="promo" class="panel" hidden><p id="promoText"></p><div class="row promo-row"><button type="button" class="btn" data-promo="5"></button><button type="button" class="btn" data-promo="4"></button><button type="button" class="btn" data-promo="3"></button><button type="button" class="btn" data-promo="2"></button></div><button type="button" id="promoCancel" class="btn"></button></div>
+<div class="actions"><button type="button" id="undoBtn" class="btn"></button><button type="button" id="hintBtn" class="btn"></button><button type="button" id="newBtn" class="btn"></button></div>
+<details><summary id="howTitle"></summary><p id="rules" class="note"></p><h3 id="guideTitle"></h3><div id="guide" class="guide"></div></details>
+<details><summary id="movesTitle"></summary><p id="history" class="history"></p></details>
+</section>
+<p id="notice" class="notice"></p>
+</div>
+<noscript><p style="text-align:center">Please enable JavaScript to play.</p></noscript>
+<script id="engine-src">
+/* MindGarden Western Chess engine — original, offline, no network.
+   Board: 0x88 (row 0 = rank 8). Pieces: +white / -black, 1 P 2 N 3 B 4 R 5 Q 6 K.
+   Move int: from | to<<7 | promo<<14 | flags<<17  (flags: 1 en passant, 2 castle, 4 double push) */
 'use strict';
-const MGChess=(()=>{
-const on=i=>i>=0&&i<128&&!(i&0x88), S=p=>!p||p==='.'?0:p===p.toUpperCase()?1:-1;
-const D={n:[-33,-31,-18,-14,14,18,31,33],b:[-17,-15,15,17],r:[-16,-1,1,16],k:[-17,-16,-15,-1,1,15,16,17]};D.q=[...D.b,...D.r];
-const sq=i=>'abcdefgh'[i&7]+(8-(i>>4)),uci=m=>sq(m.f)+sq(m.to)+(m.prom||'');
-function init(){const b=Array(128).fill('.');'rnbqkbnr'.split('').forEach((p,c)=>{b[c]=p;b[c+112]=p.toUpperCase();b[c+16]='p';b[c+96]='P'});return {b,t:1,c:15,ep:-1,half:0,full:1};}
-function king(s,who){return s.b.indexOf(who===1?'K':'k')}
-function attacked(s,target,by){for(let f=0;f<128;f++){if(!on(f)||S(s.b[f])!==by)continue;const p=s.b[f].toLowerCase();if(p==='p'){if(target===f-16*by-1||target===f-16*by+1)return true;continue}for(const d of D[p]){for(let t=f+d;on(t);t+=d){if(t===target)return true;if(s.b[t]!=='.'||p==='n'||p==='k')break;}}}return false;}
-function checked(s,who=s.t){const k=king(s,who);return k<0||attacked(s,k,-who)}
-function put(s,m){const b=s.b.slice(),p=b[m.f],capt=b[m.to];b[m.f]='.';b[m.to]=m.prom?(s.t===1?m.prom.toUpperCase():m.prom):p;let c=s.c;if(m.flag==='ep')b[m.to+16*s.t]='.';if(m.flag==='castle'){const rf=m.to>m.f?m.f+3:m.f-4,rt=m.to>m.f?m.f+1:m.f-1;b[rt]=b[rf];b[rf]='.';}if(p==='K')c&=~3;if(p==='k')c&=~12;const bit={119:1,112:2,7:4,0:8};if(p.toLowerCase()==='r')c&=~(bit[m.f]||0);if(capt.toLowerCase()==='r')c&=~(bit[m.to]||0);return {b,t:-s.t,c,ep:p.toLowerCase()==='p'&&Math.abs(m.to-m.f)===32?(m.to+m.f)/2:-1,half:p.toLowerCase()==='p'||capt!=='.'||m.flag==='ep'?0:s.half+1,full:s.full+(s.t===-1?1:0)};}
-function pseudo(s){let out=[];for(let f=0;f<128;f++){if(!on(f)||S(s.b[f])!==s.t)continue;let p=s.b[f].toLowerCase();function add(t,flag=''){if(s.b[t].toLowerCase()==='k')return;if(p==='p'&&(t>>4===0||t>>4===7))for(let prom of ['q','r','b','n'])out.push({f,to:t,prom,flag});else out.push({f,to:t,prom:'',flag});}
-if(p==='p'){let t=f-16*s.t;if(on(t)&&s.b[t]==='.'){add(t);let u=t-16*s.t;if((f>>4)===(s.t===1?6:1)&&s.b[u]==='.')add(u)}for(let d of [-1,1]){let u=t+d;if(!on(u))continue;if(S(s.b[u])===-s.t)add(u);else if(u===s.ep&&s.b[u]==='.'&&s.b[u+16*s.t]===(s.t===1?'p':'P'))add(u,'ep');}}
-else{for(let d of D[p])for(let t=f+d;on(t);t+=d){if(S(s.b[t])===s.t)break;add(t);if(s.b[t]!=='.'||p==='n'||p==='k')break;}let home=s.t===1?116:4,rook=s.t===1?'R':'r',bits=s.t===1?[1,2]:[4,8];if(p==='k'&&f===home&&!checked(s)){if((s.c&bits[0])&&s.b[f+3]===rook&&s.b[f+1]==='.'&&s.b[f+2]==='.'&&!attacked(s,f+1,-s.t)&&!attacked(s,f+2,-s.t))add(f+2,'castle');if((s.c&bits[1])&&s.b[f-4]===rook&&s.b[f-1]==='.'&&s.b[f-2]==='.'&&s.b[f-3]==='.'&&!attacked(s,f-1,-s.t)&&!attacked(s,f-2,-s.t))add(f-2,'castle');}}
-}return out;}
-const legal=s=>pseudo(s).filter(m=>!checked(put(s,m),s.t));
-const value={p:100,n:320,b:340,r:500,q:900,k:20000};
-function score(s){let v=0;for(let i=0;i<128;i++)if(on(i)&&s.b[i]!=='.'){const p=s.b[i].toLowerCase();v+=S(s.b[i])*(value[p]+(p==='p'?Math.abs(3.5-(i&7))*-2:0));}return v}
-function label(s,m){return (s.t===1?s.full+'. ':s.full+'... ')+uci(m)}
-function result(s){const m=legal(s);if(!m.length)return checked(s)?(s.t===1?'Black wins by checkmate':'White wins by checkmate'):'Draw by stalemate';let pieces=[];for(let i=0;i<128;i++)if(on(i)&&s.b[i]!=='.'&&!['k','K'].includes(s.b[i]))pieces.push([s.b[i].toLowerCase(),((i>>4)+(i&7))%2]);if(pieces.length===0||pieces.length===1&&['b','n'].includes(pieces[0][0])||pieces.length&&pieces.every(x=>x[0]==='b')&&new Set(pieces.map(x=>x[1])).size===1)return 'Draw: insufficient material';if(s.half>=150)return 'Draw: 75-move rule';return '';}
-const key=s=>s.b.join('')+'|'+s.t+'|'+s.c+'|'+s.ep;
-return {init,legal,put,checked,score,result,label,uci,key,value,at:(s,row,col)=>s.b[row*16+col],idx:(r,c)=>r*16+c,glyph:{K:'♔',Q:'♕',R:'♖',B:'♗',N:'♘',P:'♙',k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟︎'}};
+var GameEngine=(function(){
+const P=1,N=2,B=3,R=4,Q=5,K=6;
+const ND=[-33,-31,-18,-14,14,18,31,33],BD=[-17,-15,15,17],RD=[-16,-1,1,16],KD=[-17,-16,-15,-1,1,15,16,17];
+const VAL=[0,100,320,330,500,900,0];
+const EGV=[0,120,300,320,520,920,0];
+const PH=[0,0,1,1,2,4,0];
+/* Piece-square tables, white's view, index row*8+col (row 0 = rank 8). */
+const T={
+1:[0,0,0,0,0,0,0,0,50,50,50,50,50,50,50,50,10,10,20,30,30,20,10,10,5,5,10,25,25,10,5,5,0,0,0,20,20,0,0,0,5,-5,-10,0,0,-10,-5,5,5,10,10,-20,-20,10,10,5,0,0,0,0,0,0,0,0],
+2:[-50,-40,-30,-30,-30,-30,-40,-50,-40,-20,0,0,0,0,-20,-40,-30,0,10,15,15,10,0,-30,-30,5,15,20,20,15,5,-30,-30,0,15,20,20,15,0,-30,-30,5,10,15,15,10,5,-30,-40,-20,0,5,5,0,-20,-40,-50,-40,-30,-30,-30,-30,-40,-50],
+3:[-20,-10,-10,-10,-10,-10,-10,-20,-10,0,0,0,0,0,0,-10,-10,0,5,10,10,5,0,-10,-10,5,5,10,10,5,5,-10,-10,0,10,10,10,10,0,-10,-10,10,10,10,10,10,10,-10,-10,5,0,0,0,0,5,-10,-20,-10,-10,-10,-10,-10,-10,-20],
+4:[0,0,0,0,0,0,0,0,5,10,10,10,10,10,10,5,-5,0,0,0,0,0,0,-5,-5,0,0,0,0,0,0,-5,-5,0,0,0,0,0,0,-5,-5,0,0,0,0,0,0,-5,-5,0,0,0,0,0,0,-5,0,0,0,5,5,0,0,0],
+5:[-20,-10,-10,-5,-5,-10,-10,-20,-10,0,0,0,0,0,0,-10,-10,0,5,5,5,5,0,-10,-5,0,5,5,5,5,0,-5,0,0,5,5,5,5,0,-5,-10,5,5,5,5,5,0,-10,-10,0,5,0,0,0,0,-10,-20,-10,-10,-5,-5,-10,-10,-20],
+6:[-30,-40,-40,-50,-50,-40,-40,-30,-30,-40,-40,-50,-50,-40,-40,-30,-30,-40,-40,-50,-50,-40,-40,-30,-30,-40,-40,-50,-50,-40,-40,-30,-20,-30,-30,-40,-40,-30,-30,-20,-10,-20,-20,-20,-20,-20,-20,-10,20,20,0,0,0,0,20,20,20,30,10,0,0,10,30,20]};
+const TE={1:[0,0,0,0,0,0,0,0,90,90,90,90,90,90,90,90,55,55,55,55,55,55,55,55,32,32,32,32,32,32,32,32,18,18,18,18,18,18,18,18,8,8,8,8,8,8,8,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+6:[-50,-40,-30,-20,-20,-30,-40,-50,-30,-20,-10,0,0,-10,-20,-30,-30,-10,20,30,30,20,-10,-30,-30,-10,30,40,40,30,-10,-30,-30,-10,30,40,40,30,-10,-30,-30,-10,20,30,30,20,-10,-30,-30,-30,0,0,0,0,-30,-30,-50,-30,-30,-30,-30,-30,-30,-50]};
+const on=s=>!(s&0x88);
+const tix=(sq,white)=>white?((sq>>4)*8+(sq&7)):((7-(sq>>4))*8+(sq&7));
+// Zobrist (deterministic xorshift)
+let seed=0x2545F491;const rnd=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return seed|0};
+const ZL=new Int32Array(13*128),ZH=new Int32Array(13*128);for(let i=0;i<ZL.length;i++){ZL[i]=rnd();ZH[i]=rnd();}
+const ZSL=rnd(),ZSH=rnd(),ZCL=new Int32Array(16),ZCH=new Int32Array(16),ZEL=new Int32Array(8),ZEH=new Int32Array(8);
+for(let i=0;i<16;i++){ZCL[i]=rnd();ZCH[i]=rnd()}for(let i=0;i<8;i++){ZEL[i]=rnd();ZEH[i]=rnd()}
+const CMASK=new Int8Array(128).fill(15);CMASK[116]=12;CMASK[119]=14;CMASK[112]=13;CMASK[4]=3;CMASK[7]=11;CMASK[0]=7;
+const mk=(f,t,pr,fl)=>f|(t<<7)|((pr||0)<<14)|((fl||0)<<17);
+const mFrom=m=>m&127,mTo=m=>(m>>7)&127,mPromo=m=>(m>>14)&7,mFlag=m=>m>>17;
+
+class Position{
+ constructor(){this.b=new Int8Array(128);this.reset();}
+ reset(){
+  this.b.fill(0);this.cnt=new Int8Array(13);this.mg=0;this.eg=0;this.phase=0;this.hl=0;this.hh=0;this.king=[0,0];
+  const back=[R,N,B,Q,K,B,N,R];
+  for(let c=0;c<8;c++){this.add(112+c,back[c]);this.add(96+c,P);this.add(c,-back[c]);this.add(16+c,-P);}
+  this.side=1;this.castle=15;this.ep=-1;this.half=0;this.full=1;
+  this.hl^=ZCL[15];this.hh^=ZCH[15];
+  this.st=[];this.histL=[this.hl];this.histH=[this.hh];
+ }
+ add(sq,p){this.b[sq]=p;const a=p>0?p:-p,w=p>0,s=w?1:-1,i=tix(sq,w);
+  this.mg+=s*(VAL[a]+T[a][i]);this.eg+=s*(EGV[a]+(TE[a]?TE[a][i]:T[a][i]));this.phase+=PH[a];this.cnt[p+6]++;
+  const z=(p+6)*128+sq;this.hl^=ZL[z];this.hh^=ZH[z];if(a===K)this.king[w?0:1]=sq;}
+ remove(sq){const p=this.b[sq];this.b[sq]=0;const a=p>0?p:-p,w=p>0,s=w?1:-1,i=tix(sq,w);
+  this.mg-=s*(VAL[a]+T[a][i]);this.eg-=s*(EGV[a]+(TE[a]?TE[a][i]:T[a][i]));this.phase-=PH[a];this.cnt[p+6]--;
+  const z=(p+6)*128+sq;this.hl^=ZL[z];this.hh^=ZH[z];return p;}
+ attacked(sq,by){const b=this.b;
+  if(by===1){if(on(sq+15)&&b[sq+15]===P)return true;if(on(sq+17)&&b[sq+17]===P)return true;}
+  else{if(on(sq-15)&&b[sq-15]===-P)return true;if(on(sq-17)&&b[sq-17]===-P)return true;}
+  for(const d of ND){const t=sq+d;if(on(t)&&b[t]===N*by)return true;}
+  for(const d of KD){const t=sq+d;if(on(t)&&b[t]===K*by)return true;}
+  for(const d of BD){for(let t=sq+d;on(t);t+=d){const p=b[t];if(p){if(p===B*by||p===Q*by)return true;break;}}}
+  for(const d of RD){for(let t=sq+d;on(t);t+=d){const p=b[t];if(p){if(p===R*by||p===Q*by)return true;break;}}}
+  return false;}
+ inCheck(side=this.side){return this.attacked(this.king[side===1?0:1],-side);}
+ gen(out,capsOnly){const b=this.b,s=this.side;
+  for(let f=0;f<128;f++){if(f&0x88){f+=7;continue;}const p=b[f];if(p*s<=0)continue;const a=p>0?p:-p;
+   if(a===P){const dir=s===1?-16:16,t=f+dir,pr=s===1?0:7,start=s===1?6:1;
+    if(on(t)&&!b[t]){if((t>>4)===pr){for(const q of [Q,R,B,N])out.push(mk(f,t,q,0));}else if(!capsOnly){out.push(mk(f,t));if((f>>4)===start&&!b[t+dir])out.push(mk(f,t+dir,0,4));}}
+    for(const c of [t-1,t+1]){if(!on(c))continue;if(b[c]*s<0){if((c>>4)===pr){for(const q of [Q,R,B,N])out.push(mk(f,c,q,0));}else out.push(mk(f,c));}else if(c===this.ep)out.push(mk(f,c,0,1));}
+   }else if(a===N||a===K){for(const d of (a===N?ND:KD)){const t=f+d;if(!on(t))continue;const q=b[t];if(q*s>0)continue;if(capsOnly&&!q)continue;out.push(mk(f,t));}
+    if(a===K&&!capsOnly){const home=s===1?116:4;if(f===home){const ks=s===1?1:4,qs=s===1?2:8,rk=R*s;
+     if((this.castle&ks)&&b[f+3]===rk&&!b[f+1]&&!b[f+2]&&!this.attacked(f,-s)&&!this.attacked(f+1,-s)&&!this.attacked(f+2,-s))out.push(mk(f,f+2,0,2));
+     if((this.castle&qs)&&b[f-4]===rk&&!b[f-1]&&!b[f-2]&&!b[f-3]&&!this.attacked(f,-s)&&!this.attacked(f-1,-s)&&!this.attacked(f-2,-s))out.push(mk(f,f-2,0,2));}}
+   }else{const dirs=a===B?BD:a===R?RD:KD;for(const d of dirs){for(let t=f+d;on(t);t+=d){const q=b[t];if(q*s>0)break;if(q){out.push(mk(f,t));break;}if(!capsOnly)out.push(mk(f,t));}}}
+  }return out;}
+ make(m){const f=mFrom(m),t=mTo(m),pr=mPromo(m),fl=mFlag(m),s=this.side,b=this.b;
+  const st={m,cap:0,capSq:t,castle:this.castle,ep:this.ep,half:this.half,hl:this.hl,hh:this.hh};this.st.push(st);
+  if(fl&1){st.capSq=t+(s===1?16:-16);st.cap=this.remove(st.capSq);}else if(b[t])st.cap=this.remove(t);
+  const p=this.remove(f);this.add(t,pr?pr*s:p);
+  if(fl&2){const rf=t>f?f+3:f-4,rt=t>f?f+1:f-1;this.add(rt,this.remove(rf));}
+  if(this.ep>=0){this.hl^=ZEL[this.ep&7];this.hh^=ZEH[this.ep&7];}
+  this.hl^=ZCL[this.castle];this.hh^=ZCH[this.castle];this.castle&=CMASK[f]&CMASK[t];this.hl^=ZCL[this.castle];this.hh^=ZCH[this.castle];
+  this.ep=(fl&4)?(f+t)>>1:-1;if(this.ep>=0){this.hl^=ZEL[this.ep&7];this.hh^=ZEH[this.ep&7];}
+  this.half=(p===P||p===-P||st.cap)?0:this.half+1;if(s===-1)this.full++;
+  this.side=-s;this.hl^=ZSL;this.hh^=ZSH;this.histL.push(this.hl);this.histH.push(this.hh);
+  if(this.attacked(this.king[s===1?0:1],-s)){this.unmake();return false;}return true;}
+ unmake(){const st=this.st.pop(),m=st.m,f=mFrom(m),t=mTo(m),pr=mPromo(m),fl=mFlag(m);this.side=-this.side;const s=this.side;
+  if(s===-1)this.full--;this.histL.pop();this.histH.pop();
+  if(fl&2){const rf=t>f?f+3:f-4,rt=t>f?f+1:f-1;this.add(rf,this.remove(rt));}
+  const p=this.remove(t);this.add(f,pr?P*s:p);if(st.cap)this.add(st.capSq,st.cap);
+  this.castle=st.castle;this.ep=st.ep;this.half=st.half;this.hl=st.hl;this.hh=st.hh;}
+ makeNull(){this.st.push({m:0,ep:this.ep,hl:this.hl,hh:this.hh,half:this.half,nul:1});if(this.ep>=0){this.hl^=ZEL[this.ep&7];this.hh^=ZEH[this.ep&7];}this.ep=-1;this.side=-this.side;this.hl^=ZSL;this.hh^=ZSH;this.half++;this.histL.push(this.hl);this.histH.push(this.hh);}
+ unmakeNull(){const st=this.st.pop();this.side=-this.side;this.ep=st.ep;this.hl=st.hl;this.hh=st.hh;this.half=st.half;this.histL.pop();this.histH.pop();}
+ hasPieces(side){const o=side===1?6:6;return side===1?(this.cnt[o+2]+this.cnt[o+3]+this.cnt[o+4]+this.cnt[o+5])>0:(this.cnt[o-2]+this.cnt[o-3]+this.cnt[o-4]+this.cnt[o-5])>0;}
+ play(m){if(!this.make(m))return false;(this.checks||(this.checks=[false])).push(this.inCheck());return true;}
+ takeback(){this.unmake();if(this.checks)this.checks.pop();}
+ legal(){const out=[],ok=[];this.gen(out,false);for(const m of out){if(this.make(m)){this.unmake();ok.push(m);}}return ok;}
+ /* repetitions since last irreversible move (same side to move) */
+ repCount(){const n=this.histL.length-1,L=this.histL[n],H=this.histH[n];let c=1;for(let i=n-2;i>=0&&i>=n-this.half;i-=2)if(this.histL[i]===L&&this.histH[i]===H)c++;return c;}
+ isRep(){const n=this.histL.length-1,L=this.histL[n],H=this.histH[n];for(let i=n-2;i>=0&&i>=n-this.half;i-=2)if(this.histL[i]===L&&this.histH[i]===H)return true;return false;}
+ drawLimit(){return this.half>=100;}
+ repAdjust(){return 0;}
+ noMovesScore(ply,inCheck){return inCheck?-30000+ply:0;}
+ victim(m){if(mFlag(m)&1)return VAL[P];const q=this.b[mTo(m)];return q?VAL[q>0?q:-q]:0;}
+ attacker(m){const q=this.b[mFrom(m)];return VAL[q>0?q:-q]||1000;}
+ isTactical(m){return !!this.b[mTo(m)]||(mFlag(m)&1)||mPromo(m)>0;}
+ promoVal(m){return mPromo(m)?VAL[mPromo(m)]:0;}
+ evaluate(){const ph=Math.min(this.phase,24);let sc=(this.mg*ph+this.eg*(24-ph))/24;const c=this.cnt;
+  if(c[9]>=2)sc+=30;if(c[3]>=2)sc-=30;
+  // mop-up: help the stronger side finish the game instead of shuffling
+  const matW=c[7]*100+c[8]*320+c[9]*330+c[10]*500+c[11]*900,matB=c[5]*100+c[4]*320+c[3]*330+c[2]*500+c[1]*900,diff=matW-matB;
+  if(ph<=10&&Math.abs(diff)>=300){const win=diff>0?0:1,lose=1-win,lk=this.king[lose],wk=this.king[win];
+   const lr=lk>>4,lc=lk&7,wr=wk>>4,wc=wk&7;const cmd=Math.max(3-lr,lr-4)+Math.max(3-lc,lc-4);const kd=Math.abs(lr-wr)+Math.abs(lc-wc);
+   const bonus=12*cmd+5*(14-kd);sc+=win===0?bonus:-bonus;}
+  sc=sc|0;return (this.side===1?sc:-sc)+10;}
+ insufficient(){const c=this.cnt;if(c[7]||c[5]||c[10]||c[2]||c[11]||c[1])return false;const minW=c[8]+c[9],minB=c[4]+c[3];return minW<=1&&minB<=1;}
+ /* Game result for the UI: {over, winner(1/-1/0), reason} */
+ status(){const ms=this.legal();if(!ms.length){const chk=this.inCheck();return {over:true,winner:chk?-this.side:0,reason:chk?'checkmate':'stalemate'};}
+  if(this.insufficient())return {over:true,winner:0,reason:'material'};
+  if(this.repCount()>=3)return {over:true,winner:0,reason:'repetition'};
+  if(this.half>=100)return {over:true,winner:0,reason:'fifty'};
+  return {over:false,check:this.inCheck()};}
+ /* Standard algebraic notation */
+ san(m,legalList){const f=mFrom(m),t=mTo(m),fl=mFlag(m),pr=mPromo(m),p=this.b[f],a=p>0?p:-p;const files='abcdefgh',sq=x=>files[x&7]+(8-(x>>4));let s='';
+  if(fl&2)s=t>f?'O-O':'O-O-O';else{const cap=this.b[t]||(fl&1);
+   if(a===P){if(cap)s=files[f&7]+'x';s+=sq(t);if(pr)s+='='+' PNBRQK'[pr];}
+   else{s=' PNBRQK'[a];const others=(legalList||this.legal()).filter(o=>o!==m&&mTo(o)===t&&this.b[mFrom(o)]===p);
+    if(others.length){const sf=others.some(o=>(mFrom(o)&7)===(f&7)),sr=others.some(o=>(mFrom(o)>>4)===(f>>4));if(!sf)s+=files[f&7];else if(!sr)s+=8-(f>>4);else s+=sq(f);}
+    if(cap)s+='x';s+=sq(t);}}
+  if(this.make(m)){if(this.inCheck())s+=this.legal().length?'+':'#';this.unmake();}return s;}
+}
+return {kind:'chess',rows:8,cols:8,Position,idx:(r,c)=>r*16+c,rc:sq=>[sq>>4,sq&7],mFrom,mTo,mPromo,mFlag,mk,VAL,MAXSQ:128,
+ sideOf:p=>p>0?1:p<0?-1:0,type:p=>p>0?p:-p};
 })();
-/* MindGarden Xiangqi rules v3.11.0 - original, self-contained */
+if(typeof module!=='undefined')module.exports=GameEngine;
+</script>
+<script id="search-src">
+/* MindGarden game AI — iterative-deepening alpha-beta with quiescence search,
+   transposition table, killer/history ordering, check extension, null-move and
+   late-move reductions. Works with either GameEngine (chess or xiangqi). */
 'use strict';
-const MGXiangqi=(()=>{
-const W=9,H=10,IN=(r,c)=>r>=0&&r<10&&c>=0&&c<9,S=p=>!p||p==='.'?0:p===p.toUpperCase()?1:-1;
-const ID=(r,c)=>r*9+c, RC=i=>[Math.floor(i/9),i%9];
-const V={k:20000,a:120,e:120,h:340,r:650,c:340,p:85};
-function init(){let b=Array(90).fill('.');const back='rheakaehr';for(let c=0;c<9;c++){b[c]=back[c];b[81+c]=back[c].toUpperCase()};for(let c of [1,7]){b[ID(2,c)]='c';b[ID(7,c)]='C'}for(let c of [0,2,4,6,8]){b[ID(3,c)]='p';b[ID(6,c)]='P'}return {b,t:1,full:1,half:0};}
-function pseudo(s,side=s.t){let moves=[];const b=s.b;function add(f,r,c){if(!IN(r,c))return;let t=ID(r,c);if(S(b[t])!==side&&b[t].toLowerCase()!=='k')moves.push({f,to:t})}
-for(let f=0;f<90;f++){if(S(b[f])!==side)continue;let [r,c]=RC(f),p=b[f].toLowerCase();const palace=(rr,cc)=>cc>=3&&cc<=5&&(side===1?rr>=7&&rr<=9:rr>=0&&rr<=2);
-if(p==='k'||p==='a'){const dirs=p==='k'?[[1,0],[-1,0],[0,1],[0,-1]]:[[1,1],[1,-1],[-1,1],[-1,-1]];for(let [dr,dc] of dirs)if(palace(r+dr,c+dc))add(f,r+dr,c+dc);}
-else if(p==='e'){for(let [dr,dc] of [[2,2],[2,-2],[-2,2],[-2,-2]]){let rr=r+dr,cc=c+dc;if(!IN(rr,cc)||side===1&&rr<5||side===-1&&rr>4)continue;if(b[ID(r+dr/2,c+dc/2)]==='.')add(f,rr,cc)}}
-else if(p==='h'){for(let [dr,dc,lr,lc] of [[-2,-1,-1,0],[-2,1,-1,0],[2,-1,1,0],[2,1,1,0],[-1,-2,0,-1],[1,-2,0,-1],[-1,2,0,1],[1,2,0,1]]){if(IN(r+lr,c+lc)&&b[ID(r+lr,c+lc)]==='.')add(f,r+dr,c+dc)}}
-else if(p==='r'||p==='c'){for(let [dr,dc] of [[1,0],[-1,0],[0,1],[0,-1]]){let screen=false;for(let rr=r+dr,cc=c+dc;IN(rr,cc);rr+=dr,cc+=dc){let at=ID(rr,cc);if(p==='r'){if(S(b[at])===side)break;add(f,rr,cc);if(b[at]!=='.')break;}else if(!screen){if(b[at]==='.')add(f,rr,cc);else screen=true;}else if(b[at]!=='.'){if(S(b[at])===-side&&b[at].toLowerCase()!=='k')moves.push({f,to:at});break;}}}}
-else if(p==='p'){add(f,r-side,c);if(side===1?r<=4:r>=5){add(f,r,c-1);add(f,r,c+1)}}
-}return moves;}
-function attacked(s,who){const k=s.b.indexOf(who===1?'K':'k');if(k<0)return true;const [kr,kc]=RC(k);const enemy=s.b.indexOf(who===1?'k':'K');if(enemy>=0&&enemy%9===kc){let [er]=RC(enemy),clear=true;for(let r=Math.min(er,kr)+1;r<Math.max(er,kr);r++)if(s.b[ID(r,kc)]!=='.'){clear=false;break;}if(clear)return true;}
-// Check only real captures against the general's square. The old empty-square
-// probe was invalid for cannons: they move through empty squares but capture
-// ONLY over exactly one intervening piece. A capturable dummy also prevents
-// the no-general-capture rule in pseudo() from suppressing check detection.
-const probe={...s,b:s.b.slice()};
-probe.b[k]=who===1?'P':'p';
-return pseudo(probe,-who).some(m=>m.to===k);
-}
-function put(s,m){let b=s.b.slice(),p=b[m.f],capture=b[m.to];b[m.to]=p;b[m.f]='.';return {b,t:-s.t,full:s.full+(s.t===-1?1:0),half:capture==='.'?s.half+1:0};}
-function legal(s){return pseudo(s).filter(m=>!attacked(put(s,m),s.t));}
-function score(s){let v=0;for(let i=0;i<90;i++){let p=s.b[i];if(p==='.')continue;let [r,c]=RC(i),forward=S(p)===1?9-r:r;v+=S(p)*(V[p.toLowerCase()]+(p.toLowerCase()==='p'?forward*12:0));}return v;}
-function result(s){let m=legal(s);if(m.length===0)return (s.t===1?'Black':'Red')+' wins';return '';}
-function label(s,m){const [r,c]=RC(m.f),[rr,cc]=RC(m.to);return (s.t===1?'Red ':'Black ')+`(${c+1},${10-r})→(${cc+1},${10-rr})`}
-const glyph={K:'帥',A:'仕',E:'相',H:'傌',R:'俥',C:'炮',P:'兵',k:'將',a:'士',e:'象',h:'馬',r:'車',c:'砲',p:'卒'};
-const key=s=>s.b.join('')+'|'+s.t;
-return {init,legal,put,attacked,score,result,label,key,glyph,at:(s,r,c)=>s.b[ID(r,c)],idx:ID,value:V};
+var MGSearch=(function(){
+const MATE=30000,INF=32000;
+const LEVELS={
+ novice:{depth:1,time:400,noise:150,qdepth:2},
+ intermediate:{depth:4,time:1000,noise:25,qdepth:6},
+ advanced:{depth:14,time:2400,noise:0,qdepth:8}};
+const TT_BITS=18,TT_SIZE=1<<TT_BITS,TMASK=TT_SIZE-1;
+function create(E){
+ const ttLock=new Int32Array(TT_SIZE),ttMove=new Int32Array(TT_SIZE),ttScore=new Int32Array(TT_SIZE),ttDepth=new Int8Array(TT_SIZE),ttFlag=new Int8Array(TT_SIZE);
+ const killers=new Int32Array(256),hist=new Int32Array(E.MAXSQ*128);
+ let pos,nodes,deadline,stopped,rootSide,contempt,cfg,rng=Math.random;
+ const now=()=>(typeof performance!=='undefined'?performance.now():Date.now());
+ function drawScore(){let v=pos.side===rootSide?-contempt:contempt;return v+pos.repAdjust();}
+ function order(moves,ttm,ply){const sc=new Int32Array(moves.length);
+  for(let i=0;i<moves.length;i++){const m=moves[i];
+   if(m===ttm)sc[i]=2000000;
+   else if(pos.isTactical(m))sc[i]=1000000+pos.victim(m)*16-pos.attacker(m)/8+pos.promoVal(m);
+   else if(m===killers[ply*2])sc[i]=900000;else if(m===killers[ply*2+1])sc[i]=890000;
+   else sc[i]=hist[E.mFrom(m)*128+E.mTo(m)];}
+  return sc;}
+ function pick(moves,sc,i){let bi=i;for(let j=i+1;j<moves.length;j++)if(sc[j]>sc[bi])bi=j;if(bi!==i){const t=moves[i];moves[i]=moves[bi];moves[bi]=t;const u=sc[i];sc[i]=sc[bi];sc[bi]=u;}return moves[i];}
+ function timeUp(){if((nodes&1023)===0&&now()>deadline)stopped=true;return stopped;}
+ function qs(alpha,beta,ply,qd){nodes++;if(timeUp())return 0;
+  const inChk=pos.inCheck();let best=-INF;
+  if(!inChk){const stand=pos.evaluate();if(stand>=beta)return stand;if(stand>alpha)alpha=stand;best=stand;if(qd<=0)return stand;}
+  else if(qd<=-2)return pos.evaluate();
+  const moves=[];pos.gen(moves,!inChk);const sc=order(moves,0,Math.min(ply,127));let legal=0;
+  for(let i=0;i<moves.length;i++){const m=pick(moves,sc,i);
+   if(!inChk&&best+pos.victim(m)+pos.promoVal(m)+200<alpha)continue; // delta pruning
+   if(!pos.make(m))continue;legal++;const v=-qs(-beta,-alpha,ply+1,qd-1);pos.unmake();if(stopped)return 0;
+   if(v>best){best=v;if(v>alpha){alpha=v;if(v>=beta)return v;}}}
+  if(inChk&&!legal)return pos.noMovesScore(ply,true);
+  return best;}
+ function ab(depth,alpha,beta,ply,allowNull){
+  if(ply>0){if(pos.isRep())return drawScore();if(pos.drawLimit())return drawScore();
+   // mate distance pruning
+   const ma=-MATE+ply,mb=MATE-ply-1;if(alpha<ma)alpha=ma;if(beta>mb)beta=mb;if(alpha>=beta)return alpha;}
+  const inChk=pos.inCheck();if(inChk&&ply<40)depth++;
+  if(depth<=0)return qs(alpha,beta,ply,cfg.qdepth);
+  nodes++;if(timeUp())return 0;
+  const ti=pos.hl&TMASK;let ttm=0;
+  if(ttLock[ti]===pos.hh){ttm=ttMove[ti];if(ply>0&&ttDepth[ti]>=depth){let v=ttScore[ti];if(v>MATE-500)v-=ply;else if(v<-MATE+500)v+=ply;const fl=ttFlag[ti];
+   if(fl===0||(fl===1&&v>=beta)||(fl===2&&v<=alpha))return v;}}
+  const pv=beta-alpha>1;
+  if(!pv&&!inChk&&allowNull&&depth>=3&&pos.hasPieces(pos.side)&&pos.evaluate()>=beta){
+   pos.makeNull();const v=-ab(depth-3,-beta,-beta+1,ply+1,false);pos.unmakeNull();if(stopped)return 0;if(v>=beta&&v<MATE-500)return v;}
+  const moves=[];pos.gen(moves,false);const sc=order(moves,ttm,Math.min(ply,127));
+  let best=-INF,bestM=0,legal=0;const a0=alpha;
+  for(let i=0;i<moves.length;i++){const m=pick(moves,sc,i);const tact=pos.isTactical(m);
+   if(!pos.make(m))continue;legal++;let v;
+   if(legal===1)v=-ab(depth-1,-beta,-alpha,ply+1,true);
+   else{let r=0;if(depth>=3&&legal>4&&!tact&&!inChk&&!pos.inCheck())r=legal>10?2:1;
+    v=-ab(depth-1-r,-alpha-1,-alpha,ply+1,true);
+    if(!stopped&&v>alpha&&(r||v<beta))v=-ab(depth-1,-beta,-alpha,ply+1,true);}
+   pos.unmake();if(stopped)return 0;
+   if(v>best){best=v;bestM=m;if(v>alpha){alpha=v;if(v>=beta){if(!tact){const k=Math.min(ply,127)*2;if(killers[k]!==m){killers[k+1]=killers[k];killers[k]=m;}hist[E.mFrom(m)*128+E.mTo(m)]+=depth*depth;}break;}}}}
+  if(!legal)return pos.noMovesScore(ply,inChk);
+  let store=best;if(store>MATE-500)store+=ply;else if(store<-MATE+500)store-=ply;
+  ttLock[ti]=pos.hh;ttMove[ti]=bestM;ttScore[ti]=store;ttDepth[ti]=depth;ttFlag[ti]=best>=beta?1:best<=a0?2:0;
+  return best;}
+ /* Search the position; returns {move, score, depth, nodes}. */
+ function think(position,level,opts){pos=position;opts=opts||{};cfg=Object.assign({},LEVELS[level]||LEVELS.intermediate,opts);
+  if(opts.random)rng=opts.random;
+  nodes=0;stopped=false;rootSide=pos.side;contempt=cfg.noise?10:25;const t0=now();deadline=t0+cfg.time;
+  killers.fill(0);for(let i=0;i<hist.length;i++)hist[i]>>=2;
+  const roots=pos.legal();if(!roots.length)return {move:0,score:0,depth:0,nodes:0};
+  if(roots.length===1)return {move:roots[0],score:0,depth:0,nodes:0};
+  let bestMove=roots[0],bestScore=-INF,done=0;
+  const rootScores=new Map();
+  for(let d=1;d<=cfg.depth;d++){
+   const ti=pos.hl&TMASK,ttm=ttLock[ti]===pos.hh?ttMove[ti]:bestMove;
+   const sc=order(roots,ttm,0);let alpha=-INF,iterBest=0,iterScore=-INF;
+   for(let i=0;i<roots.length;i++){const m=pick(roots,sc,i);pos.make(m);let v;
+    if(i===0)v=-ab(d-1,-INF,-alpha,1,true);else{v=-ab(d-1,-alpha-1,-alpha,1,true);if(!stopped&&v>alpha)v=-ab(d-1,-INF,-alpha,1,true);}
+    pos.unmake();if(stopped)break;
+    if(v>iterScore){iterScore=v;iterBest=m;}if(v>alpha)alpha=v;}
+   if(stopped){if(iterBest&&iterScore>bestScore&&done>0){bestMove=iterBest;bestScore=iterScore;}break;}
+   bestMove=iterBest;bestScore=iterScore;done=d;
+   ttLock[ti]=pos.hh;ttMove[ti]=bestMove;
+   if(Math.abs(bestScore)>MATE-500)break;
+   if(now()-t0>cfg.time*0.55)break;}
+  // Easier levels: pick among good moves with some randomness so games vary and stay beatable.
+  if(cfg.noise>0&&Math.abs(bestScore)<MATE-500&&done>0){const d=Math.max(1,Math.min(done,cfg.depth));const floor=bestScore-cfg.noise*2;
+   stopped=false;deadline=now()+Math.max(250,cfg.time*0.6);let choice=bestMove,choiceVal=bestScore+rng()*cfg.noise;
+   for(const m of roots){if(m===bestMove)continue;pos.make(m);const v=-ab(d-1,-INF,-floor,1,true);pos.unmake();if(stopped)break;
+    if(v>floor&&v>-MATE+500){const nv=v+rng()*cfg.noise;if(nv>choiceVal){choiceVal=nv;choice=m;}}}
+   stopped=false;bestMove=choice;}
+  return {move:bestMove,score:bestScore,depth:done,nodes,ms:Math.round(now()-t0)};}
+ return {think,LEVELS};}
+return {create,LEVELS,MATE};
 })();
-</script><script>
+if(typeof module!=='undefined')module.exports=MGSearch;
+</script>
+<script>
+/* MindGarden Chess / Chinese Chess — interface text (en, ms, zh = Simplified, zt = Traditional) */
 'use strict';
-let kind=document.body.dataset.kind,engine=kind==='xiangqi'?MGXiangqi:MGChess;
-const langs={en:{name:kind==='xiangqi'?'Chinese Chess':'Western Chess',tag:'Take your time, plan each move, and enjoy a thoughtful game.',mode:'Play mode',solo:'Against computer',two:'Two players',think:'Computer strength',casual:'Casual',steady:'Thoughtful',turn:'Turn',red:'Red',black:'Black',white:'White',hint:'Hint',undo:'Undo',reset:'New game',undoHint:'Undo last move',moves:'Move history',help:'How to play',notice:'No ads, timers or sound. Games save locally.',prom:'Promote pawn to',cancel:'Cancel',result:'Game over',check:'Check!',computer:'Computer thinking…',illegal:'Choose a highlighted square.',confirm:'Start a new game? Your current position will be replaced.',done:'Your move',resume:'Progress restored',save:'Saved locally',rules:kind==='xiangqi'?'Red moves first. Generals stay inside the palace, elephants cannot cross the river, horses may be blocked, cannons capture by jumping exactly one piece. You cannot leave your general in check or face the enemy general on an empty file.':'White moves first. Castling, en passant, pawn promotion, check and checkmate are enforced. Select a piece to see its legal destinations.'},
-ms:{name:kind==='xiangqi'?'Catur Cina':'Catur Barat',tag:'Rancang langkah dengan tenang, bermain tanpa tergesa-gesa.',mode:'Mod permainan',solo:'Lawan komputer',two:'Dua pemain',think:'Tahap komputer',casual:'Santai',steady:'Berfikir',turn:'Giliran',red:'Merah',black:'Hitam',white:'Putih',hint:'Petunjuk',undo:'Undur',reset:'Permainan baharu',undoHint:'Undur langkah terakhir',moves:'Sejarah langkah',help:'Cara bermain',notice:'Tiada iklan, pemasa atau bunyi. Permainan disimpan setempat.',prom:'Naik pangkat bidak',cancel:'Batal',result:'Permainan tamat',check:'Syah!',computer:'Komputer sedang berfikir…',illegal:'Pilih petak yang ditandakan.',confirm:'Mulakan permainan baharu? Kedudukan semasa akan diganti.',done:'Giliran anda',resume:'Kemajuan dipulihkan',save:'Disimpan',rules:kind==='xiangqi'?'Merah bermula dahulu. Jeneral berada dalam istana, gajah tidak menyeberangi sungai, kuda boleh dihalang dan meriam memerlukan satu buah sebagai pelompat untuk menangkap. Jeneral tidak boleh berdepan tanpa halangan.':'Putih bermula dahulu. Castling, en passant, kenaikan pangkat bidak, syah dan syah mat dipatuhi.'},
-zh:{name:kind==='xiangqi'?'中国象棋':'国际象棋',tag:'慢慢思考每一步，享受轻松又有挑战的对弈。',mode:'游戏模式',solo:'对战电脑',two:'双人对弈',think:'电脑难度',casual:'轻松',steady:'进阶',turn:'轮到',red:'红方',black:'黑方',white:'白方',hint:'提示',undo:'悔棋',reset:'新对局',undoHint:'撤销上一步',moves:'走棋记录',help:'玩法说明',notice:'无广告、无计时、无声音；进度自动保存在本机。',prom:'兵升变为',cancel:'取消',result:'对局结束',check:'将军！',computer:'电脑正在思考…',illegal:'请选择高亮位置。',confirm:'开始新对局？当前棋局将被替换。',done:'请走棋',resume:'已恢复进度',save:'已保存',rules:kind==='xiangqi'?'红方先行。帅将不能出九宫，象不能过河，马腿被挡不能跳，炮吃子需隔一个棋子。不能让自己被将军，也不能让两将直接照面。':'白方先行。包含王车易位、吃过路兵、兵升变、将军及将死规则。'},
-zt:{name:kind==='xiangqi'?'中國象棋':'國際象棋',tag:'慢慢思考每一步，享受輕鬆又有挑戰的對弈。',mode:'遊戲模式',solo:'對戰電腦',two:'雙人對弈',think:'電腦難度',casual:'輕鬆',steady:'進階',turn:'輪到',red:'紅方',black:'黑方',white:'白方',hint:'提示',undo:'悔棋',reset:'新對局',undoHint:'撤銷上一步',moves:'走棋記錄',help:'玩法說明',notice:'無廣告、無計時、無聲音；進度自動儲存在本機。',prom:'兵升變為',cancel:'取消',result:'對局結束',check:'將軍！',computer:'電腦正在思考…',illegal:'請選擇高亮位置。',done:'請走棋',resume:'已恢復進度',save:'已儲存',rules:kind==='xiangqi'?'紅方先行。帥將不能出九宮，象不能過河，馬腿被擋不能跳，炮吃子需隔一個棋子。不能讓自己被將軍，也不能讓兩將直接照面。':'白方先行。包含王車易位、吃過路兵、兵升變、將軍及將死規則。'}};
-const UI={
- en:{game:'Chess game',side:'Your pieces',west:'Western Chess',east:'Chinese Chess',white:'White (first)',red:'Red (first)',black:'Black (second)',think:'Thoughtful computer opponent'},
- ms:{game:'Jenis catur',side:'Buah anda',west:'Catur Barat',east:'Catur Cina',white:'Putih (mula)',red:'Merah (mula)',black:'Hitam (kedua)',think:'Komputer bermain secara strategik'},
- zh:{game:'选择棋类',side:'选择棋方',west:'国际象棋',east:'中国象棋',white:'白方（先手）',red:'红方（先手）',black:'黑方（后手）',think:'策略型电脑对手'},
- zt:{game:'選擇棋類',side:'選擇棋方',west:'國際象棋',east:'中國象棋',white:'白方（先手）',red:'紅方（先手）',black:'黑方（後手）',think:'策略型電腦對手'}};
-const DIFFICULTY_WORDS={
- en:{label:'Computer level',novice:'Novice',intermediate:'Intermediate',advanced:'Advanced',desc:['Learning to defend and capture','Plans ahead and avoids simple traps','Deeper tactics for experienced amateurs']},
- ms:{label:'Tahap komputer',novice:'Permulaan',intermediate:'Pertengahan',advanced:'Lanjutan',desc:['Belajar bertahan dan menangkap buah','Merancang dan mengelak perangkap mudah','Taktik lebih mendalam untuk pemain amatur']},
- zh:{label:'电脑水平',novice:'初级',intermediate:'中级',advanced:'高级',desc:['学习防守和吃子','考虑多步并避免简单陷阱','适合业余爱好者的深入战术']},
- zt:{label:'電腦水平',novice:'初級',intermediate:'中級',advanced:'高級',desc:['學習防守和吃子','考慮多步並避免簡單陷阱','適合業餘愛好者的深入戰術']}
-};
-const CHESS_RULES={
- en:'White moves first. Castling, en passant, pawn promotion, check and checkmate are enforced. Select a piece to see its legal destinations.',
- ms:'Putih bermula dahulu. Castling, en passant, kenaikan pangkat bidak, syah dan syah mat dipatuhi.',
- zh:'白方先行。包含王车易位、吃过路兵、兵升变、将军及将死规则。',
- zt:'白方先行。包含王車易位、吃過路兵、兵升變、將軍及將死規則。'
-};
-const XIANGQI_RULES={
- en:'Red moves first. Generals stay inside the palace, elephants cannot cross the river, horses may be blocked, cannons capture by jumping exactly one piece. You cannot leave your general in check or face the enemy general on an empty file.',
- ms:'Merah bermula dahulu. Jeneral berada dalam istana, gajah tidak menyeberangi sungai, kuda boleh dihalang dan meriam memerlukan satu buah sebagai pelompat untuk menangkap. Jeneral tidak boleh berdepan tanpa halangan.',
- zh:'红方先行。帅将不能出九宫，象不能过河，马腿被挡不能跳，炮吃子需隔一个棋子。不能让自己被将军，也不能让两将直接照面。',
- zt:'紅方先行。帥將不能出九宮，象不能過河，馬腿被擋不能跳，炮吃子需隔一個棋子。不能讓自己被將軍，也不能讓兩將直接照面。'
-};
-const byId=id=>document.getElementById(id);
-const storageKey=()=> 'mindgarden_'+kind+'_v1';
-let storedLang='en';try{storedLang=localStorage.getItem('mindgarden-lang')||'en'}catch(e){}let lang=new URLSearchParams(location.search).get('lang')||storedLang;if(!langs[lang])lang='en';
-let playerSide=1,history=[engine.init()],keys=[],selected=-1,promote=null,hint=-1,waiting=false,notice='',revision=0;
-function safeLoad(){try{let x=JSON.parse(localStorage.getItem(storageKey())||'null');if(!x||x.schema!==1||!Array.isArray(x.moves)||x.moves.length>600)return;let h=[engine.init()],kk=[];for(let it of x.moves){if(!Array.isArray(it)||it.length!==3||it.some(n=>!Number.isInteger(n))||it[0]<0||it[1]<0||it[0]>=engine.init().b.length||it[1]>=engine.init().b.length||it[2]<0||it[2]>4) return;let m=engine.legal(h[h.length-1]).find(m=>m.f===it[0]&&m.to===it[1]&&(kind==='xiangqi'||(m.prom||'')===(['','q','r','b','n'][it[2]])));if(!m)return;h.push(engine.put(h[h.length-1],m));kk.push(it);}history=h;keys=kk;playerSide=x.player===-1?-1:1;difficulty=LEVELS[x.difficulty]?x.difficulty:'intermediate';notice=langs[lang].resume}catch(e){}}
-function save(){try{localStorage.setItem(storageKey(),JSON.stringify({schema:1,player:playerSide,difficulty,moves:keys.slice(-600)}))}catch(e){notice='Local save unavailable.'}}
-function text(){const tr=langs[lang],u=UI[lang];byId('langlabel').textContent='🌐 '+({en:'Language',ms:'Bahasa',zh:'语言',zt:'語言'})[lang];document.documentElement.lang=lang==='zt'?'zh-Hant':lang==='zh'?'zh-Hans':lang;byId('title').textContent=(kind==='xiangqi'?'🀄 ':'♟️ ')+(kind==='xiangqi'?u.east:u.west);byId('subtitle').textContent=tr.tag;byId('lang').value=lang;byId('gamelabel').textContent=u.game;byId('game').innerHTML=`<option value="chess">${u.west}</option><option value="xiangqi">${u.east}</option>`;byId('game').value=kind;byId('sidelabel').textContent=u.side;byId('player').innerHTML=`<option value="1">${kind==='xiangqi'?u.red:u.white}</option><option value="-1">${u.black}</option>`;byId('player').value=String(playerSide);byId('hintBtn').textContent='💡 '+tr.hint;byId('undoBtn').textContent='↶ '+tr.undo;byId('newBtn').textContent='↻ '+tr.reset;byId('movestitle').textContent=tr.moves;byId('helpsummary').textContent=tr.help;byId('rules').textContent=(kind==='xiangqi'?XIANGQI_RULES[lang]:CHESS_RULES[lang]);const d=DIFFICULTY_WORDS[lang];byId('difficultyLabel').textContent=d.label;byId('difficulty').innerHTML=['novice','intermediate','advanced'].map((k)=>`<option value="${k}">${d[k]}</option>`).join('');byId('difficulty').value=difficulty;byId('difficultyExplain').textContent=d.desc[['novice','intermediate','advanced'].indexOf(difficulty)];byId('notice').textContent=tr.notice;byId('promotionTitle').textContent=tr.prom;byId('cancelPromotion').textContent=tr.cancel;}
-function stat(){let s=history.at(-1),res=engine.result(s),t=langs[lang];if(res)return res;if(kind==='chess'){let repeats=history.filter(p=>engine.key(p)===engine.key(s)).length;if(repeats>=5)return 'Draw: fivefold repetition';if(s.half>=100)return '50-move rule: draw available';if(engine.checked(s))return t.check;}return t.turn+': '+(s.t===1?(kind==='xiangqi'?t.red:t.white):t.black)}
-function pairIndex(x){return kind==='xiangqi'?[Math.floor(x/9),x%9]:[Math.floor(x/16),x%16]}
-function decorate(){let s=history.at(-1),legal=engine.legal(s),allowed=legal.filter(m=>m.f===selected),last=keys.at(-1)||[];let root=byId('board');root.innerHTML='';let rows=kind==='xiangqi'?10:8,cols=kind==='xiangqi'?9:8;root.style.gridTemplateColumns=`repeat(${cols}, minmax(0,1fr))`;root.setAttribute('aria-label',kind==='xiangqi'?'Chinese Chess board':'Western Chess board');
-for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){let row=playerSide===1?r:rows-1-r,col=playerSide===1?c:cols-1-c,idx=engine.idx(row,col),p=engine.at(s,row,col),btn=document.createElement('button');btn.className='square '+(kind==='xiangqi'?'xiang '+(row<5?'north':'south'):(row+col)%2?'dark':'light');btn.setAttribute('aria-label',`${r+1},${c+1}: ${p==='.'?'empty':p}`);btn.type='button';btn.dataset.idx=idx;if(selected===idx)btn.classList.add('chosen');if(allowed.some(m=>m.to===idx))btn.classList.add('target');if(last[0]===idx||last[1]===idx)btn.classList.add('last');if(p!=='.'){let piece=document.createElement('span');piece.className='piece '+(p===p.toUpperCase()?'positive':'negative');piece.textContent=engine.glyph[p];btn.appendChild(piece)}else if(allowed.some(m=>m.to===idx)){let dot=document.createElement('span');dot.className='dot';btn.appendChild(dot)}if(idx===hint)btn.classList.add('hint');btn.addEventListener('click',()=>choose(idx));root.appendChild(btn)}
-byId('status').textContent=waiting?langs[lang].computer:stat();byId('message').textContent=notice;byId('turnnum').textContent=String(keys.length+1);byId('undoBtn').disabled=waiting||keys.length===0;byId('hintBtn').disabled=waiting||!!engine.result(s);let labels=[];for(let j=0;j<keys.length;j++){let from=history[j],to=engine.legal(from).find(m=>m.f===keys[j][0]&&m.to===keys[j][1]&&(kind==='xiangqi'||(m.prom||'')===['','q','r','b','n'][keys[j][2]]));labels.push(to?engine.label(from,to):'?')}byId('moves').textContent=labels.slice(-28).join(' · ')||'—';}
-function choose(idx){if(waiting||promote||engine.result(history.at(-1)))return;const s=history.at(-1);if(s.t!==playerSide)return;const options=engine.legal(s);if(selected>=0){const next=options.filter(m=>m.f===selected&&m.to===idx);if(next.length>1){promote=next;byId('promotion').hidden=false;return}if(next.length===1){doMove(next[0]);return}}if(options.some(m=>m.f===idx)){selected=selected===idx?-1:idx;notice='';decorate();return}selected=-1;notice=langs[lang].illegal;decorate();}
-function doMove(m){let s=history.at(-1);keys.push([m.f,m.to,kind==='xiangqi'?0:['','q','r','b','n'].indexOf(m.prom||'')]);history.push(engine.put(s,m));selected=-1;hint=-1;promote=null;byId('promotion').hidden=true;notice='';save();decorate();if(history.at(-1).t!==playerSide&&!engine.result(history.at(-1)))computerTurn()}
-// Three offline amateur-level opponents; bounded minimax to protect mobile devices.
-const LEVELS={novice:{depth:2,root:12,width:7,budget:550},intermediate:{depth:3,root:15,width:9,budget:2300},advanced:{depth:4,root:20,width:12,budget:6200}};
-let difficulty='intermediate';
-function movePriority(s,m){const target=s.b[m.to],v=target==='.'?0:(engine.value[target.toLowerCase()]||90);const attacker=s.b[m.f],av=engine.value[attacker.toLowerCase()]||100;return v*11-av+(m.prom?8800:0);}
-function positional(s,side){
- let base=engine.score(s)*side;
- const width=kind==='xiangqi'?9:8;
- for(let i=0;i<s.b.length;i++){
-  if(kind==='chess'&&(i&0x88))continue;
-  const piece=s.b[i];if(!piece||piece==='.')continue;
-  const p=piece.toLowerCase(),who=piece===piece.toUpperCase()?1:-1;
-  const c=kind==='xiangqi'?i%9:i%16,r=kind==='xiangqi'?Math.floor(i/9):Math.floor(i/16);
-  const center=(width-1)/2-Math.abs(c-(width-1)/2);
-  const advancement=who===1?(kind==='xiangqi'?9-r:7-r):r;
-  const bonus=(p==='p'?advancement*(kind==='xiangqi'?8:5):0)+(['n','h','b','c'].includes(p)?center*7:0);
-  base+=who*side*bonus;
- }
- return base;
-}
-function bestMove(s,level=difficulty){
- const cfg=LEVELS[level]||LEVELS.intermediate,rootSide=s.t;
- const roots=engine.legal(s);if(!roots.length)return null;
- // Every candidate is legal; search budget caps the amount of work on phones.
- let nodes=0;
- const evaluate=x=>positional(x,x.t);
- const ordered=(pos,moves)=>moves.map(m=>({m,order:movePriority(pos,m)+positional(engine.put(pos,m),pos.t)*.055})).sort((a,b)=>b.order-a.order);
- function negamax(pos,depth,alpha,beta,ply){
-  const moves=engine.legal(pos);nodes++;
-  if(!moves.length)return engine.checked(pos)?-100000+ply:kind==='xiangqi'?-100000+ply:0;
-  if(depth<=0||nodes>=cfg.budget)return evaluate(pos);
-  let best=-Infinity;
-  const top=ordered(pos,moves).slice(0,cfg.width);
-  for(const e of top){
-   const next=engine.put(pos,e.m);
-   const value=-negamax(next,depth-1,-beta,-alpha,ply+1);
-   if(value>best)best=value;
-   if(value>alpha)alpha=value;
-   if(alpha>=beta||nodes>=cfg.budget)break;
-  }
-  return best===-Infinity?evaluate(pos):best;
- }
- // Prioritise forcing captures and checks, but still consider quiet positional moves.
- const ranked=ordered(s,roots).slice(0,cfg.root);
- let chosen=ranked[0].m,best=-Infinity,alpha=-Infinity;
- for(const entry of ranked){
-  const after=engine.put(s,entry.m);
-  const val=-negamax(after,cfg.depth-1,-Infinity,-alpha,1);
-  const candidate=val+positional(after,rootSide)*.018;
-  if(candidate>best){best=candidate;chosen=entry.m;}
-  alpha=Math.max(alpha,val);
-  if(nodes>=cfg.budget)break;
- }
- return chosen;
-}
-function computerTurn(){if(waiting)return;waiting=true;const stamp=++revision;decorate();setTimeout(()=>{if(stamp!==revision)return;waiting=false;let s=history.at(-1),m=bestMove(s);if(m)doMove(m);else decorate()},kind==='xiangqi'?240:260);}
-function undo(){if(waiting||!keys.length)return;revision++;let end=history.length-1;let target=end-1;while(target>0&&history[target].t!==playerSide)target--;if(playerSide===-1&&target===0) return;keys.splice(target);history.splice(target+1);selected=-1;hint=-1;notice='';promote=null;byId('promotion').hidden=true;save();decorate();}
-function reset(){if(!window.confirm(langs[lang].confirm))return;revision++;waiting=false;history=[engine.init()];keys=[];selected=-1;promote=null;notice='';save();decorate();if(playerSide===-1)computerTurn();}
-function hintMove(){if(waiting||history.at(-1).t!==playerSide||engine.result(history.at(-1)))return;let m=bestMove(history.at(-1));if(!m)return;selected=m.f;hint=m.to;notice=engine.label(history.at(-1),m);decorate();}
-byId('game').addEventListener('change',e=>{
- const next=e.target.value;
- if(next===kind)return;
- // Switch engines in this document: works even when opened as standalone content:// HTML.
- revision++;waiting=false;
- kind=next;engine=kind==='xiangqi'?MGXiangqi:MGChess;
- document.body.dataset.kind=kind;
- playerSide=1;history=[engine.init()];keys=[];selected=-1;hint=-1;promote=null;notice='';
- byId('promotion').hidden=true;
- safeLoad();text();decorate();
- if(history.at(-1).t!==playerSide&&!engine.result(history.at(-1)))computerTurn();
-});
-byId('player').addEventListener('change',e=>{const next=Number(e.target.value);if(next===playerSide)return;if(keys.length&&!window.confirm(langs[lang].confirm)){e.target.value=String(playerSide);return;}revision++;waiting=false;playerSide=next;history=[engine.init()];keys=[];selected=-1;hint=-1;notice='';promote=null;byId('promotion').hidden=true;save();text();decorate();if(playerSide===-1)computerTurn();});
-byId('difficulty').addEventListener('change',e=>{difficulty=LEVELS[e.target.value]?e.target.value:'intermediate';save();text();decorate();});
-byId('lang').addEventListener('change',e=>{lang=e.target.value;try{localStorage.setItem('mindgarden-lang',lang)}catch(_){}text();decorate()});
-byId('undoBtn').onclick=undo;byId('newBtn').onclick=reset;byId('hintBtn').onclick=hintMove;
-byId('cancelPromotion').onclick=()=>{promote=null;byId('promotion').hidden=true;};
-for(let button of byId('promotion').querySelectorAll('[data-promo]'))button.onclick=()=>{let m=promote?.find(m=>m.prom===button.dataset.promo);if(m)doMove(m)};
-safeLoad();text();decorate();if(history.at(-1).t!==playerSide&&!engine.result(history.at(-1)))computerTurn();
-if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1')){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));}
-</script></body></html>
+var MG_TEXT={
+en:{language:'Language',back:'MindGarden',yourSide:'Your pieces',level:'Computer level',
+ levels:{novice:'Relaxed',intermediate:'Steady',advanced:'Strong'},
+ levelDesc:{novice:'Makes some mistakes — good for learning',intermediate:'Thinks a few moves ahead',advanced:'For experienced players — thinks up to 3 seconds'},
+ undo:'Undo',hint:'Hint',newGame:'New game',confirmNew:'Start a new game? The current game will be cleared.',yes:'Yes, new game',no:'Keep playing',
+ yourMove:'Your move',thinking:'Computer is thinking…',checkYou:'Check! Protect your {king}.',checkComp:'Check!',
+ youWin:'You win! 🎉',compWin:'The computer wins this time',draw:'Draw 🤝',playAgain:'Play again',
+ reasons:{checkmate:'Checkmate',stalemate:'Stalemate — no legal moves',nomoves:'No legal moves left',repetition:'Same position repeated three times',perpetual:'Perpetual check is not allowed',fifty:'50 moves without a capture or pawn move',sixty:'60 moves without a capture',material:'Not enough pieces left to checkmate'},
+ restored:'Welcome back — your game was restored.',illegal:'That move is not allowed. Choose a highlighted point.',
+ hintMsg:'Hint: {move}',promote:'Promote your pawn to:',cancel:'Cancel',
+ youCaptured:'You captured',compCaptured:'Computer captured',none:'—',
+ moves:'Move history',howTo:'How to play',pieceGuide:'Pieces and how they move',
+ notice:'No ads, no timers, no sound. Your game is saved on this device.',saveFail:'This browser cannot save the game.',
+ chess:{title:'Western Chess',sub:'Take your time and enjoy a thoughtful game.',first:'White (first)',second:'Black',sideNames:['White','Black'],king:'King',other:'Play Chinese Chess →',
+  rules:'Goal: checkmate the opponent’s King — attack it so that it has no safe move. Tap one of your pieces to see where it can go, then tap a highlighted square. Castling, en passant and pawn promotion are included. The game is a draw after stalemate, the same position three times, 50 moves without a capture or pawn move, or when too few pieces remain to checkmate.',
+  pieces:{6:['King','One square in any direction. Never into check.'],5:['Queen','Any distance straight or diagonally.'],4:['Rook','Any distance straight (up, down, left, right).'],3:['Bishop','Any distance diagonally.'],2:['Knight','An “L” shape: two squares then one sideways. Can jump over pieces.'],1:['Pawn','One square forward (two on its first move). Captures one square diagonally forward. Becomes a Queen (or other piece) at the far end.']}},
+ xiangqi:{title:'Chinese Chess',sub:'Xiangqi — plan each move calmly and enjoy the game.',first:'Red (first)',second:'Black',sideNames:['Red','Black'],king:'General',other:'Play Western Chess →',
+  rules:'Goal: checkmate the opponent’s General. Pieces stand on the line crossings and Red moves first. The two Generals may never face each other on an open file. A player with no legal move loses. Repeating the same position three times is a draw, but a player who gives check on every move of the repetition (perpetual check) loses. 60 moves without a capture is a draw.',
+  pieces:{1:['General','One step straight. Must stay inside the palace (the box with the cross).'],2:['Advisor','One step diagonally, inside the palace only.'],3:['Elephant','Exactly two steps diagonally. Cannot cross the river. Blocked if the middle point is occupied.'],4:['Horse','One step straight, then one step diagonally outward. Blocked if a piece stands right next to it in that direction.'],5:['Chariot','Any distance straight, like a rook.'],6:['Cannon','Moves like a Chariot, but captures only by jumping over exactly one piece.'],7:['Soldier','One step forward. After crossing the river it may also step sideways. Never moves backward.']}}},
+ms:{language:'Bahasa',back:'MindGarden',yourSide:'Buah anda',level:'Tahap komputer',
+ levels:{novice:'Santai',intermediate:'Sederhana',advanced:'Mahir'},
+ levelDesc:{novice:'Ada kesilapan — sesuai untuk belajar',intermediate:'Berfikir beberapa langkah ke hadapan',advanced:'Untuk pemain berpengalaman — berfikir hingga 3 saat'},
+ undo:'Undur',hint:'Petunjuk',newGame:'Permainan baharu',confirmNew:'Mulakan permainan baharu? Permainan sekarang akan dipadam.',yes:'Ya, mula baharu',no:'Teruskan bermain',
+ yourMove:'Giliran anda',thinking:'Komputer sedang berfikir…',checkYou:'Syah! Lindungi {king} anda.',checkComp:'Syah!',
+ youWin:'Anda menang! 🎉',compWin:'Komputer menang kali ini',draw:'Seri 🤝',playAgain:'Main lagi',
+ reasons:{checkmate:'Syah mat',stalemate:'Buntu — tiada langkah sah',nomoves:'Tiada langkah sah lagi',repetition:'Kedudukan sama berulang tiga kali',perpetual:'Syah berterusan tidak dibenarkan',fifty:'50 langkah tanpa tangkapan atau gerakan bidak',sixty:'60 langkah tanpa tangkapan',material:'Buah tidak mencukupi untuk syah mat'},
+ restored:'Selamat kembali — permainan anda telah dipulihkan.',illegal:'Langkah itu tidak dibenarkan. Pilih titik yang ditandakan.',
+ hintMsg:'Petunjuk: {move}',promote:'Naikkan pangkat bidak kepada:',cancel:'Batal',
+ youCaptured:'Anda tangkap',compCaptured:'Komputer tangkap',none:'—',
+ moves:'Sejarah langkah',howTo:'Cara bermain',pieceGuide:'Buah dan cara bergerak',
+ notice:'Tiada iklan, tiada pemasa, tiada bunyi. Permainan disimpan dalam peranti ini.',saveFail:'Pelayar ini tidak dapat menyimpan permainan.',
+ chess:{title:'Catur Barat',sub:'Bermain dengan tenang dan nikmati permainan.',first:'Putih (mula)',second:'Hitam',sideNames:['Putih','Hitam'],king:'Raja',other:'Main Catur Cina →',
+  rules:'Matlamat: syah mat Raja lawan — serang Raja sehingga tiada langkah selamat. Ketik buah anda untuk melihat ke mana ia boleh bergerak, kemudian ketik petak yang ditandakan. Castling, en passant dan kenaikan pangkat bidak disediakan. Permainan seri jika buntu, kedudukan sama tiga kali, 50 langkah tanpa tangkapan atau gerakan bidak, atau buah terlalu sedikit untuk syah mat.',
+  pieces:{6:['Raja','Satu petak ke mana-mana arah. Tidak boleh masuk ke dalam syah.'],5:['Menteri','Sebarang jarak secara lurus atau menyerong.'],4:['Tir','Sebarang jarak secara lurus.'],3:['Gajah','Sebarang jarak secara menyerong.'],2:['Kuda','Bentuk “L”: dua petak kemudian satu ke tepi. Boleh melompat.'],1:['Bidak','Satu petak ke hadapan (dua pada langkah pertama). Menangkap secara menyerong. Naik pangkat di hujung papan.']}},
+ xiangqi:{title:'Catur Cina',sub:'Xiangqi — rancang setiap langkah dengan tenang.',first:'Merah (mula)',second:'Hitam',sideNames:['Merah','Hitam'],king:'Jeneral',other:'Main Catur Barat →',
+  rules:'Matlamat: syah mat Jeneral lawan. Buah diletakkan di persilangan garisan dan Merah bermula dahulu. Kedua-dua Jeneral tidak boleh berdepan pada lajur yang kosong. Pemain tanpa langkah sah kalah. Kedudukan sama tiga kali adalah seri, tetapi pemain yang memberi syah pada setiap langkah ulangan (syah berterusan) kalah. 60 langkah tanpa tangkapan adalah seri.',
+  pieces:{1:['Jeneral','Satu langkah lurus. Mesti kekal dalam istana (kotak bersilang).'],2:['Penasihat','Satu langkah menyerong, dalam istana sahaja.'],3:['Gajah','Tepat dua langkah menyerong. Tidak boleh menyeberang sungai. Terhalang jika titik tengah ada buah.'],4:['Kuda','Satu langkah lurus, kemudian satu menyerong ke luar. Terhalang jika ada buah tepat di sebelahnya.'],5:['Kereta','Sebarang jarak secara lurus.'],6:['Meriam','Bergerak seperti Kereta, tetapi menangkap dengan melompat tepat satu buah.'],7:['Askar','Satu langkah ke hadapan. Selepas menyeberang sungai boleh ke tepi. Tidak boleh berundur.']}}},
+zh:{language:'语言',back:'MindGarden',yourSide:'执棋方',level:'电脑水平',
+ levels:{novice:'轻松',intermediate:'稳健',advanced:'高手'},
+ levelDesc:{novice:'偶尔失误，适合学习',intermediate:'会考虑几步之后',advanced:'适合有经验的棋手，每步最多思考3秒'},
+ undo:'悔棋',hint:'提示',newGame:'新对局',confirmNew:'开始新对局？当前棋局将被清除。',yes:'是，重新开始',no:'继续下棋',
+ yourMove:'轮到你走棋',thinking:'电脑正在思考…',checkYou:'将军！请保护你的{king}。',checkComp:'将军！',
+ youWin:'你赢了！🎉',compWin:'这局电脑赢了',draw:'和棋 🤝',playAgain:'再来一局',
+ reasons:{checkmate:'将死',stalemate:'逼和——无棋可走',nomoves:'困毙——无棋可走',repetition:'同一局面重复三次',perpetual:'长将判负',fifty:'五十回合无吃子且无兵走动',sixty:'六十回合无吃子',material:'双方子力不足以将死'},
+ restored:'欢迎回来，你的棋局已恢复。',illegal:'不能这样走，请选择高亮位置。',
+ hintMsg:'提示：{move}',promote:'兵升变为：',cancel:'取消',
+ youCaptured:'你吃掉',compCaptured:'电脑吃掉',none:'—',
+ moves:'走棋记录',howTo:'玩法说明',pieceGuide:'棋子走法',
+ notice:'无广告、无计时、无声音。棋局自动保存在本设备。',saveFail:'此浏览器无法保存棋局。',
+ chess:{title:'国际象棋',sub:'慢慢思考，享受对弈的乐趣。',first:'白方（先走）',second:'黑方',sideNames:['白方','黑方'],king:'王',other:'玩中国象棋 →',
+  rules:'目标：将死对方的王，使它无路可逃。点一下自己的棋子查看可走位置，再点高亮的格子。支持王车易位、吃过路兵和兵升变。出现逼和、同一局面重复三次、五十回合无吃子且无兵走动，或子力不足以将死时为和棋。',
+  pieces:{6:['王','向任意方向走一格，不能走进被将军的位置。'],5:['后','直线或斜线，任意格数。'],4:['车','直线，任意格数。'],3:['象','斜线，任意格数。'],2:['马','走“日”字（L形），可以越过棋子。'],1:['兵','向前一格（第一步可走两格），斜前方吃子，到底线可升变。']}},
+ xiangqi:{title:'中国象棋',sub:'从容思考每一步，享受对弈。',first:'红方（先走）',second:'黑方',sideNames:['红方','黑方'],king:['帅','将'],other:'玩国际象棋 →',
+  rules:'目标：将死对方的将（帅）。棋子走在交叉点上，红方先走。双方将帅不能在同一直线上直接照面。无棋可走的一方判负（困毙）。同一局面重复三次为和棋，但每步都在将军造成重复的一方（长将）判负。六十回合无吃子判和。',
+  pieces:{1:['帅/将','直走一步，不能离开九宫。'],2:['仕/士','斜走一步，只能在九宫内。'],3:['相/象','斜走两步（田字），不能过河，“象眼”被堵则不能走。'],4:['马','先直走一步再斜走一步（日字），“马腿”被堵则不能走。'],5:['车','直线任意格数。'],6:['炮','移动同车，吃子时必须隔一个棋子（炮架）。'],7:['兵/卒','向前一步，过河后可左右走，不能后退。']}}},
+zt:{language:'語言',back:'MindGarden',yourSide:'執棋方',level:'電腦水平',
+ levels:{novice:'輕鬆',intermediate:'穩健',advanced:'高手'},
+ levelDesc:{novice:'偶爾失誤，適合學習',intermediate:'會考慮幾步之後',advanced:'適合有經驗的棋手，每步最多思考3秒'},
+ undo:'悔棋',hint:'提示',newGame:'新對局',confirmNew:'開始新對局？目前棋局將被清除。',yes:'是，重新開始',no:'繼續下棋',
+ yourMove:'輪到你走棋',thinking:'電腦正在思考…',checkYou:'將軍！請保護你的{king}。',checkComp:'將軍！',
+ youWin:'你贏了！🎉',compWin:'這局電腦贏了',draw:'和棋 🤝',playAgain:'再來一局',
+ reasons:{checkmate:'將死',stalemate:'逼和——無棋可走',nomoves:'困斃——無棋可走',repetition:'同一局面重複三次',perpetual:'長將判負',fifty:'五十回合無吃子且無兵走動',sixty:'六十回合無吃子',material:'雙方子力不足以將死'},
+ restored:'歡迎回來，你的棋局已恢復。',illegal:'不能這樣走，請選擇高亮位置。',
+ hintMsg:'提示：{move}',promote:'兵升變為：',cancel:'取消',
+ youCaptured:'你吃掉',compCaptured:'電腦吃掉',none:'—',
+ moves:'走棋記錄',howTo:'玩法說明',pieceGuide:'棋子走法',
+ notice:'無廣告、無計時、無聲音。棋局自動儲存在本裝置。',saveFail:'此瀏覽器無法儲存棋局。',
+ chess:{title:'國際象棋',sub:'慢慢思考，享受對弈的樂趣。',first:'白方（先走）',second:'黑方',sideNames:['白方','黑方'],king:'王',other:'玩中國象棋 →',
+  rules:'目標：將死對方的王，使它無路可逃。點一下自己的棋子查看可走位置，再點高亮的格子。支援王車易位、吃過路兵和兵升變。出現逼和、同一局面重複三次、五十回合無吃子且無兵走動，或子力不足以將死時為和棋。',
+  pieces:{6:['王','向任意方向走一格，不能走進被將軍的位置。'],5:['后','直線或斜線，任意格數。'],4:['車','直線，任意格數。'],3:['象','斜線，任意格數。'],2:['馬','走「日」字（L形），可以越過棋子。'],1:['兵','向前一格（第一步可走兩格），斜前方吃子，到底線可升變。']}},
+ xiangqi:{title:'中國象棋',sub:'從容思考每一步，享受對弈。',first:'紅方（先走）',second:'黑方',sideNames:['紅方','黑方'],king:['帥','將'],other:'玩國際象棋 →',
+  rules:'目標：將死對方的將（帥）。棋子走在交叉點上，紅方先走。雙方將帥不能在同一直線上直接照面。無棋可走的一方判負（困斃）。同一局面重複三次為和棋，但每步都在將軍造成重複的一方（長將）判負。六十回合無吃子判和。',
+  pieces:{1:['帥/將','直走一步，不能離開九宮。'],2:['仕/士','斜走一步，只能在九宮內。'],3:['相/象','斜走兩步（田字），不能過河，「象眼」被堵則不能走。'],4:['馬','先直走一步再斜走一步（日字），「馬腿」被堵則不能走。'],5:['車','直線任意格數。'],6:['炮','移動同車，吃子時必須隔一個棋子（炮架）。'],7:['兵/卒','向前一步，過河後可左右走，不能後退。']}}}};
+if(typeof module!=='undefined')module.exports=MG_TEXT;
+</script>
+<script>
+/* MindGarden chess interface — shared by chess.html and xiangqi.html */
+'use strict';
+(function(){
+const E=GameEngine,KIND=E.kind,XQ=KIND==='xiangqi',ROWS=E.rows,COLS=E.cols;
+const $=id=>document.getElementById(id);
+const STORE='mindgarden_'+KIND+'_v2',STORE_V1='mindgarden_'+KIND+'_v1';
+/* ---------- language (shared with the MindGarden home page) ---------- */
+function readLang(){let l=null;try{l=new URLSearchParams(location.search).get('lang');}catch(e){}
+ if(!MG_TEXT[l]){try{l=localStorage.getItem('mindgarden-lang');}catch(e){}}
+ if(!MG_TEXT[l]){try{const s=JSON.parse(localStorage.getItem('mindgarden-settings')||'null');l=s&&s.lang;}catch(e){}}
+ return MG_TEXT[l]?l:'en';}
+function writeLang(l){try{localStorage.setItem('mindgarden-lang',l);const s=JSON.parse(localStorage.getItem('mindgarden-settings')||'{}')||{};s.lang=l;localStorage.setItem('mindgarden-settings',JSON.stringify(s));}catch(e){}}
+let lang=readLang();
+const T=()=>MG_TEXT[lang],G=()=>MG_TEXT[lang][KIND];
+const fmt=(s,o)=>s.replace(/\{(\w+)\}/g,(_,k)=>o[k]);
+/* ---------- pieces ---------- */
+const VS='︎';
+const CHESS_GLYPH={1:'♟',2:'♞',3:'♝',4:'♜',5:'♛',6:'♚'};
+function glyph(p){const a=E.type(p);if(!XQ)return CHESS_GLYPH[a]+VS;
+ const red=p>0;const set=lang==='zh'?(red?' 帅仕相马车炮兵':' 将士象马车炮卒'):(red?' 帥仕相傌俥炮兵':' 將士象馬車砲卒');return set[a];}
+function pieceName(p){return G().pieces[E.type(p)][0];}
+/* ---------- state ---------- */
+const pos=new E.Position();
+let moves=[],player=1,level='intermediate',selected=-1,targets=[],hint=null,message='',busy=false,reqId=0,promoChoices=null,confirming=false,over=null;
+/* ---------- AI worker (keeps the page responsive) ---------- */
+let worker=null,localSearch=null;const pending=new Map();
+try{const src=$('engine-src').textContent+'\n'+$('search-src').textContent+'\n'+
+ 'var S=MGSearch.create(GameEngine),P=new GameEngine.Position();onmessage=function(e){var d=e.data;P.reset();for(var i=0;i<d.moves.length;i++)P.play(d.moves[i]);var r=S.think(P,d.level,d.opts);r.id=d.id;postMessage(r);};';
+ const url=URL.createObjectURL(new Blob([src],{type:'text/javascript'}));worker=new Worker(url);
+ worker.onmessage=e=>{const cb=pending.get(e.data.id);pending.delete(e.data.id);if(cb)cb(e.data);};
+ worker.onerror=()=>{worker=null;for(const [id,cb] of pending){pending.delete(id);runLocal(cb.args,cb);}};
+}catch(e){worker=null;}
+function runLocal(args,cb){setTimeout(()=>{if(!localSearch)localSearch=MGSearch.create(E);const p=new E.Position();for(const m of args.moves)p.play(m);cb(localSearch.think(p,args.level,args.opts));},30);}
+function ask(lv,opts){const id=++reqId;const args={id,moves:moves.slice(),level:lv,opts:opts||{}};
+ return new Promise(res=>{const cb=r=>res(id===reqId?r:null);cb.args=args;if(worker){pending.set(id,cb);worker.postMessage(args);}else runLocal(args,cb);});}
+/* ---------- persistence ---------- */
+function save(){try{localStorage.setItem(STORE,JSON.stringify({schema:2,player,level,moves}));}catch(e){message=T().saveFail;}}
+function findMove(f,t,promo){return pos.legal().find(m=>E.mFrom(m)===f&&E.mTo(m)===t&&(E.mPromo(m)||0)===(promo||0));}
+function load(){let d=null;try{d=JSON.parse(localStorage.getItem(STORE)||'null');}catch(e){}
+ let list=null;
+ if(d&&d.schema===2&&Array.isArray(d.moves)){list=d.moves.map(m=>[E.mFrom(m),E.mTo(m),E.mPromo(m)]);}
+ else{try{const o=JSON.parse(localStorage.getItem(STORE_V1)||'null');if(o&&o.schema===1&&Array.isArray(o.moves)){d={player:o.player,level:{novice:'novice',intermediate:'intermediate',advanced:'advanced'}[o.difficulty]};list=o.moves.map(x=>[x[0],x[1],[0,5,4,3,2][x[2]]||0]);}}catch(e){}}
+ if(!d)return false;
+ player=d.player===-1?-1:1;if(MGSearch.LEVELS[d.level])level=d.level;
+ if(!list||list.length>800)return false;
+ for(const [f,t,pr] of list){const m=Number.isInteger(f)&&Number.isInteger(t)?findMove(f,t,pr):0;if(!m){pos.reset();moves=[];return false;}pos.play(m);moves.push(m);}
+ return moves.length>0;}
+/* ---------- board building ---------- */
+const board=$('board');const cells=[];
+function buildBoard(){board.innerHTML='';board.className='board '+(XQ?'xq':'cb');
+ if(XQ){board.insertAdjacentHTML('beforeend',xqLines());}
+ for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){const b=document.createElement('button');b.type='button';b.className='cell';
+  b.style.gridRow=String(r+1);b.style.gridColumn=String(c+1);b.addEventListener('click',()=>tap(cellIndex(r,c)));board.appendChild(b);cells.push({el:b,r,c});}}
+function cellIndex(r,c){const rr=player===1?r:ROWS-1-r,cc=player===1?c:COLS-1-c;return E.idx(rr,cc);}
+function xqLines(){const L=[],x=c=>50+100*c,y=r=>50+100*r,ln=(a,b,c,d)=>L.push(`<line x1="${a}" y1="${b}" x2="${c}" y2="${d}"/>`);
+ for(let r=0;r<10;r++)ln(x(0),y(r),x(8),y(r));
+ for(let c=0;c<9;c++){if(c===0||c===8)ln(x(c),y(0),x(c),y(9));else{ln(x(c),y(0),x(c),y(4));ln(x(c),y(5),x(c),y(9));}}
+ ln(x(3),y(0),x(5),y(2));ln(x(5),y(0),x(3),y(2));ln(x(3),y(7),x(5),y(9));ln(x(5),y(7),x(3),y(9));
+ const mark=(r,c)=>{const X=x(c),Y=y(r),g=9,l=20;for(const [sx,sy] of [[-1,-1],[1,-1],[-1,1],[1,1]]){if((c===0&&sx<0)||(c===8&&sx>0))continue;
+  L.push(`<polyline points="${X+sx*(g+l)},${Y+sy*g} ${X+sx*g},${Y+sy*g} ${X+sx*g},${Y+sy*(g+l)}"/>`);}};
+ for(const c of [1,7]){mark(2,c);mark(7,c);}for(const c of [0,2,4,6,8]){mark(3,c);mark(6,c);}
+ return `<svg class="xq-lines" viewBox="0 0 900 1000" aria-hidden="true"><rect x="50" y="50" width="800" height="900" class="xq-frame"/>${L.join('')}<text x="250" y="518" class="river">楚 河</text><text x="650" y="518" class="river">漢 界</text></svg>`;}
+/* ---------- rendering ---------- */
+function render(){const t=T(),g=G();const legal=over?[]:pos.legal();
+ const last=moves.length?moves[moves.length-1]:0;const chkSq=(!over||over.reason==='checkmate')&&pos.inCheck()?pos.king[pos.side===1?0:1]:-1;
+ for(const cell of cells){const sq=cellIndex(cell.r,cell.c),p=pos.b[sq],el=cell.el;
+  let cls='cell';if(!XQ)cls+=((cell.r+cell.c)%2?' dark':' light');
+  if(sq===selected)cls+=' sel';if(targets.includes(sq))cls+=p?' cap':' dot';
+  if(last&&(E.mFrom(last)===sq||E.mTo(last)===sq))cls+=' last';
+  if(hint&&(hint[0]===sq||hint[1]===sq))cls+=' hint';if(sq===chkSq)cls+=' check';
+  el.className=cls;
+  const html=p?`<span class="pc ${p>0?'w':'b'}">${glyph(p)}</span>`:'';
+  let coord='';if(!XQ){if(cell.c===0)coord+=`<i class="rk">${8-(sq>>4)}</i>`;if(cell.r===7)coord+=`<i class="fl">${'abcdefgh'[sq&7]}</i>`;}
+  if(el._h!==html+coord){el.innerHTML=html+coord;el._h=html+coord;}
+  const [rr,cc]=E.rc(sq);el.setAttribute('aria-label',(XQ?`${rr+1}-${cc+1}`:'abcdefgh'[cc]+(8-rr))+': '+(p?`${g.sideNames[p>0?0:1]} ${pieceName(p)}`:'—'));}
+ // status
+ const st=$('status');st.className='status';
+ if(over){const won=over.winner===player,lost=over.winner===-player;st.textContent=won?t.youWin:lost?t.compWin:t.draw;st.classList.add(won?'win':lost?'lose':'drawn');
+  $('substatus').textContent=t.reasons[over.reason]||'';}
+ else if(busy){st.textContent=t.thinking;st.classList.add('busy');$('substatus').textContent='';}
+ else{const chk=pos.inCheck();if(pos.side===player){st.textContent=chk?fmt(t.checkYou,{king:Array.isArray(g.king)?g.king[player===1?0:1]:g.king}):t.yourMove;if(chk)st.classList.add('alert');}else{st.textContent=chk?t.checkComp:t.thinking;}
+  $('substatus').textContent=g.sideNames[pos.side===1?0:1];}
+ $('message').textContent=message;$('turn').textContent='#'+(Math.floor(moves.length/2)+1);
+ $('undoBtn').disabled=!moves.length;$('hintBtn').disabled=busy||!!over||pos.side!==player;
+ $('newBtn').classList.toggle('primary',!!over);$('newBtn').textContent=(over?'↻ '+t.playAgain:'↻ '+t.newGame);
+ $('confirm').hidden=!confirming;$('promo').hidden=!promoChoices;
+ renderHistory();}
+function renderCaptured(caps){const t=T();const order=XQ?[5,4,6,3,2,7]:[5,4,3,2,1];
+ const row=side=>{const list=caps.filter(p=>E.sideOf(p)===side).sort((x,y)=>order.indexOf(E.type(x))-order.indexOf(E.type(y)));return list.map(p=>`<span class="pc mini ${p>0?'w':'b'}">${glyph(p)}</span>`).join('')||t.none;};
+ $('capYou').innerHTML=`<b>${t.youCaptured}:</b> ${row(-player)}`;$('capComp').innerHTML=`<b>${t.compCaptured}:</b> ${row(player)}`;}
+function notation(p,m,list){return XQ?p.notation(m,lang):p.san(m,list);}
+function renderHistory(){const p=new E.Position();const out=[],caps=[];for(let i=0;i<moves.length;i++){const m=moves[i];const s=notation(p,m,p.legal());
+  const c=(E.mFlag(m)&1)?-p.side*1:p.b[E.mTo(m)];if(c)caps.push(c);p.play(m);out.push((i%2===0?((i/2|0)+1)+'. ':'')+s);}
+ $('history').textContent=out.join('  ')||'—';renderCaptured(caps);}
+function renderText(){const t=T(),g=G();document.documentElement.lang=lang==='zh'?'zh-Hans':lang==='zt'?'zh-Hant':lang;
+ document.title='MindGarden — '+g.title;$('title').textContent=(XQ?'🀄 ':'♟️ ')+g.title;$('subtitle').textContent=g.sub;$('backLink').textContent='← '+t.back;
+ $('otherLink').textContent=g.other;$('otherLink').href=(XQ?'./chess.html':'./xiangqi.html')+'?lang='+lang;$('backLink').href='./index.html?lang='+lang;
+ $('langLabel').textContent='🌐 '+t.language;$('lang').value=lang;$('sideLabel').textContent=t.yourSide;$('levelLabel').textContent=t.level;
+ $('side').innerHTML=`<option value="1">${g.first}</option><option value="-1">${g.second}</option>`;$('side').value=String(player);
+ $('level').innerHTML=['novice','intermediate','advanced'].map(k=>`<option value="${k}">${t.levels[k]}</option>`).join('');$('level').value=level;$('levelDesc').textContent=t.levelDesc[level];
+ $('undoBtn').textContent='↶ '+t.undo;$('hintBtn').textContent='💡 '+t.hint;
+ $('confirmText').textContent=t.confirmNew;$('confirmYes').textContent=t.yes;$('confirmNo').textContent=t.no;
+ $('promoText').textContent=t.promote;$('promoCancel').textContent=t.cancel;
+ if(!XQ)for(const b of document.querySelectorAll('[data-promo]')){const a=+b.dataset.promo;b.innerHTML=`<span class="pc ${player>0?'w':'b'}">${CHESS_GLYPH[a]+VS}</span><small>${g.pieces[a][0]}</small>`;}
+ $('movesTitle').textContent=t.moves;$('howTitle').textContent=t.howTo;$('rules').textContent=g.rules;$('guideTitle').textContent=t.pieceGuide;$('notice').textContent=t.notice;
+ const order=XQ?[1,2,3,4,5,6,7]:[6,5,4,3,2,1];
+ $('guide').innerHTML=order.map(a=>`<div class="g-row"><span class="pc ${XQ?'w':'w'} g-pc">${glyph(a)}</span>${XQ?`<span class="pc b g-pc">${glyph(-a)}</span>`:''}<div><b>${g.pieces[a][0]}</b><br>${g.pieces[a][1]}</div></div>`).join('');}
+/* ---------- game flow ---------- */
+function refreshOver(){const s=pos.status();over=s.over?s:null;}
+function play(m){pos.play(m);moves.push(m);selected=-1;targets=[];hint=null;message='';refreshOver();save();render();if(!over&&pos.side!==player)computerMove();}
+async function computerMove(){busy=true;render();const t0=Date.now();const r=await ask(level);if(!r)return;
+ const wait=Math.max(0,350-(Date.now()-t0));setTimeout(()=>{busy=false;const m=r.move&&pos.legal().includes(r.move)?r.move:pos.legal()[0];if(m)play(m);else render();},wait);}
+function tap(sq){if(busy||over||confirming||promoChoices||pos.side!==player)return;const p=pos.b[sq];
+ if(selected>=0&&targets.includes(sq)){const ms=pos.legal().filter(m=>E.mFrom(m)===selected&&E.mTo(m)===sq);
+  if(ms.length>1){promoChoices=ms;render();return;}play(ms[0]);return;}
+ if(p&&E.sideOf(p)===player){if(selected===sq){selected=-1;targets=[];message='';}else{selected=sq;targets=pos.legal().filter(m=>E.mFrom(m)===sq).map(E.mTo);const g=G().pieces[E.type(p)];message=g[0]+': '+g[1];}render();return;}
+ if(selected>=0){message=T().illegal;}selected=-1;targets=[];render();}
+function undo(){if(!moves.length)return;reqId++;busy=false;confirming=false;promoChoices=null;
+ do{pos.takeback();moves.pop();}while(moves.length&&pos.side!==player);
+ if(pos.side!==player&&!moves.length){/* playing second: let the computer open again */}
+ selected=-1;targets=[];hint=null;message='';refreshOver();save();render();if(!over&&pos.side!==player)computerMove();}
+function newGame(){reqId++;busy=false;confirming=false;promoChoices=null;pos.reset();moves=[];selected=-1;targets=[];hint=null;message='';over=null;save();render();if(pos.side!==player)computerMove();}
+async function getHint(){if(busy||over||pos.side!==player)return;busy=true;render();const r=await ask('intermediate',{noise:0,depth:6,time:1200});busy=false;if(!r||!r.move){render();return;}
+ hint=[E.mFrom(r.move),E.mTo(r.move)];selected=-1;targets=[];const nm=(lang==='zh'||lang==='zt')&&XQ?'':pieceName(pos.b[E.mFrom(r.move)])+' — ';message=fmt(T().hintMsg,{move:nm+notation(pos,r.move)});render();}
+/* ---------- events ---------- */
+$('lang').addEventListener('change',e=>{lang=e.target.value;writeLang(lang);message='';renderText();render();});
+$('side').addEventListener('change',e=>{const v=+e.target.value;if(moves.length&&!over){pendingSide=v;confirming=true;e.target.value=String(player);render();return;}player=v;buildBoard();renderText();newGame();});
+let pendingSide=null;
+$('level').addEventListener('change',e=>{level=e.target.value;$('levelDesc').textContent=T().levelDesc[level];save();});
+$('undoBtn').addEventListener('click',undo);$('hintBtn').addEventListener('click',getHint);
+$('newBtn').addEventListener('click',()=>{if(over||!moves.length){newGame();return;}confirming=true;render();});
+$('confirmYes').addEventListener('click',()=>{confirming=false;if(pendingSide!==null){player=pendingSide;pendingSide=null;buildBoard();renderText();}newGame();});
+$('confirmNo').addEventListener('click',()=>{confirming=false;pendingSide=null;render();});
+for(const b of document.querySelectorAll('[data-promo]'))b.addEventListener('click',()=>{const m=promoChoices&&promoChoices.find(x=>E.mPromo(x)===+b.dataset.promo);promoChoices=null;if(m)play(m);else render();});
+if($('promoCancel'))$('promoCancel').addEventListener('click',()=>{promoChoices=null;render();});
+/* ---------- start ---------- */
+const restored=load();if(restored)message=T().restored;
+buildBoard();renderText();refreshOver();render();if(!over&&pos.side!==player)computerMove();
+window.MG_GAME={pos,get moves(){return moves},play:m=>play(m)}; // used by automated tests
+if('serviceWorker' in navigator&&location.protocol==='https:')window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
+})();
+</script>
+</body></html>
