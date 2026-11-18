@@ -42,3 +42,18 @@
 - Hints could lead straight into a dead end; "stuck" was only detected when no matches were left at all.
 - Traditional Chinese explanation text did not match the other languages.
 - Language is now shared with the home page in both directions.
+
+
+# Mahjong Garden — v3.14.0
+
+## New
+- 100 levels in 10 flower chapters (Jasmine Path → Lily Lake). Each level is always the same board and always solvable.
+- One board that fills the screen: every level is scaled to the biggest size that fits (extra-large tiles on early levels).
+- Vita-style stacking: 3D tile stacks with half-offset upper layers, on 27 shapes (heart, butterfly, pagoda, turtle, lotus, castle and more).
+- Gentle difficulty curve: level 1 has 18 tiles on one layer; by level 100 about 100 tiles on up to 5 layers, with trickier pairings.
+- Stars: 3 stars without Hint/Undo/Shuffle/Restart, 2 stars with up to 3 helps, 1 star otherwise.
+- Daily puzzle (same for everyone that day) with a day streak 🔥.
+- My garden grows with every star — seven garden stages from Seedling to Master gardener.
+- Big "Continue" button resumes exactly where you left off. Petal celebration when a board is cleared.
+- Dead-end warning with a one-tap "Undo n" button; "No more matches" offers Shuffle or Undo.
+- Players of earlier versions start further ahead (levels unlocked from their earlier clears).
