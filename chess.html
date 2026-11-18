@@ -1,0 +1,182 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#164c3c"><meta name="mindgarden-build" content="3.11.4"><title>MindGarden · Chess</title><style>
+:root{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#234436;background:#f3f7f1;font-size:17px}*{box-sizing:border-box}body{margin:0}button,select{font:inherit}button{cursor:pointer;touch-action:manipulation}button:focus-visible,select:focus-visible{outline:3px solid #efb261;outline-offset:2px}.wrap{max-width:720px;margin:auto;padding:16px 13px 55px}.hero{border-radius:24px;padding:22px;color:white;background:linear-gradient(120deg,#164c3c,#328161)}.back{display:inline-block;color:white;text-decoration:none;background:#ffffff2a;border-radius:12px;padding:8px 13px;margin-bottom:9px}.heading{font-weight:800;font-size:1.65rem;margin:3px 0}.subtitle{margin:5px 0}.controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:15px 0}.ctrl{display:flex;flex-direction:column;gap:4px;font-size:.9rem}.ctrl select{width:100%;border:2px solid #c7dacb;border-radius:12px;background:#fff;padding:10px 6px;color:#294d3c}.card{background:#fff;border:1px solid #dfebdd;border-radius:22px;padding:15px;margin-top:14px;box-shadow:0 6px 18px #274b3311}.stats{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}.state{font-weight:750;font-size:1.1rem}.board{display:grid;margin:0 auto;max-width:570px;width:100%;border:4px solid #aac4a9;border-radius:9px;overflow:hidden;background:#e1c99b;user-select:none;-webkit-user-select:none}.square{padding:0;border:0;aspect-ratio:1/1;position:relative;display:grid;place-items:center;min-width:0;background:transparent;overflow:visible}.square.light{background:#f1e0be}.square.dark{background:#83aa93}.square.xiang{background:#ead3a6;border-right:1px solid #b89d69;border-bottom:1px solid #b89d69}.square.xiang.north{background:#eedbb9}.square.xiang.south{background:#e6cda0}.square.xiang:nth-child(9n+5){border-left:1px dashed #cfb887}.square.xiang:nth-child(n+37):nth-child(-n+45){border-bottom:2px solid #b69d6c}.square.chosen{box-shadow:inset 0 0 0 4px #2a7b60;z-index:2}.square.target{box-shadow:inset 0 0 0 3px #e0ac3d}.square.hint{box-shadow:inset 0 0 0 4px #c1851a}.square.last:not(.chosen){background:#cae2b3}.piece{line-height:1;position:relative;z-index:1}.square:not(.xiang) .piece{font-size:clamp(21px,8vw,56px)}.square.xiang .piece{width:90%;height:90%;background:#f7e9cb;border:2px solid #b99861;border-radius:100%;display:grid;place-items:center;font-size:clamp(18px,5.5vw,38px);font-family:serif;font-weight:800;box-shadow:1px 2px 2px #6a593d55}.square.xiang .piece.positive{color:#ae322b}.square.xiang .piece.negative{color:#22362f}.piece.positive{color:#fefcf3;text-shadow:0 1px 3px #1b271b,0 0 1px #000}.piece.negative{color:#14251e;text-shadow:0 0 2px #fff}.square.xiang .piece{ text-shadow:none }.dot{width:27%;height:27%;border-radius:50%;background:#256b4c88}.actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}.actions button{border:2px solid #bdd8c2;border-radius:13px;background:#e8f4eb;padding:14px 4px;font-weight:750;color:#225840}.actions button:disabled{opacity:.45}.note{font-size:.87rem;line-height:1.5;color:#526b5a}.history{overflow-wrap:anywhere;max-height:120px;overflow:auto;font-size:.84rem;color:#415849}.promotion{background:#edf7ee;border:1px solid #a2c8aa;border-radius:14px;padding:12px;margin-top:12px}.promotion button{margin:3px;padding:9px;border-radius:10px;border:1px solid #b2c5af;background:white}.minor{color:#536f5e;font-size:.86rem}.ctrl[hidden],.promotion[hidden]{display:none!important}details{margin-top:14px}summary{font-weight:750;cursor:pointer}#message{min-height:20px}.strength-select{display:flex;align-items:center;gap:12px;background:#e7f1e9;border:1px solid #c7dacb;border-radius:15px;padding:10px 12px}.strength-select .ctrl{min-width:44%;max-width:190px}.strength-select .minor{flex:1}@media(max-width:440px){.wrap{padding:9px 7px 30px}.hero{padding:16px}.controls{grid-template-columns:1fr 1fr}.card{padding:8px}.square.xiang .piece{border-width:1px}.actions button{font-size:.86rem;padding:11px 2px}}
+</style></head><body data-kind="chess"><div class="wrap"><header class="hero"><a class="back" href="./index.html">← MindGarden</a><h1 class="heading" id="title"></h1><p id="subtitle" class="subtitle"></p></header><div class="controls"><label class="ctrl"><span id="langlabel">🌐 Language</span><select id="lang"><option value="en">English</option><option value="ms">Bahasa Melayu</option><option value="zh">简体中文</option><option value="zt">繁體中文</option></select></label><label class="ctrl"><span id="gamelabel"></span><select id="game"><option value="chess">Western Chess</option><option value="xiangqi">Chinese Chess</option></select></label><label class="ctrl"><span id="sidelabel"></span><select id="player"></select></label></div><div class="strength-select"><label class="ctrl"><span id="difficultyLabel">Computer level</span><select id="difficulty"><option value="novice">Novice</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select></label><span class="minor" id="difficultyExplain"></span></div><section class="card"><div class="stats"><div id="status" class="state" aria-live="polite"></div><span class="minor">#<span id="turnnum">1</span></span></div><div id="board" class="board" aria-label="Chess board"></div><div id="promotion" class="promotion" hidden><strong id="promotionTitle"></strong><div><button data-promo="q">♕</button><button data-promo="r">♖</button><button data-promo="b">♗</button><button data-promo="n">♘</button><button id="cancelPromotion"></button></div></div><div class="actions"><button id="undoBtn"></button><button id="hintBtn"></button><button id="newBtn"></button></div><p id="message" class="minor" aria-live="polite"></p><details><summary id="movestitle"></summary><p id="moves" class="history"></p></details><details><summary id="helpsummary"></summary><p id="rules" class="note"></p></details></section><p id="notice" class="minor"></p></div><script>
+/* MindGarden Chess engine v3.11.1 - original, local-only, no network */
+'use strict';
+const MGChess=(()=>{
+const on=i=>i>=0&&i<128&&!(i&0x88), S=p=>!p||p==='.'?0:p===p.toUpperCase()?1:-1;
+const D={n:[-33,-31,-18,-14,14,18,31,33],b:[-17,-15,15,17],r:[-16,-1,1,16],k:[-17,-16,-15,-1,1,15,16,17]};D.q=[...D.b,...D.r];
+const sq=i=>'abcdefgh'[i&7]+(8-(i>>4)),uci=m=>sq(m.f)+sq(m.to)+(m.prom||'');
+function init(){const b=Array(128).fill('.');'rnbqkbnr'.split('').forEach((p,c)=>{b[c]=p;b[c+112]=p.toUpperCase();b[c+16]='p';b[c+96]='P'});return {b,t:1,c:15,ep:-1,half:0,full:1};}
+function king(s,who){return s.b.indexOf(who===1?'K':'k')}
+function attacked(s,target,by){for(let f=0;f<128;f++){if(!on(f)||S(s.b[f])!==by)continue;const p=s.b[f].toLowerCase();if(p==='p'){if(target===f-16*by-1||target===f-16*by+1)return true;continue}for(const d of D[p]){for(let t=f+d;on(t);t+=d){if(t===target)return true;if(s.b[t]!=='.'||p==='n'||p==='k')break;}}}return false;}
+function checked(s,who=s.t){const k=king(s,who);return k<0||attacked(s,k,-who)}
+function put(s,m){const b=s.b.slice(),p=b[m.f],capt=b[m.to];b[m.f]='.';b[m.to]=m.prom?(s.t===1?m.prom.toUpperCase():m.prom):p;let c=s.c;if(m.flag==='ep')b[m.to+16*s.t]='.';if(m.flag==='castle'){const rf=m.to>m.f?m.f+3:m.f-4,rt=m.to>m.f?m.f+1:m.f-1;b[rt]=b[rf];b[rf]='.';}if(p==='K')c&=~3;if(p==='k')c&=~12;const bit={119:1,112:2,7:4,0:8};if(p.toLowerCase()==='r')c&=~(bit[m.f]||0);if(capt.toLowerCase()==='r')c&=~(bit[m.to]||0);return {b,t:-s.t,c,ep:p.toLowerCase()==='p'&&Math.abs(m.to-m.f)===32?(m.to+m.f)/2:-1,half:p.toLowerCase()==='p'||capt!=='.'||m.flag==='ep'?0:s.half+1,full:s.full+(s.t===-1?1:0)};}
+function pseudo(s){let out=[];for(let f=0;f<128;f++){if(!on(f)||S(s.b[f])!==s.t)continue;let p=s.b[f].toLowerCase();function add(t,flag=''){if(s.b[t].toLowerCase()==='k')return;if(p==='p'&&(t>>4===0||t>>4===7))for(let prom of ['q','r','b','n'])out.push({f,to:t,prom,flag});else out.push({f,to:t,prom:'',flag});}
+if(p==='p'){let t=f-16*s.t;if(on(t)&&s.b[t]==='.'){add(t);let u=t-16*s.t;if((f>>4)===(s.t===1?6:1)&&s.b[u]==='.')add(u)}for(let d of [-1,1]){let u=t+d;if(!on(u))continue;if(S(s.b[u])===-s.t)add(u);else if(u===s.ep&&s.b[u]==='.'&&s.b[u+16*s.t]===(s.t===1?'p':'P'))add(u,'ep');}}
+else{for(let d of D[p])for(let t=f+d;on(t);t+=d){if(S(s.b[t])===s.t)break;add(t);if(s.b[t]!=='.'||p==='n'||p==='k')break;}let home=s.t===1?116:4,rook=s.t===1?'R':'r',bits=s.t===1?[1,2]:[4,8];if(p==='k'&&f===home&&!checked(s)){if((s.c&bits[0])&&s.b[f+3]===rook&&s.b[f+1]==='.'&&s.b[f+2]==='.'&&!attacked(s,f+1,-s.t)&&!attacked(s,f+2,-s.t))add(f+2,'castle');if((s.c&bits[1])&&s.b[f-4]===rook&&s.b[f-1]==='.'&&s.b[f-2]==='.'&&s.b[f-3]==='.'&&!attacked(s,f-1,-s.t)&&!attacked(s,f-2,-s.t))add(f-2,'castle');}}
+}return out;}
+const legal=s=>pseudo(s).filter(m=>!checked(put(s,m),s.t));
+const value={p:100,n:320,b:340,r:500,q:900,k:20000};
+function score(s){let v=0;for(let i=0;i<128;i++)if(on(i)&&s.b[i]!=='.'){const p=s.b[i].toLowerCase();v+=S(s.b[i])*(value[p]+(p==='p'?Math.abs(3.5-(i&7))*-2:0));}return v}
+function label(s,m){return (s.t===1?s.full+'. ':s.full+'... ')+uci(m)}
+function result(s){const m=legal(s);if(!m.length)return checked(s)?(s.t===1?'Black wins by checkmate':'White wins by checkmate'):'Draw by stalemate';let pieces=[];for(let i=0;i<128;i++)if(on(i)&&s.b[i]!=='.'&&!['k','K'].includes(s.b[i]))pieces.push([s.b[i].toLowerCase(),((i>>4)+(i&7))%2]);if(pieces.length===0||pieces.length===1&&['b','n'].includes(pieces[0][0])||pieces.length&&pieces.every(x=>x[0]==='b')&&new Set(pieces.map(x=>x[1])).size===1)return 'Draw: insufficient material';if(s.half>=150)return 'Draw: 75-move rule';return '';}
+const key=s=>s.b.join('')+'|'+s.t+'|'+s.c+'|'+s.ep;
+return {init,legal,put,checked,score,result,label,uci,key,value,at:(s,row,col)=>s.b[row*16+col],idx:(r,c)=>r*16+c,glyph:{K:'♔',Q:'♕',R:'♖',B:'♗',N:'♘',P:'♙',k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟︎'}};
+})();
+/* MindGarden Xiangqi rules v3.11.0 - original, self-contained */
+'use strict';
+const MGXiangqi=(()=>{
+const W=9,H=10,IN=(r,c)=>r>=0&&r<10&&c>=0&&c<9,S=p=>!p||p==='.'?0:p===p.toUpperCase()?1:-1;
+const ID=(r,c)=>r*9+c, RC=i=>[Math.floor(i/9),i%9];
+const V={k:20000,a:120,e:120,h:340,r:650,c:340,p:85};
+function init(){let b=Array(90).fill('.');const back='rheakaehr';for(let c=0;c<9;c++){b[c]=back[c];b[81+c]=back[c].toUpperCase()};for(let c of [1,7]){b[ID(2,c)]='c';b[ID(7,c)]='C'}for(let c of [0,2,4,6,8]){b[ID(3,c)]='p';b[ID(6,c)]='P'}return {b,t:1,full:1,half:0};}
+function pseudo(s,side=s.t){let moves=[];const b=s.b;function add(f,r,c){if(!IN(r,c))return;let t=ID(r,c);if(S(b[t])!==side&&b[t].toLowerCase()!=='k')moves.push({f,to:t})}
+for(let f=0;f<90;f++){if(S(b[f])!==side)continue;let [r,c]=RC(f),p=b[f].toLowerCase();const palace=(rr,cc)=>cc>=3&&cc<=5&&(side===1?rr>=7&&rr<=9:rr>=0&&rr<=2);
+if(p==='k'||p==='a'){const dirs=p==='k'?[[1,0],[-1,0],[0,1],[0,-1]]:[[1,1],[1,-1],[-1,1],[-1,-1]];for(let [dr,dc] of dirs)if(palace(r+dr,c+dc))add(f,r+dr,c+dc);}
+else if(p==='e'){for(let [dr,dc] of [[2,2],[2,-2],[-2,2],[-2,-2]]){let rr=r+dr,cc=c+dc;if(!IN(rr,cc)||side===1&&rr<5||side===-1&&rr>4)continue;if(b[ID(r+dr/2,c+dc/2)]==='.')add(f,rr,cc)}}
+else if(p==='h'){for(let [dr,dc,lr,lc] of [[-2,-1,-1,0],[-2,1,-1,0],[2,-1,1,0],[2,1,1,0],[-1,-2,0,-1],[1,-2,0,-1],[-1,2,0,1],[1,2,0,1]]){if(IN(r+lr,c+lc)&&b[ID(r+lr,c+lc)]==='.')add(f,r+dr,c+dc)}}
+else if(p==='r'||p==='c'){for(let [dr,dc] of [[1,0],[-1,0],[0,1],[0,-1]]){let screen=false;for(let rr=r+dr,cc=c+dc;IN(rr,cc);rr+=dr,cc+=dc){let at=ID(rr,cc);if(p==='r'){if(S(b[at])===side)break;add(f,rr,cc);if(b[at]!=='.')break;}else if(!screen){if(b[at]==='.')add(f,rr,cc);else screen=true;}else if(b[at]!=='.'){if(S(b[at])===-side&&b[at].toLowerCase()!=='k')moves.push({f,to:at});break;}}}}
+else if(p==='p'){add(f,r-side,c);if(side===1?r<=4:r>=5){add(f,r,c-1);add(f,r,c+1)}}
+}return moves;}
+function attacked(s,who){const k=s.b.indexOf(who===1?'K':'k');if(k<0)return true;const [kr,kc]=RC(k);const enemy=s.b.indexOf(who===1?'k':'K');if(enemy>=0&&enemy%9===kc){let [er]=RC(enemy),clear=true;for(let r=Math.min(er,kr)+1;r<Math.max(er,kr);r++)if(s.b[ID(r,kc)]!=='.'){clear=false;break;}if(clear)return true;}
+// Check only real captures against the general's square. The old empty-square
+// probe was invalid for cannons: they move through empty squares but capture
+// ONLY over exactly one intervening piece. A capturable dummy also prevents
+// the no-general-capture rule in pseudo() from suppressing check detection.
+const probe={...s,b:s.b.slice()};
+probe.b[k]=who===1?'P':'p';
+return pseudo(probe,-who).some(m=>m.to===k);
+}
+function put(s,m){let b=s.b.slice(),p=b[m.f],capture=b[m.to];b[m.to]=p;b[m.f]='.';return {b,t:-s.t,full:s.full+(s.t===-1?1:0),half:capture==='.'?s.half+1:0};}
+function legal(s){return pseudo(s).filter(m=>!attacked(put(s,m),s.t));}
+function score(s){let v=0;for(let i=0;i<90;i++){let p=s.b[i];if(p==='.')continue;let [r,c]=RC(i),forward=S(p)===1?9-r:r;v+=S(p)*(V[p.toLowerCase()]+(p.toLowerCase()==='p'?forward*12:0));}return v;}
+function result(s){let m=legal(s);if(m.length===0)return (s.t===1?'Black':'Red')+' wins';return '';}
+function label(s,m){const [r,c]=RC(m.f),[rr,cc]=RC(m.to);return (s.t===1?'Red ':'Black ')+`(${c+1},${10-r})→(${cc+1},${10-rr})`}
+const glyph={K:'帥',A:'仕',E:'相',H:'傌',R:'俥',C:'炮',P:'兵',k:'將',a:'士',e:'象',h:'馬',r:'車',c:'砲',p:'卒'};
+const key=s=>s.b.join('')+'|'+s.t;
+return {init,legal,put,attacked,score,result,label,key,glyph,at:(s,r,c)=>s.b[ID(r,c)],idx:ID,value:V};
+})();
+</script><script>
+'use strict';
+let kind=document.body.dataset.kind,engine=kind==='xiangqi'?MGXiangqi:MGChess;
+const langs={en:{name:kind==='xiangqi'?'Chinese Chess':'Western Chess',tag:'Take your time, plan each move, and enjoy a thoughtful game.',mode:'Play mode',solo:'Against computer',two:'Two players',think:'Computer strength',casual:'Casual',steady:'Thoughtful',turn:'Turn',red:'Red',black:'Black',white:'White',hint:'Hint',undo:'Undo',reset:'New game',undoHint:'Undo last move',moves:'Move history',help:'How to play',notice:'No ads, timers or sound. Games save locally.',prom:'Promote pawn to',cancel:'Cancel',result:'Game over',check:'Check!',computer:'Computer thinking…',illegal:'Choose a highlighted square.',confirm:'Start a new game? Your current position will be replaced.',done:'Your move',resume:'Progress restored',save:'Saved locally',rules:kind==='xiangqi'?'Red moves first. Generals stay inside the palace, elephants cannot cross the river, horses may be blocked, cannons capture by jumping exactly one piece. You cannot leave your general in check or face the enemy general on an empty file.':'White moves first. Castling, en passant, pawn promotion, check and checkmate are enforced. Select a piece to see its legal destinations.'},
+ms:{name:kind==='xiangqi'?'Catur Cina':'Catur Barat',tag:'Rancang langkah dengan tenang, bermain tanpa tergesa-gesa.',mode:'Mod permainan',solo:'Lawan komputer',two:'Dua pemain',think:'Tahap komputer',casual:'Santai',steady:'Berfikir',turn:'Giliran',red:'Merah',black:'Hitam',white:'Putih',hint:'Petunjuk',undo:'Undur',reset:'Permainan baharu',undoHint:'Undur langkah terakhir',moves:'Sejarah langkah',help:'Cara bermain',notice:'Tiada iklan, pemasa atau bunyi. Permainan disimpan setempat.',prom:'Naik pangkat bidak',cancel:'Batal',result:'Permainan tamat',check:'Syah!',computer:'Komputer sedang berfikir…',illegal:'Pilih petak yang ditandakan.',confirm:'Mulakan permainan baharu? Kedudukan semasa akan diganti.',done:'Giliran anda',resume:'Kemajuan dipulihkan',save:'Disimpan',rules:kind==='xiangqi'?'Merah bermula dahulu. Jeneral berada dalam istana, gajah tidak menyeberangi sungai, kuda boleh dihalang dan meriam memerlukan satu buah sebagai pelompat untuk menangkap. Jeneral tidak boleh berdepan tanpa halangan.':'Putih bermula dahulu. Castling, en passant, kenaikan pangkat bidak, syah dan syah mat dipatuhi.'},
+zh:{name:kind==='xiangqi'?'中国象棋':'国际象棋',tag:'慢慢思考每一步，享受轻松又有挑战的对弈。',mode:'游戏模式',solo:'对战电脑',two:'双人对弈',think:'电脑难度',casual:'轻松',steady:'进阶',turn:'轮到',red:'红方',black:'黑方',white:'白方',hint:'提示',undo:'悔棋',reset:'新对局',undoHint:'撤销上一步',moves:'走棋记录',help:'玩法说明',notice:'无广告、无计时、无声音；进度自动保存在本机。',prom:'兵升变为',cancel:'取消',result:'对局结束',check:'将军！',computer:'电脑正在思考…',illegal:'请选择高亮位置。',confirm:'开始新对局？当前棋局将被替换。',done:'请走棋',resume:'已恢复进度',save:'已保存',rules:kind==='xiangqi'?'红方先行。帅将不能出九宫，象不能过河，马腿被挡不能跳，炮吃子需隔一个棋子。不能让自己被将军，也不能让两将直接照面。':'白方先行。包含王车易位、吃过路兵、兵升变、将军及将死规则。'},
+zt:{name:kind==='xiangqi'?'中國象棋':'國際象棋',tag:'慢慢思考每一步，享受輕鬆又有挑戰的對弈。',mode:'遊戲模式',solo:'對戰電腦',two:'雙人對弈',think:'電腦難度',casual:'輕鬆',steady:'進階',turn:'輪到',red:'紅方',black:'黑方',white:'白方',hint:'提示',undo:'悔棋',reset:'新對局',undoHint:'撤銷上一步',moves:'走棋記錄',help:'玩法說明',notice:'無廣告、無計時、無聲音；進度自動儲存在本機。',prom:'兵升變為',cancel:'取消',result:'對局結束',check:'將軍！',computer:'電腦正在思考…',illegal:'請選擇高亮位置。',done:'請走棋',resume:'已恢復進度',save:'已儲存',rules:kind==='xiangqi'?'紅方先行。帥將不能出九宮，象不能過河，馬腿被擋不能跳，炮吃子需隔一個棋子。不能讓自己被將軍，也不能讓兩將直接照面。':'白方先行。包含王車易位、吃過路兵、兵升變、將軍及將死規則。'}};
+const UI={
+ en:{game:'Chess game',side:'Your pieces',west:'Western Chess',east:'Chinese Chess',white:'White (first)',red:'Red (first)',black:'Black (second)',think:'Thoughtful computer opponent'},
+ ms:{game:'Jenis catur',side:'Buah anda',west:'Catur Barat',east:'Catur Cina',white:'Putih (mula)',red:'Merah (mula)',black:'Hitam (kedua)',think:'Komputer bermain secara strategik'},
+ zh:{game:'选择棋类',side:'选择棋方',west:'国际象棋',east:'中国象棋',white:'白方（先手）',red:'红方（先手）',black:'黑方（后手）',think:'策略型电脑对手'},
+ zt:{game:'選擇棋類',side:'選擇棋方',west:'國際象棋',east:'中國象棋',white:'白方（先手）',red:'紅方（先手）',black:'黑方（後手）',think:'策略型電腦對手'}};
+const DIFFICULTY_WORDS={
+ en:{label:'Computer level',novice:'Novice',intermediate:'Intermediate',advanced:'Advanced',desc:['Learning to defend and capture','Plans ahead and avoids simple traps','Deeper tactics for experienced amateurs']},
+ ms:{label:'Tahap komputer',novice:'Permulaan',intermediate:'Pertengahan',advanced:'Lanjutan',desc:['Belajar bertahan dan menangkap buah','Merancang dan mengelak perangkap mudah','Taktik lebih mendalam untuk pemain amatur']},
+ zh:{label:'电脑水平',novice:'初级',intermediate:'中级',advanced:'高级',desc:['学习防守和吃子','考虑多步并避免简单陷阱','适合业余爱好者的深入战术']},
+ zt:{label:'電腦水平',novice:'初級',intermediate:'中級',advanced:'高級',desc:['學習防守和吃子','考慮多步並避免簡單陷阱','適合業餘愛好者的深入戰術']}
+};
+const CHESS_RULES={
+ en:'White moves first. Castling, en passant, pawn promotion, check and checkmate are enforced. Select a piece to see its legal destinations.',
+ ms:'Putih bermula dahulu. Castling, en passant, kenaikan pangkat bidak, syah dan syah mat dipatuhi.',
+ zh:'白方先行。包含王车易位、吃过路兵、兵升变、将军及将死规则。',
+ zt:'白方先行。包含王車易位、吃過路兵、兵升變、將軍及將死規則。'
+};
+const XIANGQI_RULES={
+ en:'Red moves first. Generals stay inside the palace, elephants cannot cross the river, horses may be blocked, cannons capture by jumping exactly one piece. You cannot leave your general in check or face the enemy general on an empty file.',
+ ms:'Merah bermula dahulu. Jeneral berada dalam istana, gajah tidak menyeberangi sungai, kuda boleh dihalang dan meriam memerlukan satu buah sebagai pelompat untuk menangkap. Jeneral tidak boleh berdepan tanpa halangan.',
+ zh:'红方先行。帅将不能出九宫，象不能过河，马腿被挡不能跳，炮吃子需隔一个棋子。不能让自己被将军，也不能让两将直接照面。',
+ zt:'紅方先行。帥將不能出九宮，象不能過河，馬腿被擋不能跳，炮吃子需隔一個棋子。不能讓自己被將軍，也不能讓兩將直接照面。'
+};
+const byId=id=>document.getElementById(id);
+const storageKey=()=> 'mindgarden_'+kind+'_v1';
+let storedLang='en';try{storedLang=localStorage.getItem('mindgarden-lang')||'en'}catch(e){}let lang=new URLSearchParams(location.search).get('lang')||storedLang;if(!langs[lang])lang='en';
+let playerSide=1,history=[engine.init()],keys=[],selected=-1,promote=null,hint=-1,waiting=false,notice='',revision=0;
+function safeLoad(){try{let x=JSON.parse(localStorage.getItem(storageKey())||'null');if(!x||x.schema!==1||!Array.isArray(x.moves)||x.moves.length>600)return;let h=[engine.init()],kk=[];for(let it of x.moves){if(!Array.isArray(it)||it.length!==3||it.some(n=>!Number.isInteger(n))||it[0]<0||it[1]<0||it[0]>=engine.init().b.length||it[1]>=engine.init().b.length||it[2]<0||it[2]>4) return;let m=engine.legal(h[h.length-1]).find(m=>m.f===it[0]&&m.to===it[1]&&(kind==='xiangqi'||(m.prom||'')===(['','q','r','b','n'][it[2]])));if(!m)return;h.push(engine.put(h[h.length-1],m));kk.push(it);}history=h;keys=kk;playerSide=x.player===-1?-1:1;difficulty=LEVELS[x.difficulty]?x.difficulty:'intermediate';notice=langs[lang].resume}catch(e){}}
+function save(){try{localStorage.setItem(storageKey(),JSON.stringify({schema:1,player:playerSide,difficulty,moves:keys.slice(-600)}))}catch(e){notice='Local save unavailable.'}}
+function text(){const tr=langs[lang],u=UI[lang];byId('langlabel').textContent='🌐 '+({en:'Language',ms:'Bahasa',zh:'语言',zt:'語言'})[lang];document.documentElement.lang=lang==='zt'?'zh-Hant':lang==='zh'?'zh-Hans':lang;byId('title').textContent=(kind==='xiangqi'?'🀄 ':'♟️ ')+(kind==='xiangqi'?u.east:u.west);byId('subtitle').textContent=tr.tag;byId('lang').value=lang;byId('gamelabel').textContent=u.game;byId('game').innerHTML=`<option value="chess">${u.west}</option><option value="xiangqi">${u.east}</option>`;byId('game').value=kind;byId('sidelabel').textContent=u.side;byId('player').innerHTML=`<option value="1">${kind==='xiangqi'?u.red:u.white}</option><option value="-1">${u.black}</option>`;byId('player').value=String(playerSide);byId('hintBtn').textContent='💡 '+tr.hint;byId('undoBtn').textContent='↶ '+tr.undo;byId('newBtn').textContent='↻ '+tr.reset;byId('movestitle').textContent=tr.moves;byId('helpsummary').textContent=tr.help;byId('rules').textContent=(kind==='xiangqi'?XIANGQI_RULES[lang]:CHESS_RULES[lang]);const d=DIFFICULTY_WORDS[lang];byId('difficultyLabel').textContent=d.label;byId('difficulty').innerHTML=['novice','intermediate','advanced'].map((k)=>`<option value="${k}">${d[k]}</option>`).join('');byId('difficulty').value=difficulty;byId('difficultyExplain').textContent=d.desc[['novice','intermediate','advanced'].indexOf(difficulty)];byId('notice').textContent=tr.notice;byId('promotionTitle').textContent=tr.prom;byId('cancelPromotion').textContent=tr.cancel;}
+function stat(){let s=history.at(-1),res=engine.result(s),t=langs[lang];if(res)return res;if(kind==='chess'){let repeats=history.filter(p=>engine.key(p)===engine.key(s)).length;if(repeats>=5)return 'Draw: fivefold repetition';if(s.half>=100)return '50-move rule: draw available';if(engine.checked(s))return t.check;}return t.turn+': '+(s.t===1?(kind==='xiangqi'?t.red:t.white):t.black)}
+function pairIndex(x){return kind==='xiangqi'?[Math.floor(x/9),x%9]:[Math.floor(x/16),x%16]}
+function decorate(){let s=history.at(-1),legal=engine.legal(s),allowed=legal.filter(m=>m.f===selected),last=keys.at(-1)||[];let root=byId('board');root.innerHTML='';let rows=kind==='xiangqi'?10:8,cols=kind==='xiangqi'?9:8;root.style.gridTemplateColumns=`repeat(${cols}, minmax(0,1fr))`;root.setAttribute('aria-label',kind==='xiangqi'?'Chinese Chess board':'Western Chess board');
+for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){let row=playerSide===1?r:rows-1-r,col=playerSide===1?c:cols-1-c,idx=engine.idx(row,col),p=engine.at(s,row,col),btn=document.createElement('button');btn.className='square '+(kind==='xiangqi'?'xiang '+(row<5?'north':'south'):(row+col)%2?'dark':'light');btn.setAttribute('aria-label',`${r+1},${c+1}: ${p==='.'?'empty':p}`);btn.type='button';btn.dataset.idx=idx;if(selected===idx)btn.classList.add('chosen');if(allowed.some(m=>m.to===idx))btn.classList.add('target');if(last[0]===idx||last[1]===idx)btn.classList.add('last');if(p!=='.'){let piece=document.createElement('span');piece.className='piece '+(p===p.toUpperCase()?'positive':'negative');piece.textContent=engine.glyph[p];btn.appendChild(piece)}else if(allowed.some(m=>m.to===idx)){let dot=document.createElement('span');dot.className='dot';btn.appendChild(dot)}if(idx===hint)btn.classList.add('hint');btn.addEventListener('click',()=>choose(idx));root.appendChild(btn)}
+byId('status').textContent=waiting?langs[lang].computer:stat();byId('message').textContent=notice;byId('turnnum').textContent=String(keys.length+1);byId('undoBtn').disabled=waiting||keys.length===0;byId('hintBtn').disabled=waiting||!!engine.result(s);let labels=[];for(let j=0;j<keys.length;j++){let from=history[j],to=engine.legal(from).find(m=>m.f===keys[j][0]&&m.to===keys[j][1]&&(kind==='xiangqi'||(m.prom||'')===['','q','r','b','n'][keys[j][2]]));labels.push(to?engine.label(from,to):'?')}byId('moves').textContent=labels.slice(-28).join(' · ')||'—';}
+function choose(idx){if(waiting||promote||engine.result(history.at(-1)))return;const s=history.at(-1);if(s.t!==playerSide)return;const options=engine.legal(s);if(selected>=0){const next=options.filter(m=>m.f===selected&&m.to===idx);if(next.length>1){promote=next;byId('promotion').hidden=false;return}if(next.length===1){doMove(next[0]);return}}if(options.some(m=>m.f===idx)){selected=selected===idx?-1:idx;notice='';decorate();return}selected=-1;notice=langs[lang].illegal;decorate();}
+function doMove(m){let s=history.at(-1);keys.push([m.f,m.to,kind==='xiangqi'?0:['','q','r','b','n'].indexOf(m.prom||'')]);history.push(engine.put(s,m));selected=-1;hint=-1;promote=null;byId('promotion').hidden=true;notice='';save();decorate();if(history.at(-1).t!==playerSide&&!engine.result(history.at(-1)))computerTurn()}
+// Three offline amateur-level opponents; bounded minimax to protect mobile devices.
+const LEVELS={novice:{depth:2,root:12,width:7,budget:550},intermediate:{depth:3,root:15,width:9,budget:2300},advanced:{depth:4,root:20,width:12,budget:6200}};
+let difficulty='intermediate';
+function movePriority(s,m){const target=s.b[m.to],v=target==='.'?0:(engine.value[target.toLowerCase()]||90);const attacker=s.b[m.f],av=engine.value[attacker.toLowerCase()]||100;return v*11-av+(m.prom?8800:0);}
+function positional(s,side){
+ let base=engine.score(s)*side;
+ const width=kind==='xiangqi'?9:8;
+ for(let i=0;i<s.b.length;i++){
+  if(kind==='chess'&&(i&0x88))continue;
+  const piece=s.b[i];if(!piece||piece==='.')continue;
+  const p=piece.toLowerCase(),who=piece===piece.toUpperCase()?1:-1;
+  const c=kind==='xiangqi'?i%9:i%16,r=kind==='xiangqi'?Math.floor(i/9):Math.floor(i/16);
+  const center=(width-1)/2-Math.abs(c-(width-1)/2);
+  const advancement=who===1?(kind==='xiangqi'?9-r:7-r):r;
+  const bonus=(p==='p'?advancement*(kind==='xiangqi'?8:5):0)+(['n','h','b','c'].includes(p)?center*7:0);
+  base+=who*side*bonus;
+ }
+ return base;
+}
+function bestMove(s,level=difficulty){
+ const cfg=LEVELS[level]||LEVELS.intermediate,rootSide=s.t;
+ const roots=engine.legal(s);if(!roots.length)return null;
+ // Every candidate is legal; search budget caps the amount of work on phones.
+ let nodes=0;
+ const evaluate=x=>positional(x,x.t);
+ const ordered=(pos,moves)=>moves.map(m=>({m,order:movePriority(pos,m)+positional(engine.put(pos,m),pos.t)*.055})).sort((a,b)=>b.order-a.order);
+ function negamax(pos,depth,alpha,beta,ply){
+  const moves=engine.legal(pos);nodes++;
+  if(!moves.length)return engine.checked(pos)?-100000+ply:kind==='xiangqi'?-100000+ply:0;
+  if(depth<=0||nodes>=cfg.budget)return evaluate(pos);
+  let best=-Infinity;
+  const top=ordered(pos,moves).slice(0,cfg.width);
+  for(const e of top){
+   const next=engine.put(pos,e.m);
+   const value=-negamax(next,depth-1,-beta,-alpha,ply+1);
+   if(value>best)best=value;
+   if(value>alpha)alpha=value;
+   if(alpha>=beta||nodes>=cfg.budget)break;
+  }
+  return best===-Infinity?evaluate(pos):best;
+ }
+ // Prioritise forcing captures and checks, but still consider quiet positional moves.
+ const ranked=ordered(s,roots).slice(0,cfg.root);
+ let chosen=ranked[0].m,best=-Infinity,alpha=-Infinity;
+ for(const entry of ranked){
+  const after=engine.put(s,entry.m);
+  const val=-negamax(after,cfg.depth-1,-Infinity,-alpha,1);
+  const candidate=val+positional(after,rootSide)*.018;
+  if(candidate>best){best=candidate;chosen=entry.m;}
+  alpha=Math.max(alpha,val);
+  if(nodes>=cfg.budget)break;
+ }
+ return chosen;
+}
+function computerTurn(){if(waiting)return;waiting=true;const stamp=++revision;decorate();setTimeout(()=>{if(stamp!==revision)return;waiting=false;let s=history.at(-1),m=bestMove(s);if(m)doMove(m);else decorate()},kind==='xiangqi'?240:260);}
+function undo(){if(waiting||!keys.length)return;revision++;let end=history.length-1;let target=end-1;while(target>0&&history[target].t!==playerSide)target--;if(playerSide===-1&&target===0) return;keys.splice(target);history.splice(target+1);selected=-1;hint=-1;notice='';promote=null;byId('promotion').hidden=true;save();decorate();}
+function reset(){if(!window.confirm(langs[lang].confirm))return;revision++;waiting=false;history=[engine.init()];keys=[];selected=-1;promote=null;notice='';save();decorate();if(playerSide===-1)computerTurn();}
+function hintMove(){if(waiting||history.at(-1).t!==playerSide||engine.result(history.at(-1)))return;let m=bestMove(history.at(-1));if(!m)return;selected=m.f;hint=m.to;notice=engine.label(history.at(-1),m);decorate();}
+byId('game').addEventListener('change',e=>{
+ const next=e.target.value;
+ if(next===kind)return;
+ // Switch engines in this document: works even when opened as standalone content:// HTML.
+ revision++;waiting=false;
+ kind=next;engine=kind==='xiangqi'?MGXiangqi:MGChess;
+ document.body.dataset.kind=kind;
+ playerSide=1;history=[engine.init()];keys=[];selected=-1;hint=-1;promote=null;notice='';
+ byId('promotion').hidden=true;
+ safeLoad();text();decorate();
+ if(history.at(-1).t!==playerSide&&!engine.result(history.at(-1)))computerTurn();
+});
+byId('player').addEventListener('change',e=>{const next=Number(e.target.value);if(next===playerSide)return;if(keys.length&&!window.confirm(langs[lang].confirm)){e.target.value=String(playerSide);return;}revision++;waiting=false;playerSide=next;history=[engine.init()];keys=[];selected=-1;hint=-1;notice='';promote=null;byId('promotion').hidden=true;save();text();decorate();if(playerSide===-1)computerTurn();});
+byId('difficulty').addEventListener('change',e=>{difficulty=LEVELS[e.target.value]?e.target.value:'intermediate';save();text();decorate();});
+byId('lang').addEventListener('change',e=>{lang=e.target.value;try{localStorage.setItem('mindgarden-lang',lang)}catch(_){}text();decorate()});
+byId('undoBtn').onclick=undo;byId('newBtn').onclick=reset;byId('hintBtn').onclick=hintMove;
+byId('cancelPromotion').onclick=()=>{promote=null;byId('promotion').hidden=true;};
+for(let button of byId('promotion').querySelectorAll('[data-promo]'))button.onclick=()=>{let m=promote?.find(m=>m.prom===button.dataset.promo);if(m)doMove(m)};
+safeLoad();text();decorate();if(history.at(-1).t!==playerSide&&!engine.result(history.at(-1)))computerTurn();
+if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1')){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));}
+</script></body></html>

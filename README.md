@@ -1,3 +1,24 @@
+# MindGarden v3.11.4 — Chess Collection
+
+Two new original, ad-free board games have been added:
+
+- **Chinese Chess (象棋)** (`xiangqi.html`): proper nine-by-ten board, generals and flying-general rule, cannon screens, blocked horse movement, river and palace restrictions, check and victory by no legal moves. Red begins.
+- **Western Chess** (`chess.html`): eight-by-eight starting position, castling, en passant, promotion choice, check, checkmate, stalemate, insufficient-material and 75-move outcomes. White begins.
+- Both have an accessible touch board, local two-player mode, basic offline computer opponent (Casual or Thoughtful), hints, undo, fresh game, progress saving and four language selectors (EN/BM/简体/繁體). Computer play is intentionally casual, not an expert engine.
+- Chess games are fully self-contained standalone HTML pages without scripts loaded from external sites. Independent saves: `mindgarden_chess_v1` and `mindgarden_xiangqi_v1`. Save files are never executed. Loaded move history is replayed and validated against legal moves.
+- **No music, sound, advertising, tracking, remote chess engines, registration, or unnecessary network requests.**
+- **All existing games are retained**, including Tower Escape Arcade-only and the original compact viewport. The new pages are linked from the homepage and included in the offline PWA cache.
+
+## Games in MindGarden
+Word Trails, Memory Garden, Number Steps, Sharp Eyes, Sentence Detective / Chinese Character Hunt, Idiom Lab, Logic Grid, Gem Garden, Air Traffic Coordinator, Smart City 3D, Mahjong Garden, Tower Escape, Chinese Chess, Western Chess.
+
+## Security and disclaimer
+MindGarden is provided as free, open-source software under its applicable GNU licence. Official releases are maintained by IOT SOLUTIONS. Downloads and third-party modifications should be verified. Unofficial derivatives are not controlled, verified or endorsed by IOT SOLUTIONS. Software is provided **AS IS**, subject to applicable law. Do not run third-party versions without appropriate cybersecurity checks.
+
+## Release tests
+Verify legal chess moves, opening positions, checkmate, xiangqi flying generals, autosave load validation, user/computer turns, all four languages, service-worker syntax and cache list. Test touch control in Android Chromium and iOS Safari before publishing.
+
+---
 # MindGarden v3.10.2 — Tower Escape Expanded
 
 ## What's new in Tower Escape
@@ -155,3 +176,32 @@ Puzzle 1–2 use four-layer layouts and Puzzle 3 onward uses five-layer layouts.
 - Uses the classic compact 22 × 14 camera viewport across all 36 tower levels.
 - Previous saves load in Arcade mode without resetting unlocked level progress.
 - Touch and keyboard controls, auto-advance and all other MindGarden games remain.
+
+### v3.11.4 Chess update
+- Both chess games are computer-only with a more strategic three-ply selective lookahead.
+- Choose White/Black or Red/Black. Computer opens when the player chooses Black.
+- Use the Chess game dropdown to switch directly between Western and Chinese chess.
+- Each game saves separately; changing side requires confirmation and starts a new game.
+
+
+### v3.11.4 — Standalone Chinese/Western Chess navigation hotfix
+
+- Fixes the Chinese Chess selector failing in Android `content://` file viewers with `ERR_FILE_NOT_FOUND`.
+- Both rule engines are embedded into each chess page; switching the chess type updates the current document without navigating to another local file.
+- Separate local saves remain for Chinese Chess and Western Chess.
+- Choice of Red/Black or White/Black and the Thoughtful computer are preserved.
+- No external script downloads, redirects or new permissions.
+
+## v3.11.4 — Xiangqi rules correction
+
+Fixed a false-check bug: a cannon can capture the opposing general only when exactly one piece stands between them. The former empty-square check incorrectly detected cannon attacks without a screen and could declare a false defeat. Existing locally saved games are replayed against corrected rules on reload.
+
+
+## v3.11.4 — Three computer levels (both chess games)
+
+- **Novice:** shorter tactical search, beginner-friendly.
+- **Intermediate:** default, considers counterplay and positional development.
+- **Advanced:** deeper bounded search for amateur players. Not a championship engine.
+- Offline, no remote chess engine or tracking; no timers.
+- The selected level saves separately for Western and Chinese Chess without restarting ongoing matches.
+- Switching levels affects the computer's next decision only.

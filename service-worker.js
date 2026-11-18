@@ -1,7 +1,7 @@
-/* MindGarden v3.10.2 — self-contained PWA cache; usable without installation. */
+/* MindGarden v3.11.4 — self-contained PWA cache; usable without installation. */
 'use strict';
-const CACHE_NAME='mindgarden-v3.10.2-pwa';
-const SHELL=['./','./index.html','./city.html','./mahjong.html','./tower.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./version.json'];
+const CACHE_NAME='mindgarden-v3.11.4-pwa';
+const SHELL=['./','./index.html','./city.html','./mahjong.html','./tower.html','./chess.html','./xiangqi.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./version.json'];
 self.addEventListener('install',event=>event.waitUntil(
   caches.open(CACHE_NAME).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting())
 ));
@@ -23,7 +23,7 @@ self.addEventListener('fetch',event=>{
    }).catch(async()=>{
      const saved=await caches.match(req);
      if(saved)return saved;
-     const fallback=path.endsWith('city.html')?'./city.html':path.endsWith('mahjong.html')?'./mahjong.html':path.endsWith('tower.html')?'./tower.html':'./index.html';
+     const fallback=path.endsWith('city.html')?'./city.html':path.endsWith('mahjong.html')?'./mahjong.html':path.endsWith('tower.html')?'./tower.html':path.endsWith('chess.html')?'./chess.html':path.endsWith('xiangqi.html')?'./xiangqi.html':'./index.html';
      return (await caches.match(fallback))||Response.error();
    }));return;
  }
