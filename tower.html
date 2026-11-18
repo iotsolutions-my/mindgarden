@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#164c3c"><meta name="google" content="notranslate">
+<title>Tower Escape — MindGarden</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1e4236;background:#f3f8f1}*{box-sizing:border-box}body{margin:0}button,select{font:inherit}button{cursor:pointer;touch-action:manipulation}button:focus-visible,select:focus-visible{outline:3px solid #eeb166;outline-offset:2px}.wrap{max-width:960px;margin:auto;padding:16px 14px 60px}.hero{background:linear-gradient(120deg,#164c3c,#2b7758);color:white;border-radius:22px;padding:19px 21px}.top{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}h1{font-size:1.65rem;line-height:1.15;margin:8px 0}.muted{color:#e0f0e5;margin:4px 0 0}a.back{display:inline-block;color:#fff;text-decoration:none;background:#ffffff20;padding:9px 14px;border-radius:12px;font-weight:700}select{border:2px solid #d1e3d3;background:#fff;color:#1e4236;border-radius:12px;padding:9px;min-height:45px}.panel{margin-top:14px;background:white;border:1px solid #dce9d9;border-radius:22px;padding:16px;box-shadow:0 7px 22px #22462e10}.stats{display:flex;gap:9px;flex-wrap:wrap;align-items:center;justify-content:space-between}.stat{border-radius:11px;background:#eef6e8;padding:10px 13px;font-weight:700}.board{border:4px solid #8ab5a1;overflow:hidden;border-radius:16px;background:#d3ead9;position:relative;margin-top:13px;touch-action:pan-y}.board canvas{display:block;width:100%;max-width:100%;height:auto;image-rendering:auto}.board.zoomed canvas{width:100%;height:auto}#arcadeMode{font-size:.84rem;white-space:nowrap}.message{min-height:46px;padding:11px 13px;border-radius:12px;background:#eef7e8;line-height:1.4;margin-top:11px;font-weight:600}.row{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.action{background:#f2f8f0;border:2px solid #bbd7c2;border-radius:13px;padding:11px 14px;min-height:48px;color:#20523d;font-weight:750;flex:1}.action.primary{background:#287856;color:white;border-color:#287856}.controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:365px;margin:14px auto 4px}.control{font-size:1.38rem;font-weight:800;min-height:60px;border:2px solid #b6d5bf;border-radius:15px;background:#eaf5e8;color:#20513b;user-select:none;-webkit-user-select:none;touch-action:none}.control:active{background:#bce6c6}.instructions{font-size:.93rem;line-height:1.6;color:#50695b;margin-top:14px}.foot{text-align:center;color:#718677;font-size:.82rem;margin:20px 0}.row label{font-size:.85rem}.badge{display:inline-block;padding:4px 9px;border-radius:999px;background:#e3f1e6;color:#286644;font-size:.83rem}#notice{font-size:.94rem}@media(max-width:550px){.wrap{padding:10px 8px 30px}.hero{padding:15px}.panel{padding:10px}.stat{font-size:.85rem;padding:8px 9px}.control{min-height:55px}.action{font-size:.9rem;padding:10px}.top select{max-width:142px}}
+</style>
+</head><body>
+<main class="wrap">
+<header class="hero"><div class="top"><a class="back" href="./index.html" id="back">← MindGarden</a><select id="lang" aria-label="Language"><option value="en">English</option><option value="ms">Bahasa Melayu</option><option value="zh">简体中文</option><option value="zt">繁體中文</option></select></div><h1 id="title">🌱 Tower Escape</h1><p class="muted" id="tagline">Collect seeds, climb, dig and outsmart rolling obstacles.</p></header>
+<section class="panel">
+<div class="stats"><span class="stat" id="level">Level 1 / 36</span><span class="stat" id="seeds">Seeds: 0 / 0</span><span class="stat" id="lives">Hearts: ♥♥♥</span><span class="stat" id="arcadeMode">Arcade Adventure</span></div>
+<div class="board"><canvas id="game" width="768" height="448" role="img" aria-label="Tower Escape game board"></canvas></div>
+<div class="message" id="notice" role="status" aria-live="polite"></div>
+<div class="controls" aria-label="Touch controls">
+<span></span><button class="control" id="up" aria-label="Up">↑</button><span></span>
+<button class="control" id="left" aria-label="Left">←</button><button class="control" id="down" aria-label="Down">↓</button><button class="control" id="right" aria-label="Right">→</button>
+<button class="control" id="digLeft" aria-label="Dig left">⛏ ↙</button><button class="control" id="stop" aria-label="Pause">⏸</button><button class="control" id="digRight" aria-label="Dig right">⛏ ↘</button>
+</div>
+<div class="row"><button class="action" id="hint">💡 Hint</button><button class="action" id="zoom">🔍 Zoom</button><button class="action" id="restart">↻ Retry</button><button class="action" id="skip">⇥ Skip</button><button class="action primary" id="next" hidden>Next level →</button></div>
+<details class="level-picker" style="margin-top:12px;border:1px solid #cddfcd;border-radius:13px;padding:11px"><summary id="chooseText" style="font-weight:700;cursor:pointer">Choose an unlocked tower</summary><div class="row" style="align-items:center"><select id="chooseLevel" aria-label="Choose unlocked tower"></select><span id="mapInfo" class="badge"></span></div></details>
+<p class="instructions" id="instructions">Use ← → to move, ↑ ↓ for ladders, Z / X to dig diagonally. Collect all seeds, then reach the glowing exit. Avoid robots and rolling stones. No timer.</p>
+</section><p class="foot" id="footer">Free · No ads · No music · Automatic local saves · No installation required</p>
+</main>
+<script>
+'use strict';
+(()=>{
+const COUNT=36,T=32,VIEW_W=22,VIEW_H=14,SAVE_KEY='mindgarden_tower_escape_v1';
+const $=id=>document.getElementById(id),canvas=$('game'),ctx=canvas.getContext('2d'),board=document.querySelector('.board');
+const LANG={
+ en:{name:'🌱 Tower Escape',sub:'36 towers · Arcade Adventure · Compact controls',level:'Level',seeds:'Seeds',hearts:'Hearts',choose:'Choose an unlocked tower',floors:'floors',ready:'Collect the seeds and reach the gate. Watch the new obstacles!',hint:'Hint',retry:'Retry level',skip:'Skip level',next:'Next level',select:'Unlocked towers',locked:'Clear or skip a tower to unlock the next.',instructions:'Move with arrows / WASD or touch; climb ladders with ↑ ↓. Dig with Z/X. Watch spikes, conveyor belts, rolling stones and crumbling floors. No countdown.',foot:'No ads · No sound · Browser-playable · Autosave',pause:'Paused. Press ▶ to resume.',won:'Tower cleared! Next tower starting…',final:'All 36 towers explored! Replay any unlocked tower.',seed:'Seed found!',unlock:'Gate unlocked! Find the exit at the top right.',hit:'Watch out! Try another route.',trap:'A temporary hole was dug.',crumble:'Careful: this floor is crumbling!',goal:'Aim for the highlighted seed, then the exit.',back:'← MindGarden',mode:'Puzzle Adventure',arcade:'Arcade Adventure',zoom:'Zoom',confirm:'Restart this tower?',zoomInfo:'Tap Zoom to see the full tower; tap again to return to readable tiles.'},
+ ms:{name:'🌱 Pelarian Menara',sub:'36 menara · Mod Arked · Kawalan ringkas',level:'Tahap',seeds:'Benih',hearts:'Nyawa',choose:'Pilih menara yang dibuka',floors:'tingkat',ready:'Kutip semua benih dan ke pintu keluar. Awas halangan baharu!',hint:'Petunjuk',retry:'Cuba lagi',skip:'Langkau tahap',next:'Tahap seterusnya',select:'Menara dibuka',locked:'Selesaikan atau langkau menara untuk membuka tahap berikutnya.',instructions:'Gerak dengan anak panah / WASD atau sentuhan; naik tangga dengan ↑ ↓. Gali dengan Z/X. Awas duri, tali sawat, batu bergolek dan lantai rapuh. Tiada masa tamat.',foot:'Tanpa iklan · Tiada bunyi · Main di web · Simpan automatik',pause:'Dijeda. Tekan ▶ untuk sambung.',won:'Menara selesai! Tahap seterusnya bermula…',final:'Semua 36 menara diterokai! Ulang mana-mana menara.',seed:'Benih ditemui!',unlock:'Pintu dibuka! Cari jalan ke kanan atas.',hit:'Awas! Cuba jalan lain.',trap:'Lubang sementara digali.',crumble:'Awas: lantai hampir runtuh!',goal:'Cari benih ditanda, kemudian keluar.',back:'← MindGarden',mode:'Pengembaraan Teka-teki',arcade:'Pengembaraan Arked',zoom:'Zum',confirm:'Mulakan semula menara ini?',zoomInfo:'Tekan Zum untuk melihat seluruh menara; tekan lagi untuk jubin besar.'},
+ zh:{name:'🌱 高塔探险',sub:'36关 · 街机冒险 · 简洁操控',level:'关卡',seeds:'种子',hearts:'生命',choose:'选择已解锁关卡',floors:'层',ready:'收集种子，抵达出口。留意新增障碍！',hint:'提示',retry:'重试',skip:'跳过',next:'下一关',select:'已解锁关卡',locked:'完成或跳过当前关卡以解锁下一关。',instructions:'方向键 / WASD 或触控移动；↑ ↓ 爬梯，Z/X 挖洞。小心尖刺、传送带、滚石和易碎地板。没有倒计时。',foot:'无广告 · 无声音 · 网页游玩 · 自动保存',pause:'已暂停。按 ▶ 继续。',won:'成功过关！即将进入下一关…',final:'36关全部探索完成！可重玩已解锁关卡。',seed:'找到种子！',unlock:'出口已开启！前往右上角。',hit:'小心！换条路试试。',trap:'已挖出临时陷阱。',crumble:'小心！地板正在碎裂！',goal:'寻找标记的种子，然后前往出口。',back:'← MindGarden',mode:'益智冒险',arcade:'街机冒险',zoom:'缩放',confirm:'重新开始这一关？',zoomInfo:'点击缩放可看完整高塔，再点可恢复大方块。'},
+ zt:{name:'🌱 高塔探險',sub:'36關 · 街機冒險 · 簡潔操控',level:'關卡',seeds:'種子',hearts:'生命',choose:'选择已解锁关卡',floors:'層',ready:'收集種子，抵達出口。留意新增障礙！',hint:'提示',retry:'重試',skip:'跳過',next:'下一關',select:'已解鎖關卡',locked:'完成或跳過目前關卡以解鎖下一關。',instructions:'方向鍵 / WASD 或觸控移動；↑ ↓ 爬梯，Z/X 挖洞。小心尖刺、輸送帶、滾石和易碎地板。沒有倒數。',foot:'無廣告 · 無聲音 · 網頁遊玩 · 自動儲存',pause:'已暫停。按 ▶ 繼續。',won:'成功過關！即將進入下一關…',final:'36關全部探索完成！可重玩已解鎖關卡。',seed:'找到種子！',unlock:'出口已開啟！前往右上角。',hit:'小心！換條路試試。',trap:'已挖出暫時陷阱。',crumble:'小心！地板正在碎裂！',goal:'尋找標記的種子，然後前往出口。',back:'← MindGarden',mode:'益智冒險',arcade:'街機冒險',zoom:'縮放',confirm:'重新開始這一關？',zoomInfo:'點擊縮放可看完整高塔，再點可恢復大方塊。'}
+};
+function initialLang(){const q=new URLSearchParams(location.search).get('lang');if(LANG[q])return q;try{const a=JSON.parse(localStorage.getItem('mindgarden-settings')||'{}');if(LANG[a.lang])return a.lang;}catch(_){}return localStorage.getItem('mindgarden-tower-language')||'en'}
+function rng(seed){let s=seed>>>0;return ()=>{s=(Math.imul(1664525,s)+1013904223)>>>0;return s/4294967296}}
+function generate(index){
+ const r=rng(2803+index*98713),tier=Math.floor(index/8),floors=4+Math.min(3,tier),w=24+4*Math.min(3,tier)+(index%3)*2,h=floors*3+2;
+ const floorRows=Array.from({length:floors},(_,f)=>3+3*f),grid=Array.from({length:h},()=>Array(w).fill(' '));
+ for(const y of floorRows)for(let x=1;x<w-1;x++)grid[y][x]='#';
+ const ladders=[];
+ // Multiple alternate ladder paths connect adjacent floors; every floor stays reachable.
+ for(let f=0;f<floors-1;f++){
+  let xs=[3+((index*3+f*7)%5),Math.floor(w*.45)+((index+f*3)%4),w-7-((index+f)%5)];
+  if(index>=12&&f%2===1)xs.push(Math.floor(w*.70));
+  xs=[...new Set(xs)].filter(x=>x>=2&&x<=w-3);
+  for(const x of xs){ladders.push({x,from:f,to:f+1});for(let y=2+3*f;y<=5+3*f;y++)grid[y][x]='H';}
+ }
+ // Alternating crumble/conveyor floors, with unmodified walkable routes alongside them.
+ const brittle=[],belts=[],spikes=[];
+ for(let f=0;f<floors;f++){
+  const walk=2+3*f,ground=walk+1;
+  if(index>=6&&f%2===index%2){const x=10+Math.floor(r()*(w-18));if(grid[ground][x]==='#') {grid[ground][x]='C';brittle.push({x,y:ground})}}
+  if(index>=10&&f%2===0){let x=5+Math.floor(r()*(w-12));if(grid[ground][x]==='#'){grid[ground][x]=f%3===0?'>':'<';belts.push({x,y:ground})}}
+  if(index>=4&&f>0){const x=9+Math.floor(r()*(w-16));if(grid[ground][x]==='#' && !ladders.some(l=>l.x===x&&Math.abs(f-l.from)<=1))spikes.push({x,y:walk});}
+ }
+ const seedCount=5+Math.floor(index/3)+Math.min(3,tier),gems=[],used=new Set([`${2},${h-3}`,`${w-2},2`]);
+ for(let i=0;i<seedCount;i++){const f=i%floors;let x=2+Math.floor(r()*(w-4)),y=2+3*f,n=0;
+ while((used.has(`${x},${y}`)||grid[y][x]==='H'||spikes.some(s=>s.x===x&&s.y===y))&&n++<w){x=2+(x+3)%(w-4)}
+ used.add(`${x},${y}`);gems.push({x,y})}
+ const guards=[],rocks=[];
+ const guardCount=Math.min(7,1+Math.floor(index/6)),rockCount=index<3?0:Math.min(5,Math.ceil(index/9));
+ for(let i=0;i<guardCount;i++){const f=(i*2+index)%floors;let x=4+Math.floor(r()*(w-8)),y=2+3*f;guards.push({x,y,dir:i%2?1:-1,trapped:false})}
+ for(let i=0;i<rockCount;i++){const f=(i*3+1)%floors;rocks.push({x:w-6-(i%4)*2,y:2+3*f,dir:i%2?1:-1})}
+ return {index,w,h,floors,grid,gems,guards,rocks,spikes,brittle,belts,spawn:{x:2,y:h-3},exit:{x:w-2,y:2},theme:Math.min(4,Math.floor(index/8))};
+}
+let lang=LANG[initialLang()]?initialLang():'en',mode='arcade',stage=0,unlocked=0,level=null,grid=[],gems=[],guards=[],rocks=[],player={x:2,y:11},hearts=3,paused=false,cleared=false,msg='',invulnerable=0,hintAt=null,advanceAt=0,tick=0,lastTime=0,acc=0,holes=new Map(),crumble=new Map(),zoomed=false,camX=0,camY=0;
+function validSave(s){return s&&[1,2].includes(s.v)&&Number.isInteger(s.level)&&s.level>=0&&s.level<COUNT&&s.player&&Number.isInteger(s.player.x)&&Number.isInteger(s.player.y)&&s.player.x>=1&&s.player.x<=45&&s.player.y>=1&&s.player.y<=30&&Array.isArray(s.gems)&&s.gems.length<=30&&s.gems.every(g=>g&&Number.isInteger(g.x)&&g.x>=1&&g.x<=45&&Number.isInteger(g.y)&&g.y>=1&&g.y<=30)&&Number.isInteger(s.hearts)&&s.hearts>=0&&s.hearts<=3&&typeof s.cleared==='boolean'&&['puzzle','arcade'].includes(s.mode)&&(!('unlocked' in s)||(Number.isInteger(s.unlocked)&&s.unlocked>=0&&s.unlocked<COUNT))}
+function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify({v:2,level:stage,unlocked,player,hearts,gems,cleared,mode}));}catch(_){}}
+function say(s){msg=s;$('notice').textContent=s}
+function pos(){camX=Math.max(0,Math.min(level.w-VIEW_W,player.x-Math.floor(VIEW_W/2)));camY=Math.max(0,Math.min(level.h-VIEW_H,player.y-Math.floor(VIEW_H/2)))}
+function loadLevel(n,restore){mode='arcade';stage=Math.max(0,Math.min(COUNT-1,n));level=generate(stage);grid=level.grid.map(a=>[...a]);gems=level.gems.map(p=>({...p}));guards=level.guards.map(g=>({...g}));rocks=level.rocks.map(g=>({...g}));if(mode==='arcade')rocks.push({x:level.w-7,y:2,dir:-1});player={...level.spawn};hearts=3;cleared=false;paused=false;invulnerable=0;holes.clear();crumble.clear();hintAt=null;tick=0;advanceAt=0;acc=0;
+ if(restore&&validSave(restore)&&restore.level===stage&&restore.v===2&&restore.player.x<level.w-1&&restore.player.y<level.h-1){player={...restore.player};gems=restore.gems.map(g=>({...g}));hearts=restore.hearts||3;cleared=restore.cleared;if(cleared&&stage<COUNT-1)advanceAt=Date.now()+1500;}
+ canvas.width=VIEW_W*T;canvas.height=VIEW_H*T;canvas.style.width='100%';canvas.style.height='auto';board.classList.toggle('zoomed',zoomed);pos();say(LANG[lang].ready);refresh();save()}
+function tile(x,y){if(x<0||x>=level.w||y<0||y>=level.h)return '#';return grid[y][x]}
+function solid(x,y){return ['#','C','>','<'].includes(tile(x,y))}
+function available(x,y){return x>=1&&x<level.w-1&&y>=1&&y<level.h-1&&!solid(x,y)}
+function grounded(x,y){return solid(x,y+1)||tile(x,y)==='H'||tile(x,y+1)==='H'}
+function fall(){let n=0;while(n++<level.h && player.y<level.h-3&&tile(player.x,player.y)!=='H'&&!solid(player.x,player.y+1)&&tile(player.x,player.y+1)!=='H')player.y++}
+function pick(){let prev=gems.length;gems=gems.filter(g=>g.x!==player.x||g.y!==player.y);if(gems.length<prev)say(gems.length?LANG[lang].seed:LANG[lang].unlock)}
+function hit(){if(invulnerable>0)return;if([...guards.filter(g=>!g.trapped),...rocks,...level.spikes].some(o=>o.x===player.x&&o.y===player.y)){hearts--;invulnerable=12;player={...level.spawn};if(hearts<=0){hearts=3;say(LANG[lang].hit)}else say(LANG[lang].hit);pos()}}
+function win(){if(cleared)return;cleared=true;paused=true;unlocked=Math.max(unlocked,Math.min(COUNT-1,stage+1));advanceAt=stage===COUNT-1?0:Date.now()+1700;say(stage===COUNT-1?LANG[lang].final:LANG[lang].won);save();refresh()}
+function move(dir){if(paused||cleared)return;const {x,y}=player;let nx=x,ny=y;if(dir==='left')nx--;else if(dir==='right')nx++;else if(dir==='up'){if(tile(x,y)==='H'||tile(x,y-1)==='H')ny--;else return;}else if(dir==='down'){if(tile(x,y)==='H'||tile(x,y+1)==='H')ny++;else return;}
+ if(!available(nx,ny))return;player={x:nx,y:ny};fall();pick();hit();if(tile(player.x,player.y+1)==='C')beginCrumble(player.x,player.y+1);if(player.x===level.exit.x&&player.y===level.exit.y&&gems.length===0)win();pos();refresh();save()}
+function dig(side){if(paused||cleared)return;const x=player.x+side,y=player.y+1;if(x<1||x>=level.w-1||y>=level.h-1||tile(x,y)!=='#')return;grid[y][x]=' ';holes.set(y*level.w+x,Date.now()+(mode==='arcade'?3800:5500));for(const g of guards)trap(g);say(LANG[lang].trap);save()}
+function trap(g){if(g.trapped)return;const k=(g.y+1)*level.w+g.x;if(holes.has(k)){g.y++;g.trapped=true}}
+function beginCrumble(x,y){const k=y*level.w+x;if(!crumble.has(k))crumble.set(k,Date.now()+1250)}
+function update(){tick++;for(const [k,time] of holes)if(Date.now()>=time){const x=k%level.w,y=Math.floor(k/level.w);grid[y][x]='#';holes.delete(k);for(const g of guards)if(g.trapped&&g.x===x&&g.y===y){g.y=Math.max(1,g.y-1);g.trapped=false}}
+ for(const [k,time] of crumble)if(Date.now()>=time){const x=k%level.w,y=Math.floor(k/level.w);if(grid[y][x]==='C'){grid[y][x]=' ';crumble.set(k,Date.now()+2100)}else{grid[y][x]='C';crumble.delete(k)}}
+ if(invulnerable>0)invulnerable--;
+ const cadence=mode==='arcade'?2:3;
+ if(tick%cadence===0){for(const g of guards){if(g.trapped)continue;trap(g);if(g.trapped)continue;
+ if(g.y===player.y&&Math.abs(player.x-g.x)<16)g.dir=player.x>g.x?1:-1;
+ let nx=g.x+g.dir;if(!available(nx,g.y)||(!grounded(nx,g.y)&&!holes.has((g.y+1)*level.w+nx))){g.dir*=-1;nx=g.x+g.dir}
+ if(available(nx,g.y)&&(grounded(nx,g.y)||holes.has((g.y+1)*level.w+nx)))g.x=nx;trap(g)}
+ for(const r of rocks){let nx=r.x+r.dir;if(!available(nx,r.y)||!grounded(nx,r.y)){r.dir*=-1;nx=r.x+r.dir}if(available(nx,r.y)&&grounded(nx,r.y))r.x=nx}}
+ if(tick%4===0){const below=tile(player.x,player.y+1);if(below==='>'||below==='<'){const nx=player.x+(below==='>'?1:-1);if(available(nx,player.y)){player.x=nx;fall();pick();pos()}}}
+ if(!grounded(player.x,player.y))fall();hit();if(player.x===level.exit.x&&player.y===level.exit.y&&!gems.length)win();refresh()}
+function refresh(){const t=LANG[lang];$('level').textContent=`${t.level} ${stage+1} / ${COUNT}`;$('seeds').textContent=`${t.seeds}: ${level.gems.length-gems.length} / ${level.gems.length}`;$('lives').textContent=`${t.hearts}: ${'♥'.repeat(hearts)}${'♡'.repeat(3-hearts)}`;$('mapInfo').textContent=`${level.w}×${level.h} · ${level.floors} ${t.floors}`;$('notice').textContent=msg;$('stop').textContent=paused?'▶':'⏸';$('next').hidden=!cleared;$('arcadeMode').textContent=t.arcade;
+ const choice=$('chooseLevel'),selected=choice.value;choice.replaceChildren();for(let i=0;i<=unlocked;i++){let o=document.createElement('option');o.value=i;o.textContent=`${t.level} ${i+1}`;choice.append(o)}choice.value=String(stage)}
+function changeLang(l){if(!LANG[l])return;lang=l;let t=LANG[l];document.documentElement.lang=l==='zt'?'zh-Hant':l==='zh'?'zh-Hans':l;$('lang').value=l;$('title').textContent=t.name;$('tagline').textContent=t.sub;$('chooseText').textContent=t.choose;$('back').textContent=t.back;$('hint').textContent='💡 '+t.hint;$('restart').textContent='↻ '+t.retry;$('skip').textContent='⇥ '+t.skip;$('next').textContent=t.next+' →';$('zoom').textContent='🔍 '+t.zoom;$('instructions').textContent=t.instructions;$('footer').textContent=t.foot;msg=t.ready;refresh();try{localStorage.setItem('mindgarden-tower-language',l)}catch(_){}}
+function hint(){if(cleared)return;const closest=[...gems].sort((a,b)=>Math.abs(a.x-player.x)+Math.abs(a.y-player.y)-Math.abs(b.x-player.x)-Math.abs(b.y-player.y))[0];hintAt=closest||level.exit;say(LANG[lang].goal)}
+const rr=(x,y,w,h,c,r=4)=>{ctx.fillStyle=c;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill()};
+function draw(ts){const w=canvas.width,h=canvas.height;ctx.setTransform(1,0,0,1,0,0);const palettes=[['#ddf0df','#c8e5cd'],['#dfeaf4','#d2ddea'],['#e5e9e0','#cbd8cf'],['#f5e9d6','#e8dac5'],['#e9e4f2','#d8d0eb']];const theme=palettes[level.theme];ctx.fillStyle=theme[0];ctx.fillRect(0,0,w,h);let scale=1,ox=-camX*T,oy=-camY*T;if(zoomed){scale=Math.min(w/(level.w*T),h/(level.h*T));ox=(w-level.w*T*scale)/2;oy=(h-level.h*T*scale)/2;}ctx.setTransform(scale,0,0,scale,ox,oy);ctx.fillStyle=theme[1];for(let i=0;i<Math.ceil(level.w*T/130);i++)ctx.fillRect(i*137+23,(i*71+34)%(level.h*T),68,4);
+ for(let y=0;y<level.h;y++)for(let x=0;x<level.w;x++){const t=tile(x,y),u=x*T,v=y*T;
+ if(solid(x,y)){rr(u+1,v+3,30,28,'#ad8168');rr(u+3,v+4,26,7,'#ceab88');if(t==='C'){ctx.strokeStyle='#735c4d';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(u+8,v+8);ctx.lineTo(u+18,v+19);ctx.lineTo(u+10,v+29);ctx.stroke()}if(t==='>'||t==='<'){ctx.fillStyle='#f0d65e';ctx.font='bold 23px system-ui';ctx.textAlign='center';ctx.fillText(t==='>'?'→':'←',u+16,v+25)}}
+ if(t==='H'){ctx.strokeStyle='#bd7a42';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(u+7,v);ctx.lineTo(u+7,v+31);ctx.moveTo(u+25,v);ctx.lineTo(u+25,v+31);ctx.stroke();ctx.strokeStyle='#f8da93';ctx.lineWidth=3;for(let k=7;k<31;k+=9){ctx.beginPath();ctx.moveTo(u+7,v+k);ctx.lineTo(u+25,v+k);ctx.stroke()}}
+ }
+ for(const spike of level.spikes){const x=spike.x*T,y=spike.y*T;ctx.fillStyle='#bc5461';for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(x+2+i*10,y+31);ctx.lineTo(x+7+i*10,y+12);ctx.lineTo(x+12+i*10,y+31);ctx.fill()}}
+ for(const gem of gems){let x=gem.x*T+16,y=gem.y*T+16;ctx.fillStyle='#f3bc37';ctx.beginPath();ctx.moveTo(x,y-12);ctx.lineTo(x+10,y);ctx.lineTo(x,y+12);ctx.lineTo(x-10,y);ctx.closePath();ctx.fill()}
+ let ex=level.exit.x*T+16,ey=level.exit.y*T+16;rr(ex-12,ey-16,24,31,gems.length?'#849c91':'#e4c85c');ctx.fillStyle='#204d40';ctx.font='bold 22px system-ui';ctx.textAlign='center';ctx.fillText(gems.length?'×':'✓',ex,ey+8);
+ for(const o of rocks){ctx.fillStyle='#767e89';ctx.beginPath();ctx.arc(o.x*T+16,o.y*T+16,11,0,7);ctx.fill();ctx.fillStyle='#adb4bd';ctx.beginPath();ctx.arc(o.x*T+12,o.y*T+11,4,0,7);ctx.fill()}
+ for(const g of guards){rr(g.x*T+5,g.y*T+5,22,24,g.trapped?'#9a8b63':'#ae5149',7);ctx.fillStyle='white';ctx.fillRect(g.x*T+11,g.y*T+12,4,4);ctx.fillRect(g.x*T+19,g.y*T+12,4,4);if(g.trapped){ctx.strokeStyle='#ebb551';ctx.lineWidth=3;ctx.strokeRect(g.x*T+2,g.y*T+2,28,28)}}
+ if(invulnerable===0||Math.floor(ts/120)%2===0){rr(player.x*T+5,player.y*T+6,22,25,'#2c7299',6);ctx.fillStyle='#f4d39f';ctx.beginPath();ctx.arc(player.x*T+16,player.y*T+8,8,0,7);ctx.fill();rr(player.x*T+7,player.y*T,18,6,'#2c5944')}
+ if(hintAt){ctx.strokeStyle='#f1aa36';ctx.lineWidth=4;ctx.setLineDash([5,4]);ctx.strokeRect(hintAt.x*T+2,hintAt.y*T+2,28,28);ctx.setLineDash([])}
+ ctx.setTransform(1,0,0,1,0,0);if(paused||cleared){ctx.fillStyle='#183d33ba';ctx.fillRect(0,0,w,h);ctx.fillStyle='white';ctx.font='bold 22px system-ui';ctx.textAlign='center';const text=cleared?(stage===COUNT-1?LANG[lang].final:LANG[lang].won):LANG[lang].pause;ctx.fillText(text.slice(0,38),w/2,h/2)}}
+function loop(t){if(cleared&&advanceAt&&Date.now()>advanceAt){advanceAt=0;loadLevel(stage+1)}if(!lastTime)lastTime=t;const delta=Math.min(100,t-lastTime);lastTime=t;if(!paused&&!cleared){acc+=delta;while(acc>=190){update();acc-=190}}draw(t);requestAnimationFrame(loop)}
+let hold=null;function held(id,fn){const el=$(id);el.addEventListener('pointerdown',e=>{e.preventDefault();fn();clearInterval(hold);hold=setInterval(fn,160);try{el.setPointerCapture(e.pointerId)}catch(_){}});for(const ev of ['pointerup','pointercancel','lostpointercapture','pointerleave'])el.addEventListener(ev,()=>{clearInterval(hold);hold=null})}
+[['left',()=>move('left')],['right',()=>move('right')],['up',()=>move('up')],['down',()=>move('down')],['digLeft',()=>dig(-1)],['digRight',()=>dig(1)]].forEach(([id,fn])=>held(id,fn));
+document.addEventListener('keydown',e=>{if(e.target.tagName==='SELECT')return;const map={ArrowLeft:()=>move('left'),ArrowRight:()=>move('right'),ArrowUp:()=>move('up'),ArrowDown:()=>move('down'),a:()=>move('left'),d:()=>move('right'),w:()=>move('up'),s:()=>move('down'),z:()=>dig(-1),x:()=>dig(1),' ':()=>{paused=!paused;refresh()}};if(map[e.key]){e.preventDefault();map[e.key]()}});
+$('stop').onclick=()=>{if(cleared)return;paused=!paused;say(paused?LANG[lang].pause:LANG[lang].ready);refresh()};$('hint').onclick=hint;$('zoom').onclick=()=>{zoomed=!zoomed;board.classList.toggle('zoomed',zoomed);pos();say(LANG[lang].zoomInfo)};$('restart').onclick=()=>{if(confirm(LANG[lang].confirm))loadLevel(stage)};$('skip').onclick=()=>{unlocked=Math.max(unlocked,Math.min(COUNT-1,stage+1));loadLevel((stage+1)%COUNT)};$('next').onclick=()=>loadLevel((stage+1)%COUNT);$('chooseLevel').onchange=e=>{let n=Number(e.target.value);if(Number.isInteger(n)&&n>=0&&n<=unlocked)loadLevel(n)};$('lang').onchange=e=>changeLang(e.target.value);
+let previous=null;try{previous=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');if(validSave(previous)){stage=previous.level;mode='arcade';unlocked=Math.max(stage,previous.unlocked||stage)}}catch(_){}
+loadLevel(stage,previous);changeLang(lang);requestAnimationFrame(loop);
+})();
+</script>
+</body></html>

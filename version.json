@@ -1,5 +1,5 @@
 {
-  "version": "3.8.0",
-  "build": "3.8.0",
-  "notes": "Mahjong midgame difficulty tuning, personal achievements, save schema 6; preserves other MindGarden games"
+  "version": "3.10.2",
+  "build": "3.10.2",
+  "notes": "Tower Escape arcade-only mode, classic 22x14 viewport, 36 towers retained, legacy saves migrate to arcade"
 }

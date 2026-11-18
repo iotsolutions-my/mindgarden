@@ -1,4 +1,38 @@
-# MindGarden v3.8.0 — Progressive Layered Mahjong Garden
+# MindGarden v3.10.2 — Tower Escape Expanded
+
+## What's new in Tower Escape
+- 36 deterministic levels, with 4–7 floors and wider maps (24–40 columns).
+- Procedural variations with multiple ladder routes and distinct scenery themes.
+- Later levels add spike zones, conveyor floors and tiles that crumble then rebuild.
+- Rolling stones and guard pursuit continue; temporary digging traps remain.
+- Automatic next-level progression; select any unlocked level. No hard time limit.
+- Scrollable follow camera on mobile and an optional full-map zoom.
+- Progress save uses the existing Tower Escape storage key; unrelated city/Mahjong saves are untouched.
+- English, Bahasa Melayu, Simplified Chinese and Traditional Chinese.
+- Offline PWA support and a standalone HTML game page; no external scripts, ads or sound.
+
+## MindGarden game collection
+Word Trails; Memory Garden; Number Steps; Sharp Eyes; Sentence Detective / Chinese Character Hunt; Idiom Lab; Logic Grid; Gem Garden; Air Traffic Coordinator; Smart City 3D; Mahjong Garden; Tower Escape.
+
+## Security baseline
+Only store validated local game state. No remote audio, code execution from JSON, ads, unnecessary outbound connections or automatic redirects. Exported JSON is data only. Publish releases from the official IOT SOLUTIONS repository. Provided AS IS to the extent permitted by applicable law.
+## New in v3.10.2 — Tower Escape gameplay hotfix
+
+- Cleared towers automatically advance after a brief celebration (except the final tower).
+- Digging a floor tile drops guards standing over the hole; trapped guards remain until it refills, then resume pursuing the player.
+- Guards pursue nearby players on the same platform and patrol otherwise.
+- Retains original ten towers, separate saves, free browser play and four languages.
+
+## Previous v3.10.2 introduction — Tower Escape
+- Original retro puzzle-platformer blending classic digging-and-ladder mechanics with rolling obstacles, without copying protected characters or graphics.
+- 10 handcrafted level configurations, Puzzle and Arcade modes (arcade has faster patrols and more rolling stones), optional zoom for smaller screens, collectible seeds, ladders, diggable temporary platforms, rolling stones, patrolling sentries and an exit at the upper-right.
+- Responsive canvas, keyboard arrows/WASD, Z/X to dig, large touch controls, pause, hint, retry and skip. No countdown or music.
+- Standalone `tower.html`, local automatic saves isolated from Mahjong and Smart City.
+- Four languages: English, Bahasa Melayu, Simplified Chinese and Traditional Chinese.
+- Original geometry; no third-party textures, game engines, libraries, remote dependencies or ads.
+- Security baseline: strictly limited local save fields and ranges; never execute save data.
+
+# MindGarden v3.10.2 — Tower Escape Arcade & Puzzle
 
 ## New in v3.8.0 — Strategy Challenge
 - One Mahjong challenge mode with progressive **3-, 4- and 5-layer** boards (unchanged board dimensions).
@@ -14,7 +48,7 @@
 - Generated boards are checked against their legal solution sequence, and all starting layouts must contain at least one matching free pair.
 - Validate Android touch controls, visually inspect tile overlaps and back up existing saves before deployment. Local Chromium automation was tested using in-memory HTML because direct `file://` navigation is restricted.
 
-# MindGarden v3.8.0 — Mahjong Garden Layered Challenge
+# MindGarden v3.10.2 — Tower Escape and Mahjong Garden
 
 A lightweight browser-playable city game with optional PWA installation.
 
@@ -32,6 +66,8 @@ MindGarden is a free, ad-free browser collection, not only a city simulator. The
 9. **Air Traffic Coordinator** — guide aircraft and exercise coordination.
 10. **Smart City 3D** — one persistent Malaysian city with missions, transport and infrastructure.
 11. **Mahjong Garden** — an original, accessible Mahjong Solitaire-style pair-matching game, with large tiles, hints, rearrange, skip and autosave.
+
+12. **Tower Escape** — collect seeds, climb ladders, dig temporary traps and avoid rolling hazards.
 
 Available languages: English, Bahasa Melayu, 简体中文 and 繁體中文. Games have friendly hints and options to skip where supported. MindGarden is for enjoyable recreation, not medical diagnosis or treatment.
 
@@ -103,3 +139,19 @@ Puzzle 1–2 use four-layer layouts and Puzzle 3 onward uses five-layer layouts.
 - Personal Garden tracks completed puzzles and independent clears, without timers or penalizing help.
 - Undo, hint, retry, skip and rearrange remain available. Existing Mahjong saves migrate from schema 4/5 to 6.
 - One challenge mode, 4–5 layers, browser play without installation or external runtime services.
+
+## v3.10.2 regression fix
+
+- Restores the compact 24×14 tile viewing window for Tower Escape on phones.
+- Larger levels scroll via the follow camera without enlarging the visible game area.
+- Moves level selection to a collapsed control below the gameplay controls.
+- Keeps 36 levels, existing saved progress, and touch buttons.
+- Zoom displays a full tower overview without changing layout dimensions.
+
+
+## Tower Escape v3.10.2
+
+- Arcade Adventure is the only game mode; no mode switch or puzzle mode.
+- Uses the classic compact 22 × 14 camera viewport across all 36 tower levels.
+- Previous saves load in Arcade mode without resetting unlocked level progress.
+- Touch and keyboard controls, auto-advance and all other MindGarden games remain.
