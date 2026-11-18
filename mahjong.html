@@ -1,224 +1,324 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#18513e"><title>MindGarden — Mahjong Garden</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#164c3c"><meta name="mindgarden-build" content="3.13.0">
+<title>MindGarden — Mahjong Garden</title><meta name="description" content="Relaxing Mahjong solitaire with real tiles, four board sizes and hints that never lead to a dead end. English, Bahasa Melayu and Chinese. No ads.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="MindGarden"><meta property="og:title" content="MindGarden — Mahjong Garden"><meta property="og:description" content="Relaxing Mahjong solitaire with real tiles, four board sizes and hints that never lead to a dead end. English, Bahasa Melayu and Chinese. No ads.">
+<meta property="og:image" content="./social-preview.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="MindGarden — Mahjong Garden"><meta name="twitter:description" content="Relaxing Mahjong solitaire with real tiles, four board sizes and hints that never lead to a dead end. English, Bahasa Melayu and Chinese. No ads."><meta name="twitter:image" content="./social-preview.png">
+<link rel="icon" href="./favicon.ico" sizes="any"><link rel="manifest" href="./manifest.webmanifest">
 <style>
-:root{font:17px system-ui,-apple-system,'Segoe UI',sans-serif;color:#214536;background:#f2f7f0}*{box-sizing:border-box}body{margin:0}main{max-width:850px;margin:auto;padding:16px 14px 40px}header{background:linear-gradient(120deg,#194d3d,#338062);color:white;padding:20px;border-radius:22px}header a{color:#e6ffe7;font-weight:650;text-decoration:none}h1{margin:9px 0 2px;font-size:clamp(1.4rem,5vw,2rem)}header p{margin:5px 0;color:#e3f2e7}.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:15px 0}select,button{font:inherit;border-radius:12px;border:2px solid #b8d3c1;background:#fff;color:#234b3a;padding:11px 13px;min-height:48px}button{cursor:pointer;font-weight:700}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,select:focus-visible{outline:3px solid #e9a649;outline-offset:2px}button.primary{background:#287b57;color:white;border-color:#287b57}.boardcard{background:#fff;border:1px solid #d9e9da;border-radius:23px;padding:18px 12px;box-shadow:0 6px 22px #1c533017}.stats{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:5px 6px 14px;font-weight:700}.board-wrap{overflow-x:auto;padding:10px 2px 16px}.board{position:relative;width:100%;max-width:540px;aspect-ratio:6 / 8.85;margin:auto;isolation:isolate;background:linear-gradient(155deg,#e7f2e7,#f5f8ee);border:1px solid #d9e8d7;border-radius:15px}.tile{position:absolute;left:calc(var(--c)*100%/6 + 3px + var(--layer)*5px);top:calc(var(--r)*100%/8 + 3px - var(--layer)*5px);width:calc(100%/6 - 8px);height:calc(100%/8 - 8px);z-index:calc(2 + var(--layer)*20);border:2px solid #b6c9b1;background:linear-gradient(130deg,#fffdf4,#edf2e3);box-shadow:3px 5px 0 #a7bdab;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:1px;color:#244f39;min-height:0;touch-action:manipulation}.tile.layer-upper{border-color:#5e9a72;box-shadow:4px 7px 0 #6f9278,5px 9px 4px #274e3855;background:linear-gradient(125deg,#fffdf5,#d8eadb)}.tile .symbol{font-weight:800;font-size:clamp(1.35rem,5.4vw,2.1rem);line-height:1.15}.tile .small{font-size:.65rem;color:#708477;font-weight:700}.tile.wind .symbol{color:#bd493c}.tile.bamboo .symbol{color:#247451}.tile.circle .symbol{color:#2266a0}.tile.flower .symbol{color:#98653a}.tile:not(.free){background:#e7ece4}.tile.covered{opacity:.70;background:linear-gradient(125deg,#d9e7dc,#c9d8cf)}.tile.covered .symbol{color:#537867!important;font-size:1.45rem}.tile:not(.free) .symbol{opacity:.6}.tile.selected{background:#d1f4da;border-color:#258653;box-shadow:3px 5px 0 #5b9c70}.tile.hinted{outline:4px solid #e9b651;outline-offset:1px}.tile.gone{visibility:hidden;pointer-events:none}.layer-legend{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:0 0 8px;font-size:.82rem;color:#456855}.layer-legend span{display:inline-flex;align-items:center;gap:5px}.layer-dot{width:13px;height:13px;border-radius:3px;background:#d8eadb;border:1px solid #5e9a72;display:inline-block}.layer-dot.base{background:#edf2e3;border-color:#b6c9b1}.message{min-height:50px;border-radius:13px;background:#edf6e9;padding:13px 15px;color:#276043;margin-top:12px;line-height:1.4}.buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:15px}.challenge-note{padding:10px 12px;margin:4px 2px 12px;border-radius:12px;background:#f1f6ec;color:#355d47;font-size:.88rem;line-height:1.45}.personal-progress{padding:12px 14px;margin:10px 2px 6px;border:1px solid #cfe4d4;border-radius:12px;background:#f3f8ed;color:#27553a;line-height:1.5;font-size:.92rem}.personal-progress strong{color:#185a3d}.message.is-stuck{background:#fff0d9;color:#704a22;border:2px solid #e8b779}.buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.footer{font-size:.8rem;color:#697c6c;margin:24px 3px 0;line-height:1.65}label{font-weight:650}details{margin-top:15px}summary{font-weight:700;cursor:pointer}body.compact .board{max-width:500px}@media(max-width:420px){main{padding:9px}.boardcard{padding:12px 7px}.tile .symbol{font-size:clamp(1.15rem,6vw,1.9rem)}.controls select{max-width:46vw}.buttons button{padding:10px 5px;font-size:.89rem}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style><meta name="description" content="Play 14 free, ad-free brain games in English, Bahasa Melayu and Chinese. Mahjong, chess, word puzzles, Smart City and more. No installation needed."><meta property="og:type" content="website"><meta property="og:site_name" content="MindGarden"><meta property="og:title" content="MindGarden — Free Brain Games & Puzzles"><meta property="og:description" content="Play 14 free, ad-free brain games in English, Bahasa Melayu and Chinese. Mahjong, chess, word puzzles, Smart City and more. No installation needed."><meta property="og:image" content="./social-preview.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="MindGarden — Free Brain Games & Puzzles"><meta name="twitter:description" content="Play 14 free, ad-free brain games in English, Bahasa Melayu and Chinese. Mahjong, chess, word puzzles, Smart City and more. No installation needed."><meta name="twitter:image" content="./social-preview.png"><link rel="icon" href="./favicon.ico" sizes="any"></head><body><main><header><a href="./index.html" id="back">← MindGarden</a><h1 id="title">🀄 Mahjong Garden</h1><p id="subtitle">A thoughtful tile challenge at your own pace. No timer, no penalties.</p></header>
-<div class="controls"><label for="language" id="langlabel">Language</label><select id="language"><option value="en">English</option><option value="ms">Bahasa Melayu</option><option value="zh">简体中文</option><option value="zt">繁體中文</option></select></div>
-<section class="boardcard"><div class="stats"><span id="puzzle">Puzzle 1</span><span id="remaining">Pairs left: 12</span></div><div class="challenge-note" id="challengeNote"></div><div class="personal-progress" id="personalProgress" role="status" aria-live="polite"></div><div class="board-wrap"><div class="layer-legend" id="layersLabel"><span><i class="layer-dot"></i>Upper layer</span><span><i class="layer-dot base"></i>Lower layer</span></div><div class="board" id="board" aria-label="Progressive three to five layer Mahjong tile board"></div></div><div class="message" id="message" role="status" aria-live="polite"></div><div class="buttons"><button id="hint">💡 Hint</button><button id="undo">↶ Undo pair</button><button id="retry">🔄 Try again</button><button id="shuffle">🔀 Rearrange</button><button id="skip">↪ Skip this puzzle</button><button class="primary" id="next">Next puzzle →</button></div><details><summary id="howTitle">How to play</summary><p id="howText"></p></details></section>
-<p class="footer" id="footer">No ads · No account · No music or sound · Saves locally · For recreation, not medical treatment. Created and managed by IOT SOLUTIONS.</p></main>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#22392f;background:#f3f7f1;font-size:17px;-webkit-text-size-adjust:100%}
+*{box-sizing:border-box}body{margin:0}button,select{font:inherit;color:inherit}button{cursor:pointer;touch-action:manipulation}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #eeaf64;outline-offset:2px}
+.wrap{max-width:560px;margin:auto;padding:14px 12px 48px}
+.hero{border-radius:22px;padding:14px 18px 16px;color:#fff;background:linear-gradient(120deg,#164c3c,#2f7b5c)}
+.back{display:inline-flex;align-items:center;min-height:44px;color:#fff;text-decoration:none;background:#ffffff26;border-radius:12px;padding:8px 14px;font-weight:650}
+.hero h1{font-size:1.65rem;margin:10px 0 2px}.hero p{margin:4px 0 0;color:#e3f2dc}
+.settings{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.ctrl{display:flex;flex-direction:column;gap:5px;font-size:.95rem;font-weight:650;color:#2c4e3f}
+.ctrl select{width:100%;min-height:48px;border:2px solid #c3d8c7;border-radius:12px;background:#fff;padding:8px 10px;color:#22392f}
+.card{background:#fff;border:1px solid #dcebd9;border-radius:22px;padding:12px 10px;box-shadow:0 6px 18px #274b3312}
+.stats{display:flex;justify-content:space-between;gap:8px;font-size:1.02rem;color:#2c4e3f;margin:2px 4px 8px;flex-wrap:wrap}.stats b{font-size:1.15rem;color:#174d39}
+.msg{min-height:1.5em;margin:4px 4px 8px;font-size:1.05rem;line-height:1.45;color:#22513e;font-weight:600}.msg.win{color:#1d7a4c;font-size:1.2rem}
+.warn{background:#fff3df;border:2px solid #e8b779;color:#6d4415;border-radius:14px;padding:10px 12px;margin:0 2px 10px;line-height:1.45;font-size:1rem}
+.board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;padding:18px 6px 10px 12px;background:linear-gradient(160deg,#e5f0e2,#f4f7ec);border:1px solid #d6e5d3;border-radius:16px;user-select:none;-webkit-user-select:none}
+.slot{position:relative;aspect-ratio:3/4}
+.tile{position:absolute;inset:0;border:1.5px solid #b9a578;border-radius:9px;background:linear-gradient(150deg,#fffdf6,#f4ead2);padding:0;display:block;transition:transform .15s,filter .15s,opacity .2s;-webkit-tap-highlight-color:transparent}
+.tile svg{position:absolute;inset:6% 8%;width:84%;height:88%}
+.tile.blocked{filter:saturate(.3) brightness(.86) contrast(.9);background:#e6dfcd}
+.tile.free{cursor:pointer}
+.tile.sel{border-color:#1f6d50;background:linear-gradient(150deg,#e9fbef,#cdeed8);outline:3px solid #1f6d50;outline-offset:1px;z-index:5}
+.tile.hint{outline:4px solid #e0a020;outline-offset:1px;z-index:4;animation:glow 1s ease-in-out infinite alternate}
+.tile.vanish{opacity:0;transform:scale(.6)!important}
+.tile.shake{animation:shake .35s}
+.badge{position:absolute;right:3px;top:2px;font-size:.72rem;font-weight:800;color:#6b5a32;background:#f4e6c1;border-radius:7px;padding:0 4px;line-height:1.3}
+@keyframes glow{from{outline-color:#f2c45a}to{outline-color:#c97d00}}
+@keyframes shake{0%,100%{margin-left:0}25%{margin-left:-5px}75%{margin-left:5px}}
+@media (prefers-reduced-motion:reduce){.tile,.tile.hint,.tile.shake{animation:none;transition:none}}
+.board.cleared{background:linear-gradient(160deg,#dff3e2,#fdf6e3)}
+.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.btn{min-height:54px;border:2px solid #b9d5bf;border-radius:14px;background:#e9f4ec;padding:10px 6px;font-weight:750;color:#1f5540;font-size:1rem}
+.btn:disabled{opacity:.45;cursor:default}.btn.primary{background:#1f6d50;border-color:#1f6d50;color:#fff}.btn.wide{grid-column:1/-1}
+.panel{background:#f1f8f1;border:2px solid #a9cdb1;border-radius:16px;padding:12px;margin:10px 0}.panel p{margin:0 0 10px;font-weight:650}.panel .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+details{margin-top:12px;border-top:1px solid #e1ece0;padding-top:10px}summary{font-weight:750;cursor:pointer;min-height:40px;display:flex;align-items:center;font-size:1.05rem}
+.note{line-height:1.6;color:#2f4b3e}#gardenText{line-height:1.8;color:#2f4b3e}#gardenText p{margin:4px 0;font-weight:650}
+.notice{color:#4f6a5b;font-size:.95rem;text-align:center;margin-top:16px;line-height:1.5}
+[hidden]{display:none!important}
+@media(max-width:440px){.wrap{padding:8px 6px 32px}.hero h1{font-size:1.4rem}.card{padding:10px 6px}.board{gap:4px;padding:16px 4px 8px 10px}.btn{font-size:.95rem}}
+</style></head>
+<body><div class="wrap">
+<header class="hero"><a class="back" href="./index.html">← MindGarden</a><h1 id="title"></h1><p id="subtitle"></p></header>
+<section class="settings">
+<label class="ctrl"><span id="langLabel">Language</span><select id="lang"><option value="en">English</option><option value="ms">Bahasa Melayu</option><option value="zh">简体中文</option><option value="zt">繁體中文</option></select></label>
+<label class="ctrl"><span id="sizeLabel">Board</span><select id="size"></select></label>
+</section>
+<section class="card">
+<div class="stats"><span id="pairs"></span><span id="avail"></span></div>
+<p id="msg" class="msg" aria-live="polite"></p>
+<div id="warn" class="warn" role="status" hidden></div>
+<div id="board" class="board"></div>
+<div id="confirm" class="panel" hidden><p id="confirmText"></p><div class="row"><button type="button" id="confirmYes" class="btn primary"></button><button type="button" id="confirmNo" class="btn"></button></div></div>
+<div class="actions"><button type="button" id="hintBtn" class="btn"></button><button type="button" id="undoBtn" class="btn"></button><button type="button" id="reBtn" class="btn"></button><button type="button" id="restartBtn" class="btn"></button><button type="button" id="newBtn" class="btn wide"></button></div>
+<details><summary id="howTitle"></summary><p id="howText" class="note"></p></details>
+<details><summary id="gardenTitle"></summary><div id="gardenText"></div></details>
+</section>
+<p id="notice" class="notice"></p>
+</div>
+<noscript><p style="text-align:center">Please enable JavaScript to play.</p></noscript>
 <script>
+/* MindGarden Mahjong Solitaire core — boards, generation (always solvable), solver, hints. Offline. */
 'use strict';
-// MindGarden Mahjong Garden v3.8.0: optimised mid-game choices, single-mode strategy and optional personal milestones.
-const L={
- en:{title:'Mahjong Garden',subtitle:'A thoughtful tile challenge at your own pace. No timer, no penalties.',language:'Language',puzzle:'Puzzle',remaining:'Pairs left',hint:'Gentle hint',shuffle:'Rearrange tiles',skip:'Skip this puzzle',next:'Next puzzle',how:'How to play',help:"Match two identical free tiles. A tile is free when nothing is directly above it and at least one side is open. Some matching pairs can block later moves; plan ahead. If you run out of matches, try the same board, undo a pair, or rearrange. Unlimited hints and skip, no timer or penalties.",start:'Find matching tiles with an open left or right side.',wrong:'These tiles do not match; try another pair.',blocked:'That tile is blocked. Clear tiles above or beside it first.',match:'Lovely match! 🌿',won:'Well played! Garden cleared. 🌸',skipMsg:'New puzzle, fresh start. Nothing lost.',rearranged:'Tiles rearranged into a solvable layout.',nohint:'No matching free pair. Use Rearrange.',challenge:'Advanced garden: five overlapping layers from Puzzle 3 onward. Covered faces stay hidden until uncovered. Plan which tiles to reveal next; a wrong match can lead to a dead end. No timer or penalties.',undo:'Undo last pair',retry:'Try same board',stuck:'No free matches left. This round is stuck — try the same board again, undo a move, or rearrange. You can solve it!',undid:'Last pair restored. Try a different route.',retried:'Fresh attempt, same challenge. You can do it!',attempts:'Attempts',footer:'No ads · No account · No music or sound · Saves locally · For recreation, not medical diagnosis, prevention or treatment. Created and managed by IOT SOLUTIONS.'},
- ms:{title:'Taman Mahjong',subtitle:'Cabaran jubin yang menarik, ikut rentak sendiri. Tiada masa atau penalti.',language:'Bahasa',puzzle:'Teka-teki',remaining:'Baki pasangan',hint:'Petunjuk lembut',shuffle:'Susun semula',skip:'Langkau teka-teki',next:'Teka-teki seterusnya',how:'Cara bermain',help:"Padankan dua jubin sama yang bebas: tiada jubin di atas dan sekurang-kurangnya satu sisi terbuka. Sesetengah padanan boleh menghalang langkah seterusnya. Jika tiada padanan bebas, cuba papan yang sama, undur atau susun semula. Petunjuk dan langkau tanpa had; tiada pemasa atau penalti.",start:'Cari jubin sama yang mempunyai sisi kiri atau kanan terbuka.',wrong:'Jubin tidak sama. Cuba pasangan lain.',blocked:'Jubin terhalang. Alihkan jubin di atas atau di sisinya dahulu.',match:'Padanan yang bagus! 🌿',won:'Syabas! Taman berjaya dikosongkan. 🌸',skipMsg:'Teka-teki baharu. Tiada kemajuan hilang.',rearranged:'Jubin disusun semula dalam susunan yang boleh diselesaikan.',nohint:'Tiada pasangan bebas. Gunakan Susun semula.',challenge:'Cabaran lebih tinggi: lima lapisan mulai teka-teki 3. Simbol jubin tertutup disembunyikan sehingga dibuka. Rancang jubin yang hendak didedahkan. Padanan silap boleh menyebabkan jalan buntu. Tiada pemasa atau penalti.',undo:'Undur pasangan',retry:'Cuba papan sama',stuck:'Tiada pasangan bebas. Cuba lagi pada papan sama, undur langkah atau susun semula. Anda boleh!',undid:'Pasangan terakhir dipulihkan. Cuba laluan lain.',retried:'Percubaan baharu pada papan sama. Anda boleh!',attempts:'Cubaan',footer:'Tanpa iklan · Tanpa akaun · Tanpa bunyi · Simpanan setempat · Untuk rekreasi, bukan diagnosis atau rawatan perubatan. Dicipta dan diurus oleh IOT SOLUTIONS.'},
- zh:{title:'麻将花园',subtitle:'动动脑筋，按自己的节奏挑战。无计时，无惩罚。',language:'语言',puzzle:'第',remaining:'剩余配对',hint:'温馨提示',shuffle:'重新排列',skip:'跳过本题',next:'下一题',how:'玩法说明',help:"配对相同且可用的牌：上方不能有牌，左右至少一边畅通。有些配对看似正确，却会阻碍后续操作。无牌可配时，可重试同一盘、撤销一步或重新排列。提示及跳过不限次数，没有计时和惩罚。",start:'寻找左右至少一侧畅通的相同牌。',wrong:'这两张牌不同，请再试试。',blocked:'这张牌被挡住了，请先移开上方或旁边的牌。',match:'配对成功！🌿',won:'太棒了！全部配对完成。🌸',skipMsg:'开启新的一题，原有进度不受影响。',rearranged:'已重新排列成可解开的布局。',nohint:'没有可配对的牌，请重新排列。',challenge:'进阶挑战：从第3关起采用五层叠牌。被覆盖的牌面会隐藏，移开上层牌后才显示。请计划解开顺序，错误选择可能导致僵局。无计时、无惩罚。',undo:'撤销上一步',retry:'重试同一盘',stuck:'没有可用的配对了。这一局陷入僵局！可以重试、撤销一步或重新排列。再想想就能成功！',undid:'已恢复上一步。试试另一条路线。',retried:'重新开始同一局，加油！',attempts:'尝试次数',footer:'无广告 · 无账号 · 无音乐音效 · 本地保存 · 仅供休闲，不用于医疗诊断、预防或治疗。由 IOT SOLUTIONS 制作及管理。'},
- zt:{title:'麻將花園',subtitle:'動動腦筋，按自己的節奏挑戰。無計時，無懲罰。',language:'語言',puzzle:'第',remaining:'剩餘配對',hint:'溫馨提示',shuffle:'重新排列',skip:'跳過本題',next:'下一題',how:'玩法說明',help:"配對相同且可用的牌：上方不能有牌，左右至少一邊暢通。有些配對看似正確，卻會阻礙後續操作。無牌可配時，可重試同一盤、撤銷一步或重新排列。提示及跳過不限次數，沒有計時和懲罰。",start:'尋找左右至少一側暢通的相同牌。',wrong:'這兩張牌不同，請再試試。',blocked:'這張牌被擋住了，請先移開上方或旁邊的牌。',match:'配對成功！🌿',won:'太棒了！全部配對完成。🌸',skipMsg:'開啟新的一題，原有進度不受影響。',rearranged:'已重新排列成可解開的布局。',nohint:'沒有可配對的牌，請重新排列。',challenge:'更考驗策略：看似正確的配對，不一定能讓後續的牌順利打開。沒有倒數計時，想好下一步再動手。',undo:'撤銷上一步',retry:'重試同一盤',stuck:'沒有可用的配對了。這一局陷入僵局！可以重試、撤銷一步或重新排列。再想想就能成功！',undid:'已恢復上一步。試試另一條路線。',retried:'重新開始同一局，加油！',attempts:'嘗試次數',footer:'無廣告 · 無帳號 · 無音樂音效 · 本地儲存 · 僅供休閒，不用於醫療診斷、預防或治療。由 IOT SOLUTIONS 製作及管理。'}
-};
-const ACHIEVEMENTS={
- en:{summary:'My Garden',cleared:'Puzzles completed',independent:'Cleared without help',best:'Personal challenge: clear this puzzle without a hint, undo or rearrange',earned:'Independent clear! A thoughtful win 🌿',replay:'Try a different route if you would like—no pressure.'},
- ms:{summary:'Taman Saya',cleared:'Teka-teki selesai',independent:'Selesai tanpa bantuan',best:'Cabaran peribadi: selesaikan tanpa petunjuk, undur atau susun semula',earned:'Selesai tanpa bantuan! Tahniah 🌿',replay:'Boleh cuba cara lain jika mahu, tiada tekanan.'},
- zh:{summary:'我的花园',cleared:'已完成题目',independent:'独立完成',best:'个人挑战：不使用提示、撤销或重排，完成这一局',earned:'独立通关！值得开心的一步 🌿',replay:'想尝试不同走法也可以，不必勉强。'},
- zt:{summary:'我的花園',cleared:'已完成題目',independent:'獨立完成',best:'個人挑戰：不使用提示、撤銷或重排，完成這一局',earned:'獨立通關！值得開心的一步 🌿',replay:'想嘗試不同走法也可以，不必勉強。'}
-};
-const SYMBOLS=[['中','Red dragon','wind'],['發','Green dragon','bamboo'],['東','East','wind'],['南','South','wind'],['西','West','wind'],['北','North','wind'],['●','Circle','circle'],['◎','Double circle','circle'],['◉','Roundel','circle'],['竹','Bamboo','bamboo'],['林','Forest','bamboo'],['花','Flower','flower'],['梅','Plum','flower'],['蘭','Orchid','flower'],['菊','Chrysanthemum','flower'],['一','One','wind'],['二','Two','wind'],['三','Three','wind'],['四','Four','wind'],['五','Five','wind'],['六','Six','wind'],['七','Seven','wind'],['八','Eight','wind'],['九','Nine','wind'],['春','Spring','flower'],['夏','Summer','flower'],['秋','Autumn','flower'],['冬','Winter','flower']];
-// Layer-aware Mahjong engine supports z=0..4 and progressively uses 3–5 layers.
-const ENGINE_MAX_LAYERS=5, ROWS=8, COLS=6;
-// One challenge mode: layers increase gently with play rather than using a difficulty selector.
-function layerCount(n){return n<=2?4:5;}
-function expectedTileCount(n){return 48+(layerCount(n)>=3?12+8:0)+(layerCount(n)>=4?4:0)+(layerCount(n)>=5?4:0);}
-// Deepest playable stack: 48 base + 12 first + 8 second + 4 third + 4 fourth.
-// Upper cells are wholly supported by the layer beneath them, allowing a physical stack.
-const LEVEL1_LAYOUTS=[
- [[1,1],[1,2],[1,3],[1,4],[2,1],[2,4],[3,1],[3,4],[4,1],[4,4],[5,1],[5,4]],
- [[1,1],[1,2],[1,3],[1,4],[2,1],[2,4],[3,1],[3,4],[4,1],[4,4],[6,2],[6,3]],
- [[1,1],[1,2],[1,3],[1,4],[2,1],[2,4],[4,1],[4,4],[5,1],[5,4],[6,2],[6,3]],
- [[1,1],[1,2],[1,3],[1,4],[2,1],[2,4],[3,1],[3,4],[5,1],[5,4],[6,2],[6,3]],
- [[1,1],[1,2],[1,3],[1,4],[2,1],[2,4],[4,1],[4,4],[5,1],[5,4],[6,1],[6,4]]
-];
-const LEVEL2_LAYOUTS=[
- [[1,2],[1,3],[2,1],[2,4],[3,1],[3,4],[4,1],[4,4]],
- [[1,2],[1,3],[2,1],[2,4],[3,1],[3,4],[4,1],[4,4]],
- [[1,2],[1,3],[2,1],[2,4],[4,1],[4,4],[5,1],[5,4]],
- [[1,2],[1,3],[2,1],[2,4],[3,1],[3,4],[5,1],[5,4]],
- [[1,2],[1,3],[2,1],[2,4],[4,1],[4,4],[5,1],[5,4]]
-];
-const LEVEL3_LAYOUTS=[
- [[1,2],[1,3],[2,1],[2,4]],
- [[1,2],[1,3],[2,1],[2,4]],
- [[1,2],[1,3],[4,1],[4,4]],
- [[1,2],[1,3],[2,1],[2,4]],
- [[1,2],[1,3],[4,1],[4,4]]
-];
-const LEVEL4_LAYOUTS=LEVEL3_LAYOUTS;
-
-const UPPER_LAYOUTS=[
- [[2,1],[2,2],[2,3],[2,4],[3,1],[3,2],[3,3],[3,4]],
- [[3,1],[3,2],[3,3],[3,4],[4,1],[4,2],[4,3],[4,4]],
- [[2,2],[2,3],[3,2],[3,3],[4,2],[4,3],[5,2],[5,3]],
- [[1,1],[1,2],[1,3],[1,4],[5,1],[5,2],[5,3],[5,4]],
- [[2,1],[2,2],[2,3],[2,4],[5,1],[5,2],[5,3],[5,4]],
-];
-const KEY='mindgarden-mahjong-v1', $=s=>document.getElementById(s);
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-const nodeId=t=>`${t.r}:${t.c}:${t.z}`;
-function positionsFor(n){
- const p=[];for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)p.push({r,c,z:0});
- const ix=(n-1)%LEVEL1_LAYOUTS.length;
- [LEVEL1_LAYOUTS,LEVEL2_LAYOUTS,LEVEL3_LAYOUTS,LEVEL4_LAYOUTS]
-   .slice(0,layerCount(n)-1)
-   .forEach((layouts,idx)=>{for(const [r,c] of layouts[ix])p.push({r,c,z:idx+1});});
- return p;
-}
-let language='en',puzzle=1,tiles=[],chosen=null,message='',hinted=[],original=[],undoHistory=[],attempts=1,stuckRecorded=false;
-let helpUsed=false, completedRecords={}, independentRecords={};
-try{const m=JSON.parse(localStorage.getItem('mindgarden-settings')||'{}');if(L[m.lang])language=m.lang;}catch(e){}
-const urlLang=new URLSearchParams(location.search).get('lang');if(L[urlLang])language=urlLang;
-function validTiles(a){if(!Array.isArray(a)||a.length!==expectedTileCount(puzzle))return false;const seen=new Set();const counts={};for(const t of a){if(!t||!Number.isInteger(t.r)||t.r<0||t.r>=ROWS||!Number.isInteger(t.c)||t.c<0||t.c>=COLS||!Number.isInteger(t.z)||t.z<0||t.z>=ENGINE_MAX_LAYERS||t.z>=layerCount(puzzle)||!Number.isInteger(t.v)||t.v<0||t.v>=SYMBOLS.length||typeof t.gone!=='boolean')return false;const k=nodeId(t);if(seen.has(k))return false;seen.add(k);if(!t.gone)counts[t.v]=(counts[t.v]||0)+1;}return Object.values(counts).every(n=>n%2===0);}
-function save(){try{localStorage.setItem(KEY,JSON.stringify({schema:6,puzzle,tiles,original,undoHistory,attempts,stuckRecorded,helpUsed,completedRecords,independentRecords}));}catch(e){}}
-function live(){return tiles.filter(t=>!t.gone);}
-function occupiedSet(arr){return new Set(arr.filter(t=>!t.gone).map(nodeId));}
-function isCovered(t,arr=tiles){return arr.some(o=>!o.gone&&o.r===t.r&&o.c===t.c&&o.z>t.z);}
-function freeTile(t,arr=tiles,occ=occupiedSet(arr)){return !t.gone&&!isCovered(t,arr)&&(!occ.has(`${t.r}:${t.c-1}:${t.z}`)||!occ.has(`${t.r}:${t.c+1}:${t.z}`));}
-function remaining(){return live().length/2;}
-function availableMatches(){const free=tiles.filter(t=>freeTile(t));const out=[];for(let i=0;i<free.length;i++)for(let j=i+1;j<free.length;j++)if(free[i].v===free[j].v)out.push([nodeId(free[i]),nodeId(free[j])]);return out;}
-// Work forwards through legal removals, then assign matching faces to those removals.
-// This constructs a known solution independently of arbitrary player decisions.
-function makeSolvable(positions){
- // Construct a legal solution first; tile faces are assigned to its removal pairs.
- // Mixed-layer pair choices mean a player must plan beyond the uppermost row.
- for(let attempt=0;attempt<32;attempt++){
-  const work=positions.map(t=>({...t,v:0,gone:false})),pairs=[];let failed=false;let previousFree=new Set();
-  while(work.some(t=>!t.gone)){
-   const free=work.filter(t=>freeTile(t,work));if(free.length<2){failed=true;break;}
-   const top=Math.max(...work.filter(t=>!t.gone).map(t=>t.z));
-   const onTop=free.filter(t=>t.z===top);
-   // Prefer upper-layer removals to preserve a valid construction path.
-   // Duplicate symbols elsewhere create tempting alternative matches.
-   // Prefer newly freed tiles, so solving future pairs requires exposing tiles first.
-   // This reduces easy pairs that are visible together from the opening.
-   const newlyFree=free.filter(t=>!previousFree.has(nodeId(t)));
-   const candidates=newlyFree.length?newlyFree:(onTop.length>=2?onTop:free);
-   const a=candidates[Math.floor(Math.random()*candidates.length)];
-   previousFree=new Set(free.map(nodeId));
-   const others=free.filter(t=>t!==a);
-   const across=others.filter(t=>t.r!==a.r && (t.c!==a.c || t.z!==a.z));
-   const pool=across.length&&Math.random()<.80?across:others;const b=pool[Math.floor(Math.random()*pool.length)];
-   if(!b){failed=true;break;}
-   a.gone=b.gone=true;pairs.push([nodeId(a),nodeId(b)]);
-  }
-  if(failed)continue;
-  const facePool=shuffle(SYMBOLS.map((_,i)=>i));
-  const labels=shuffle(Array.from({length:pairs.length},(_,i)=>facePool[i%facePool.length]));
-  const values=new Map();pairs.forEach((pair,i)=>pair.forEach(id=>values.set(id,labels[i])));
-  return {tiles:positions.map(t=>({...t,v:values.get(nodeId(t)),gone:false})),pairs};
- }
- // Safe fallback retains the guaranteed-solution property.
- const work=positions.map(t=>({...t,v:0,gone:false})),pairs=[];
- while(work.some(t=>!t.gone)){
-  const top=Math.max(...work.filter(t=>!t.gone).map(t=>t.z));
-  const free=work.filter(t=>t.z===top&&freeTile(t,work));
-  if(free.length<2)throw Error('Unable to construct a valid layout');
-  const a=free[Math.floor(Math.random()*free.length)],b=free.filter(t=>t!==a)[Math.floor(Math.random()*(free.length-1))];
-  a.gone=b.gone=true;pairs.push([nodeId(a),nodeId(b)]);
- }
- const labels=shuffle(Array.from({length:pairs.length},(_,i)=>i%10));
- const values=new Map();pairs.forEach((pair,i)=>pair.forEach(id=>values.set(id,labels[i])));
- return {tiles:positions.map(t=>({...t,v:values.get(nodeId(t)),gone:false})),pairs};
-}
-// Improve decisions throughout the board, not only at the opening.
-// We keep the legally solved removal order unchanged and swap only face labels
-// between its pairs. That way every candidate still has a verified solution.
-function optimisePairFaces(pairOrder, initialLabels, positions){
- const byId=new Map();pairOrder.forEach((ids,i)=>ids.forEach(id=>byId.set(id,i)));
- const stages=[0,Math.floor(pairOrder.length*.17),Math.floor(pairOrder.length*.40),Math.floor(pairOrder.length*.63)];
- const plan=stages.map((stage)=>{
-  const arr=positions.map(t=>({...t,v:0,gone:false}));
-  for(let k=0;k<stage;k++)for(const id of pairOrder[k]){const t=arr.find(t=>nodeId(t)===id);if(t)t.gone=true;}
-  return arr.filter(t=>freeTile(t,arr)).map(t=>byId.get(nodeId(t)));
- });
- function rate(labels){
-  let total=0;
-  for(let j=0;j<plan.length;j++){
-   const counts=new Map();for(const k of plan[j])counts.set(labels[k],(counts.get(labels[k])||0)+1);
-   let matches=0;for(const v of counts.values())matches+=v*(v-1)/2;
-   const target=j===0?3: j===1?3:4;
-   const penalty=matches<2?(2-matches)*2.1:Math.abs(matches-target)*(j===0?1.4:1);
-   total-=penalty;
-   // Penalise huge groups of identical exposed faces: they encourage unplanned tapping.
-   for(const v of counts.values())if(v>=4)total-=(v-3)*2.2;
-  }
-  return total;
- }
- let best=initialLabels.slice(),bestScore=rate(best),cur=best.slice(),currentScore=bestScore;
- for(let i=0;i<240;i++){
-  const a=Math.floor(Math.random()*cur.length),b=Math.floor(Math.random()*cur.length);if(a===b||cur[a]===cur[b])continue;
-  [cur[a],cur[b]]=[cur[b],cur[a]];
-  const score=rate(cur);
-  const temp=1.0*(1-i/240)+.05;
-  if(score>=currentScore||Math.random()<Math.exp((score-currentScore)/temp))currentScore=score;
-  else [cur[a],cur[b]]=[cur[b],cur[a]];
-  if(currentScore>bestScore){best=cur.slice();bestScore=currentScore;}
- }
- return best;
-}
-function buildBoard(positions,faces){
- let best=null,bestScore=-Infinity;
- for(let tries=0;tries<6;tries++){
-  const cand=makeSolvable(positions);
-  if(faces){
-   const labels=optimisePairFaces(cand.pairs,shuffle(faces),positions);if(labels.length!==cand.pairs.length)throw Error('Invalid reshuffle count');
-   const byId=new Map(cand.tiles.map(t=>[nodeId(t),t]));
-   cand.pairs.forEach((pair,i)=>pair.forEach(id=>byId.get(id).v=labels[i]));
-  }
-  if(!faces){const labels=optimisePairFaces(cand.pairs,cand.pairs.map(ids=>cand.tiles.find(t=>nodeId(t)===ids[0]).v),positions);const index=new Map();cand.pairs.forEach((ids,i)=>ids.forEach(id=>index.set(id,i)));for(const t of cand.tiles)t.v=labels[index.get(nodeId(t))];}
-  const pairs=availableMatchesFor(cand.tiles),free=cand.tiles.filter(t=>freeTile(t,cand.tiles));
-  const faceCounts=new Map();for(const t of free)faceCounts.set(t.v,(faceCounts.get(t.v)||0)+1);
-  const ambiguous=[...faceCounts.values()].filter(n=>n>=3).length;
-  // Optimise opening and midgame choices, while always retaining a valid solution.
-  // Duplicate accessible faces create meaningful alternatives that can lead to a dead end.
-  const target=3;
-  const score=(pairs.length?40:-100)-Math.abs(pairs.length-target)*4+Math.min(3,ambiguous)*.7+(pairs.length>8?-20:0);
-  if(score>bestScore){best=cand;bestScore=score;}
-  if(pairs.length>=2&&pairs.length<=4 && tries>=2)break;
- }
- return best;
-}
-function availableMatchesFor(arr){const free=arr.filter(t=>freeTile(t,arr));const out=[];for(let i=0;i<free.length;i++)for(let j=i+1;j<free.length;j++)if(free[i].v===free[j].v)out.push([nodeId(free[i]),nodeId(free[j])]);return out;}
-function newBoard(){const result=buildBoard(positionsFor(puzzle));tiles=result.tiles;original=tiles.map(t=>({...t}));undoHistory=[];attempts=1;stuckRecorded=false;helpUsed=false;chosen=null;hinted=[];message=L[language].start;save();render();}
-function stuckNow(){return remaining()>0 && availableMatches().length===0;}
-function undoPair(){if(!undoHistory.length)return;helpUsed=true;const ids=undoHistory.pop();for(const t of tiles)if(ids.includes(nodeId(t)))t.gone=false;chosen=null;hinted=[];stuckRecorded=false;message=L[language].undid;save();render();}
-function retrySame(){if(!original.length)return;tiles=original.map(t=>({...t}));undoHistory=[];attempts++;stuckRecorded=false;helpUsed=false;chosen=null;hinted=[];message=L[language].retried;save();render();}
-function match(id){const t=tiles.find(t=>nodeId(t)===id);if(!t||t.gone)return;if(!freeTile(t)){message=L[language].blocked;render();return;}
- if(chosen===null){chosen=id;message=L[language].start;render();return;}
- if(chosen===id){chosen=null;render();return;}
- const prev=tiles.find(x=>nodeId(x)===chosen);if(prev&&!prev.gone&&freeTile(prev)&&prev.v===t.v){undoHistory.push([nodeId(t),nodeId(prev)]);t.gone=prev.gone=true;chosen=null;hinted=[];if(stuckNow()){message=L[language].stuck;stuckRecorded=true;}else message=remaining()?L[language].match:L[language].won;
- if(!remaining()){const key=String(puzzle);if(!completedRecords[key])completedRecords[key]=true;if(!helpUsed&&attempts===1&&!independentRecords[key]){independentRecords[key]=true;message+=' '+ACHIEVEMENTS[language].earned;}}
- save();render();}
- else{chosen=id;message=L[language].wrong;render();}
-}
-function rearrange(){if(!remaining())return;helpUsed=true;const left=live();const faces=[];for(const face of [...new Set(left.map(t=>t.v))]){const count=left.filter(t=>t.v===face).length;if(count%2){message=L[language].nohint;render();return;}for(let k=0;k<count/2;k++)faces.push(face);}
- const next=buildBoard(left.map(({r,c,z})=>({r,c,z})),faces);const newValues=new Map(next.tiles.map(t=>[nodeId(t),t.v]));for(const t of left)t.v=newValues.get(nodeId(t));original=tiles.map(t=>({...t}));undoHistory=[];chosen=null;hinted=[];stuckRecorded=false;message=L[language].rearranged;save();render();}
-function render(){const tr=L[language],ac=ACHIEVEMENTS[language];document.documentElement.lang=language==='zh'?'zh-Hans':language==='zt'?'zh-Hant':language;document.title='MindGarden · '+tr.title;
- $('title').textContent='🀄 '+tr.title;$('subtitle').textContent=tr.subtitle;$('langlabel').textContent=tr.language;$('howTitle').textContent=tr.how;$('howText').textContent=tr.help;$('footer').textContent=tr.footer;$('language').value=language;
- const layerText={en:'Layers',ms:'Lapisan',zh:'层数',zt:'層數'}[language];
- $('layersLabel').textContent=layerText+': '+layerCount(puzzle)+' · '+({en:'Higher tiles must be cleared first',ms:'Alihkan jubin atas dahulu',zh:'先移走上层牌',zt:'先移走上層牌'}[language]);
- $('personalProgress').textContent='🌿 '+ac.summary+' · '+ac.cleared+': '+Object.keys(completedRecords).length+' · '+ac.independent+': '+Object.keys(independentRecords).length+' · '+ac.best;
- $('puzzle').textContent=(language==='en'||language==='ms'?tr.puzzle+' ':'第 ')+puzzle+(language==='zh'||language==='zt'?' 关':'');$('challengeNote').textContent=tr.challenge+' · '+tr.attempts+': '+attempts+' · '+({en:'Available pairs',ms:'Pasangan tersedia',zh:'可选配对',zt:'可選配對'}[language])+': '+availableMatches().length;$('remaining').textContent=tr.remaining+': '+remaining();$('message').textContent=stuckNow()?tr.stuck:message||tr.start;$('message').classList.toggle('is-stuck',stuckNow());
- for(const id of ['hint','undo','retry','shuffle','skip','next'])$(id).textContent=({hint:'💡 ',undo:'↶ ',retry:'🔄 ',shuffle:'🔀 ',skip:'↪ ',next:''})[id]+tr[id]+(id==='next'?' →':'');$('next').disabled=remaining()>0;$('shuffle').disabled=remaining()===0;$('undo').disabled=undoHistory.length===0;$('retry').disabled=remaining()===0;
- $('board').setAttribute('aria-label',layerCount(puzzle)+' layer Mahjong tile board');const root=$('board');root.replaceChildren();const sorted=[...tiles].sort((a,b)=>a.z-b.z||a.r-b.r||a.c-b.c);
- for(const t of sorted){if(t.gone)continue;const id=nodeId(t),open=freeTile(t),covered=isCovered(t),b=document.createElement('button');b.type='button';b.className='tile '+SYMBOLS[t.v][2]+(open?' free':'')+(covered?' covered':'')+(t.z?' layer-upper':'')+(chosen===id?' selected':'')+(hinted.includes(id)?' hinted':'');b.style.setProperty('--r',t.r);b.style.setProperty('--c',t.c);b.style.setProperty('--layer',t.z);b.setAttribute('aria-label',(covered?'Covered tile':SYMBOLS[t.v][1])+', layer '+(t.z+1)+(open?', available':', blocked')); b.setAttribute('aria-disabled',String(!open));
- const ss=document.createElement('span');ss.className='symbol';ss.textContent=covered?'◆':SYMBOLS[t.v][0];const cap=document.createElement('span');cap.className='small';cap.textContent=covered?'⌑':t.z>0?'▲'.repeat(t.z):(t.v===0||t.v===1)?'✦':SYMBOLS[t.v][2]==='circle'?'●':'◇';b.append(ss,cap);b.onclick=()=>match(id);root.append(b);
- }
-}
-$('hint').onclick=()=>{helpUsed=true;save();const options=availableMatches();hinted=options.length?options[Math.floor(Math.random()*options.length)]:[];message=options.length?L[language].start:L[language].nohint;render();};
-$('shuffle').onclick=rearrange;
-$('undo').onclick=undoPair;
-$('retry').onclick=retrySame;
-$('skip').onclick=()=>{puzzle++;newBoard();message=L[language].skipMsg;render();};
-$('next').onclick=()=>{if(remaining()===0){puzzle++;newBoard();}};
-$('language').onchange=e=>{language=e.target.value;try{const m=JSON.parse(localStorage.getItem('mindgarden-settings')||'{}');m.lang=language;localStorage.setItem('mindgarden-settings',JSON.stringify(m));}catch(err){}render();};
-try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&Number.isInteger(s.puzzle)&&s.puzzle>=1&&s.puzzle<1000000){puzzle=s.puzzle;if((s.schema===4||s.schema===5||s.schema===6)&&validTiles(s.tiles)){tiles=s.tiles;original=s.schema>=5&&Array.isArray(s.original)&&s.original.length===tiles.length?s.original.map(t=>({...t})):tiles.map(t=>({...t}));undoHistory=s.schema>=5&&Array.isArray(s.undoHistory)?s.undoHistory.filter(x=>Array.isArray(x)&&x.length===2&&x.every(id=>typeof id==='string')).slice(-200):[];attempts=s.schema>=5&&Number.isInteger(s.attempts)&&s.attempts>=1&&s.attempts<=10000?s.attempts:1;stuckRecorded=!!s.stuckRecorded;helpUsed=s.schema===6&&s.helpUsed===true;completedRecords=s.schema===6&&s.completedRecords&&typeof s.completedRecords==='object'&&!Array.isArray(s.completedRecords)?Object.fromEntries(Object.keys(s.completedRecords).filter(k=>/^\d{1,6}$/.test(k)).slice(-500).map(k=>[k,true])):{};independentRecords=s.schema===6&&s.independentRecords&&typeof s.independentRecords==='object'&&!Array.isArray(s.independentRecords)?Object.fromEntries(Object.keys(s.independentRecords).filter(k=>/^\d{1,6}$/.test(k)).slice(-500).map(k=>[k,true])):{};}}}catch(e){}
-if(!tiles.length)newBoard();else render();
-
-</script></body></html>
+var MJ=(function(){
+const COLS=6;
+/* Stack heights per cell (6 columns). Upper tiles sit exactly on top of lower ones. */
+const LAYOUTS={
+ small:['011110','112211','121121','121121','112211','011110'],
+ medium:['111111','122221','123321','123321','122221','111111'],
+ large:['011110','122221','123321','224422','123321','122221','011110'],
+ expert:['111111','123321','234432','125521','234432','123321','010010']};
+/* Tile faces: 0-8 characters 1-9, 9-17 dots 1-9, 18-26 bamboo 1-9, 27-30 winds E S W N,
+   31-33 dragons red/green/white, 34-37 flowers, 38-41 seasons */
+const NFACES=42;
+const suitOf=f=>f<9?'char':f<18?'dot':f<27?'bam':f<31?'wind':f<34?'dragon':f<38?'flower':'season';
+function layout(size){const rows=LAYOUTS[size]||LAYOUTS.small;const H=[];for(const r of rows)for(const ch of r)H.push(+ch);return {rows:rows.length,H};}
+function isFree(H,cell){const h=H[cell];if(!h)return false;const c=cell%COLS;const l=c>0?H[cell-1]:0,r=c<COLS-1?H[cell+1]:0;return l<h||r<h;}
+function freeCells(H){const out=[];for(let i=0;i<H.length;i++)if(isFree(H,i))out.push(i);return out;}
+const top=(H,F,cell)=>F[cell][H[cell]-1];
+function matches(H,F){const fr=freeCells(H),by=new Map(),out=[];for(const c of fr){const f=top(H,F,c);if(!by.has(f))by.set(f,[]);by.get(f).push(c);}
+ for(const list of by.values())for(let i=0;i<list.length;i++)for(let j=i+1;j<list.length;j++)out.push([list[i],list[j]]);return out;}
+const total=H=>H.reduce((a,b)=>a+b,0);
+function shuffle(a,rnd){for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+/* Simulate a legal clearing order on heights H; returns list of pairs [[cell,z],[cell,z]] or null. */
+function removalOrder(H0,rnd,spread){
+ for(let attempt=0;attempt<60;attempt++){const H=H0.slice(),pairs=[];let ok=true,step=0;const since=new Map();for(const c of freeCells(H))since.set(c,0);
+  while(total(H)){const fr=freeCells(H);if(fr.length<2){ok=false;break;}step++;for(const c of fr)if(!since.has(c))since.set(c,step);
+   // Pair a recently-freed tile with another tile, so few pairs are matchable at the start:
+   // the player has to uncover tiles to find partners (like a real layout).
+   const w=c=>Math.pow(1+since.get(c),spread)*(H[c]);
+   const pickW=list=>{let sum=0;for(const c of list)sum+=w(c);let x=rnd()*sum;for(const c of list){x-=w(c);if(x<=0)return c;}return list[list.length-1];};
+   const a=pickW(fr);const others=fr.filter(c=>c!==a);const b=pickW(others);
+   pairs.push([[a,H[a]-1],[b,H[b]-1]]);H[a]--;H[b]--;for(const c of [a,b])if(H[c])since.set(c,step);else since.delete(c);}
+  if(ok)return pairs;}
+ return null;}
+/* Build faces F (per cell, bottom→top) for heights H0. facePairs: optional list of faces (one per pair) to reuse. */
+function assign(H0,rnd,facePairs,spread){const order=removalOrder(H0,rnd,spread==null?2:spread);if(!order)return null;
+ let faces;if(facePairs){faces=shuffle(facePairs.slice(),rnd);}
+ else{const n=order.length,kinds=shuffle([...Array(NFACES).keys()],rnd);const distinct=Math.min(NFACES,Math.ceil(n*0.8));faces=kinds.slice(0,distinct);
+  const extra=shuffle(faces.slice(),rnd);let k=0;while(faces.length<n)faces.push(extra[k++%extra.length]);faces=shuffle(faces,rnd);}
+ const F=H0.map(h=>new Array(h).fill(-1));order.forEach((pr,i)=>{for(const [c,z] of pr)F[c][z]=faces[i];});return F;}
+/* Solver: depth-first search on stack heights, with memo and safe-move shortcuts. Returns true, false or null (gave up). */
+function solvable(H0,F,limit){limit=limit||60000;const H=H0.slice();const remain=new Map();
+ for(let c=0;c<H.length;c++)for(let z=0;z<H[c];z++){const f=F[c][z];remain.set(f,(remain.get(f)||0)+1);}
+ const dead=new Set();let nodes=0,left=total(H);
+ function rec(){if(!left)return true;const key=H.join('');if(dead.has(key))return false;if(++nodes>limit)throw 0;
+  const fr=freeCells(H),by=new Map();for(const c of fr){const f=top(H,F,c);if(!by.has(f))by.set(f,[]);by.get(f).push(c);}
+  // safe moves: every remaining copy of a face is free right now
+  for(const [f,list] of by){const n=remain.get(f);if(list.length===n&&n>=2){for(const c of list)H[c]--;left-=n;remain.set(f,0);const r=rec();for(const c of list)H[c]++;left+=n;remain.set(f,n);if(r)return true;dead.add(key);return false;}}
+  for(const [f,list] of by){if(list.length<2)continue;for(let i=0;i<list.length;i++)for(let j=i+1;j<list.length;j++){const a=list[i],b=list[j];
+   H[a]--;H[b]--;left-=2;remain.set(f,remain.get(f)-2);const r=rec();H[a]++;H[b]++;left+=2;remain.set(f,remain.get(f)+2);if(r)return true;}}
+  dead.add(key);return false;}
+ try{return rec();}catch(e){return null;}}
+/* Make a new board of the given size. Picks a layout with a comfortable number of opening matches. */
+function newBoard(size,rnd){rnd=rnd||Math.random;const {rows,H}=layout(size);const target={small:[3,5],medium:[3,4],large:[2,4],expert:[2,4]}[size]||[3,4];
+ let best=null,bestScore=-1e9;for(let t=0;t<30;t++){const F=assign(H,rnd,null,1+t%4);if(!F)continue;const m=matches(H,F).length;const score=-(m<target[0]?(target[0]-m)*3:m>target[1]?m-target[1]:0);
+  if(score>bestScore){best=F;bestScore=score;}if(score===0)break;}
+ return {rows,H,F:best};}
+/* Re-deal the faces of the remaining tiles so the position is solvable again. */
+function rearrange(H,F,rnd){rnd=rnd||Math.random;const cnt=new Map();for(let c=0;c<H.length;c++)for(let z=0;z<H[c];z++){const f=F[c][z];cnt.set(f,(cnt.get(f)||0)+1);}
+ const fp=[];for(const [f,n] of cnt)for(let k=0;k<n/2;k++)fp.push(f);
+ const NF=assign(H,rnd,fp);if(!NF)return null;return H.map((h,c)=>{const col=F[c].slice();for(let z=0;z<h;z++)col[z]=NF[c][z];return col;});}
+/* Smart hint: a pair that keeps the board clearable. If none exists, how many pairs to undo. */
+function hint(H,F,history){const ms=matches(H,F);
+ if(ms.length){const scored=[];for(const [a,b] of ms){H[a]--;H[b]--;const s=solvable(H,F,25000);H[a]++;H[b]++;if(s===true)return {pair:[a,b],safe:true};scored.push([s,a,b]);}
+  const unknown=scored.find(x=>x[0]===null);if(unknown)return {pair:[unknown[1],unknown[2]],safe:null};}
+ // dead end: find the smallest number of undos that gets back to a clearable position
+ const Hx=H.slice();for(let k=1;k<=history.length;k++){const [a,b]=history[history.length-k];Hx[a]++;Hx[b]++;if(solvable(Hx,F,25000)!==false)return {deadEnd:true,undo:k,noMoves:!ms.length};}
+ return {deadEnd:true,undo:0,noMoves:!ms.length};}
+return {COLS,LAYOUTS,NFACES,suitOf,layout,isFree,freeCells,matches,solvable,newBoard,rearrange,hint,total};
+})();
+if(typeof module!=='undefined')module.exports=MJ;
+</script>
+<script>
+/* MindGarden Mahjong tile faces, drawn as SVG (no fonts or images needed for the patterns). viewBox 0 0 60 80 */
+'use strict';
+var MJTiles=(function(){
+const NUM='一二三四五六七八九';
+const BLUE='#1d4f91',GREEN='#1b7148',RED='#c0352b';
+const DOTS=[[[30,40,17]],[[30,22,11],[30,58,11]],[[15,17,9],[30,40,9],[45,63,9]],[[18,24,10],[42,24,10],[18,56,10],[42,56,10]],
+ [[17,20,9],[43,20,9],[30,40,9],[17,60,9],[43,60,9]],[[18,17,9],[42,17,9],[18,40,9],[42,40,9],[18,63,9],[42,63,9]],
+ [[13,12,6.5],[30,21,6.5],[47,30,6.5],[19,50,7.5],[41,50,7.5],[19,68,7.5],[41,68,7.5]],
+ [[18,13,7.5],[42,13,7.5],[18,31,7.5],[42,31,7.5],[18,49,7.5],[42,49,7.5],[18,67,7.5],[42,67,7.5]],
+ [[13,18,7.5],[30,18,7.5],[47,18,7.5],[13,40,7.5],[30,40,7.5],[47,40,7.5],[13,62,7.5],[30,62,7.5],[47,62,7.5]]];
+const DOTCOL=[[RED],[GREEN,BLUE],[BLUE,RED,GREEN],[BLUE,GREEN,GREEN,BLUE],[BLUE,GREEN,RED,GREEN,BLUE],[GREEN,GREEN,RED,RED,RED,RED],
+ [GREEN,GREEN,GREEN,RED,RED,RED,RED],[BLUE,BLUE,BLUE,BLUE,BLUE,BLUE,BLUE,BLUE],[BLUE,BLUE,BLUE,RED,RED,RED,GREEN,GREEN,GREEN]];
+const dot=(x,y,r,c)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="${c}" stroke-width="${r*0.42}"/><circle cx="${x}" cy="${y}" r="${r*0.38}" fill="${c}"/>`;
+const stick=(x,y,c,h)=>{h=h||20;return `<rect x="${x-3.6}" y="${y-h/2}" width="7.2" height="${h}" rx="3.4" fill="${c}"/><rect x="${x-4.4}" y="${y-1.4}" width="8.8" height="2.8" rx="1.4" fill="${c}" opacity=".9"/><line x1="${x}" y1="${y-h/2+3}" x2="${x}" y2="${y+h/2-3}" stroke="#fff" stroke-width="1.2" opacity=".55"/>`;};
+const BAM=[null,[[30,22],[30,58]],[[30,22],[18,58],[42,58]],[[18,22],[42,22],[18,58],[42,58]],[[16,22],[44,22],[30,40,RED],[16,58],[44,58]],
+ [[14,22],[30,22],[46,22],[14,58],[30,58],[46,58]],[[30,15,RED],[14,40],[30,40],[46,40],[14,64],[30,64],[46,64]],
+ [[12,22],[24,22],[36,22],[48,22],[12,58],[24,58],[36,58],[48,58]],
+ [[14,16,RED],[30,16,BLUE],[46,16,GREEN],[14,40,RED],[30,40,BLUE],[46,40,GREEN],[14,64,RED],[30,64,BLUE],[46,64,GREEN]]];
+function bamboo(n){if(n===1){return `<path d="M30 12c9 6 12 16 6 24 8 2 12 10 9 20-6-5-11-6-15-4 1 6-1 11-6 15-1-7-4-11-9-13 6-5 8-11 7-18-6 1-10-2-12-7 7 0 12-3 15-8-3-3-3-6 0-9z" fill="${GREEN}"/><circle cx="33" cy="20" r="2.4" fill="${RED}"/><path d="M24 64l-5 6M30 64v8M36 63l5 6" stroke="${RED}" stroke-width="2.4" stroke-linecap="round"/>`;}
+ return BAM[n-1].map(([x,y,c])=>stick(x,y,c||GREEN,n>=7?19:22)).join('');}
+const txt=(s,y,size,c,w)=>`<text x="30" y="${y}" font-size="${size}" fill="${c}" font-weight="${w||800}" text-anchor="middle" dominant-baseline="central" font-family="'Songti SC','STKaiti','KaiTi','Noto Serif CJK SC','Noto Serif CJK TC','PMingLiU',serif">${s}</text>`;
+const FLOWERS=['梅','蘭','菊','竹'],FLC=['#c2185b','#7b3fa0','#c77c02',GREEN],SEASONS=['春','夏','秋','冬'],SEC=[GREEN,RED,'#c77c02',BLUE];
+const cache=new Map();
+function svg(f){if(cache.has(f))return cache.get(f);let body='';
+ if(f<9)body=txt(NUM[f],22,27,'#1f2a44')+txt('萬',57,30,RED);
+ else if(f<18)body=DOTS[f-9].map(([x,y,r],i)=>dot(x,y,r,DOTCOL[f-9][i])).join('');
+ else if(f<27)body=bamboo(f-17);
+ else if(f<31)body=txt('東南西北'[f-27],40,40,'#1f2a44');
+ else if(f===31)body=txt('中',40,42,RED);
+ else if(f===32)body=txt('發',40,40,GREEN);
+ else if(f===33)body=`<rect x="12" y="14" width="36" height="52" rx="4" fill="none" stroke="${BLUE}" stroke-width="4"/><rect x="18" y="20" width="24" height="40" rx="2" fill="none" stroke="${BLUE}" stroke-width="1.6"/>`;
+ else if(f<38)body=txt(FLOWERS[f-34],44,34,FLC[f-34])+`<text x="8" y="14" font-size="11" fill="${FLC[f-34]}" font-weight="700">${f-33}</text>`+`<circle cx="44" cy="14" r="4" fill="${FLC[f-34]}" opacity=".85"/><circle cx="50" cy="19" r="2.6" fill="${FLC[f-34]}" opacity=".6"/>`;
+ else body=txt(SEASONS[f-38],44,34,SEC[f-38])+`<text x="8" y="14" font-size="11" fill="${SEC[f-38]}" font-weight="700">${f-37}</text>`;
+ const s=`<svg viewBox="0 0 60 80" aria-hidden="true" focusable="false">${body}</svg>`;cache.set(f,s);return s;}
+/* Spoken names for screen readers / hint text */
+const NAMES={
+ en:{char:'Characters',dot:'Dots',bam:'Bamboo',wind:['East wind','South wind','West wind','North wind'],dragon:['Red dragon','Green dragon','White dragon'],flower:['Plum','Orchid','Chrysanthemum','Bamboo flower'],season:['Spring','Summer','Autumn','Winter']},
+ ms:{char:'Aksara',dot:'Bulat',bam:'Buluh',wind:['Angin Timur','Angin Selatan','Angin Barat','Angin Utara'],dragon:['Naga Merah','Naga Hijau','Naga Putih'],flower:['Plum','Orkid','Kekwa','Bunga Buluh'],season:['Musim Bunga','Musim Panas','Musim Luruh','Musim Sejuk']},
+ zh:{char:'万',dot:'筒',bam:'条',wind:['东风','南风','西风','北风'],dragon:['红中','发财','白板'],flower:['梅','兰','菊','竹'],season:['春','夏','秋','冬']},
+ zt:{char:'萬',dot:'筒',bam:'條',wind:['東風','南風','西風','北風'],dragon:['紅中','發財','白板'],flower:['梅','蘭','菊','竹'],season:['春','夏','秋','冬']}};
+function name(f,lang){const N=NAMES[lang]||NAMES.en,cn=lang==='zh'||lang==='zt';
+ if(f<27){const n=f%9+1,s=f<9?N.char:f<18?N.dot:N.bam;return cn?NUM[n-1]+s:n+' '+s;}
+ if(f<31)return N.wind[f-27];if(f<34)return N.dragon[f-31];if(f<38)return N.flower[f-34];return N.season[f-38];}
+return {svg,name};
+})();
+if(typeof module!=='undefined')module.exports=MJTiles;
+</script>
+<script>
+/* MindGarden Mahjong Solitaire — page interface */
+'use strict';
+(function(){
+const TXT={
+en:{title:'Mahjong Garden',sub:'Match pairs of identical tiles. No timer, no penalties.',language:'Language',size:'Board',
+ sizes:{small:'Small · 40 tiles',medium:'Medium · 56 tiles',large:'Large · 68 tiles',expert:'Expert · 84 tiles'},
+ pairsLeft:'Pairs left',available:'Matches you can make',hint:'Hint',undo:'Undo',rearrange:'Rearrange',restart:'Restart',newBoard:'New board',
+ start:'Tap two matching tiles that are free (bright). A tile is free when nothing is on top of it and its left or right side is open.',
+ pick:'Now tap the matching tile.',match:'Lovely match! 🌿',notMatch:'Those two are different — try another tile.',blocked:'That tile is blocked. Free its left or right side, or clear the tiles on top first.',
+ won:'Garden cleared! Well played 🌸',wonSolo:'Garden cleared without any help — wonderful! 🌸',hintMsg:'Try these two: {name}.',
+ deadEnd:'Heads-up: from here the board can no longer be fully cleared. Tap Undo {n}× to get back on track, or tap Rearrange.',deadEndRe:'This board can no longer be fully cleared. Tap Rearrange to shuffle the remaining tiles.',
+ stuck:'No more matches. Tap Undo or Rearrange — you can still finish!',rearranged:'Tiles shuffled into a layout that can be cleared.',restarted:'Back to the start of this board.',undone:'Last pair put back.',
+ confirmSize:'Start a new board? The current one will be cleared.',yes:'Yes, new board',no:'Keep playing',restored:'Welcome back — your board was restored.',
+ how:'How to play',howText:'Find two identical tiles and tap them one after the other to remove them. Only free tiles can be used: bright tiles are free, greyed tiles are blocked. A tile is free when no tile is stacked on it and it has an open left or right side. The small number shows how many tiles are stacked in that spot. Plan ahead — taking the wrong pair can block tiles you need later. Hints always show a pair that still lets you clear the whole board.',
+ garden:'My garden',cleared:'Boards cleared',solo:'without help',earlier:'from the earlier version',
+ notice:'No ads, no timers, no sound. Your board is saved on this device. For recreation, not medical treatment.'},
+ms:{title:'Taman Mahjong',sub:'Padankan pasangan jubin yang sama. Tiada pemasa, tiada penalti.',language:'Bahasa',size:'Papan',
+ sizes:{small:'Kecil · 40 jubin',medium:'Sederhana · 56 jubin',large:'Besar · 68 jubin',expert:'Pakar · 84 jubin'},
+ pairsLeft:'Baki pasangan',available:'Padanan boleh dibuat',hint:'Petunjuk',undo:'Undur',rearrange:'Susun semula',restart:'Mula semula',newBoard:'Papan baharu',
+ start:'Ketik dua jubin sama yang bebas (cerah). Jubin bebas jika tiada jubin di atasnya dan sisi kiri atau kanannya terbuka.',
+ pick:'Sekarang ketik jubin yang sepadan.',match:'Padanan yang bagus! 🌿',notMatch:'Dua jubin itu berbeza — cuba jubin lain.',blocked:'Jubin itu terhalang. Buka sisi kiri atau kanannya, atau alihkan jubin di atasnya dahulu.',
+ won:'Taman berjaya dikosongkan! Syabas 🌸',wonSolo:'Dikosongkan tanpa sebarang bantuan — hebat! 🌸',hintMsg:'Cuba dua ini: {name}.',
+ deadEnd:'Perhatian: dari sini papan tidak lagi boleh dikosongkan sepenuhnya. Ketik Undur {n}× untuk kembali ke laluan betul, atau ketik Susun semula.',deadEndRe:'Papan ini tidak lagi boleh dikosongkan sepenuhnya. Ketik Susun semula untuk mengocok jubin yang tinggal.',
+ stuck:'Tiada padanan lagi. Ketik Undur atau Susun semula — anda masih boleh selesaikan!',rearranged:'Jubin dikocok menjadi susunan yang boleh diselesaikan.',restarted:'Kembali ke permulaan papan ini.',undone:'Pasangan terakhir dikembalikan.',
+ confirmSize:'Mulakan papan baharu? Papan sekarang akan dipadam.',yes:'Ya, papan baharu',no:'Teruskan bermain',restored:'Selamat kembali — papan anda telah dipulihkan.',
+ how:'Cara bermain',howText:'Cari dua jubin yang sama dan ketik satu demi satu untuk mengalihkannya. Hanya jubin bebas boleh digunakan: jubin cerah adalah bebas, jubin kelabu terhalang. Jubin bebas jika tiada jubin bertindih di atasnya dan sisi kiri atau kanannya terbuka. Nombor kecil menunjukkan bilangan jubin bertindih di tempat itu. Rancang dahulu — pasangan yang salah boleh menghalang jubin yang diperlukan kemudian. Petunjuk sentiasa menunjukkan pasangan yang masih membolehkan papan dikosongkan.',
+ garden:'Taman saya',cleared:'Papan diselesaikan',solo:'tanpa bantuan',earlier:'dari versi terdahulu',
+ notice:'Tiada iklan, tiada pemasa, tiada bunyi. Papan disimpan dalam peranti ini. Untuk rekreasi, bukan rawatan perubatan.'},
+zh:{title:'麻将花园',sub:'找出相同的牌两两配对。无计时，无惩罚。',language:'语言',size:'牌局',
+ sizes:{small:'小 · 40张',medium:'中 · 56张',large:'大 · 68张',expert:'高手 · 84张'},
+ pairsLeft:'剩余对数',available:'可配对',hint:'提示',undo:'撤销',rearrange:'重新洗牌',restart:'重来',newBoard:'新牌局',
+ start:'点两张相同且可用（明亮）的牌。牌上方没有牌、且左边或右边是空的，就可以用。',
+ pick:'再点一张相同的牌。',match:'配对成功！🌿',notMatch:'这两张不一样，换一张试试。',blocked:'这张牌被挡住了。先让它左边或右边空出来，或先拿走上面的牌。',
+ won:'全部清空！下得好 🌸',wonSolo:'不靠任何帮助就清空了，太棒了！🌸',hintMsg:'试试这两张：{name}。',
+ deadEnd:'提醒：照现在的局面已无法全部清空。点“撤销”{n}次回到正确路线，或点“重新洗牌”。',deadEndRe:'这一局已无法全部清空。点“重新洗牌”把剩下的牌重新排列。',
+ stuck:'没有可配对的牌了。点“撤销”或“重新洗牌”，你还是能完成的！',rearranged:'已重新洗牌，这个排列可以全部清空。',restarted:'已回到这一局的开头。',undone:'已放回上一对牌。',
+ confirmSize:'开始新牌局？当前牌局将被清除。',yes:'是，开新局',no:'继续玩',restored:'欢迎回来，你的牌局已恢复。',
+ how:'玩法说明',howText:'找出两张相同的牌，先后点一下就能拿走。只有可用的牌才能点：明亮的牌可用，灰色的牌被挡住。牌上方没有叠牌、且左边或右边是空的，就是可用的牌。小数字表示这个位置叠了几张牌。要先想好——拿错一对，可能会挡住以后需要的牌。“提示”给出的配对，一定还能让整局清空。',
+ garden:'我的花园',cleared:'已清空牌局',solo:'独立完成',earlier:'来自旧版本',
+ notice:'无广告、无计时、无声音。牌局保存在本设备。仅供休闲，不作医疗用途。'},
+zt:{title:'麻將花園',sub:'找出相同的牌兩兩配對。無計時，無懲罰。',language:'語言',size:'牌局',
+ sizes:{small:'小 · 40張',medium:'中 · 56張',large:'大 · 68張',expert:'高手 · 84張'},
+ pairsLeft:'剩餘對數',available:'可配對',hint:'提示',undo:'撤銷',rearrange:'重新洗牌',restart:'重來',newBoard:'新牌局',
+ start:'點兩張相同且可用（明亮）的牌。牌上方沒有牌、且左邊或右邊是空的，就可以用。',
+ pick:'再點一張相同的牌。',match:'配對成功！🌿',notMatch:'這兩張不一樣，換一張試試。',blocked:'這張牌被擋住了。先讓它左邊或右邊空出來，或先拿走上面的牌。',
+ won:'全部清空！下得好 🌸',wonSolo:'不靠任何幫助就清空了，太棒了！🌸',hintMsg:'試試這兩張：{name}。',
+ deadEnd:'提醒：照現在的局面已無法全部清空。點「撤銷」{n}次回到正確路線，或點「重新洗牌」。',deadEndRe:'這一局已無法全部清空。點「重新洗牌」把剩下的牌重新排列。',
+ stuck:'沒有可配對的牌了。點「撤銷」或「重新洗牌」，你還是能完成的！',rearranged:'已重新洗牌，這個排列可以全部清空。',restarted:'已回到這一局的開頭。',undone:'已放回上一對牌。',
+ confirmSize:'開始新牌局？目前牌局將被清除。',yes:'是，開新局',no:'繼續玩',restored:'歡迎回來，你的牌局已恢復。',
+ how:'玩法說明',howText:'找出兩張相同的牌，先後點一下就能拿走。只有可用的牌才能點：明亮的牌可用，灰色的牌被擋住。牌上方沒有疊牌、且左邊或右邊是空的，就是可用的牌。小數字表示這個位置疊了幾張牌。要先想好——拿錯一對，可能會擋住以後需要的牌。「提示」給出的配對，一定還能讓整局清空。',
+ garden:'我的花園',cleared:'已清空牌局',solo:'獨立完成',earlier:'來自舊版本',
+ notice:'無廣告、無計時、無聲音。牌局儲存在本裝置。僅供休閒，不作醫療用途。'}};
+const $=id=>document.getElementById(id),SIZES=['small','medium','large','expert'],KEY='mindgarden-mahjong-v2';
+const fmt=(s,o)=>s.replace(/\{(\w+)\}/g,(_,k)=>o[k]);
+function readLang(){let l=null;try{l=new URLSearchParams(location.search).get('lang');}catch(e){}
+ if(!TXT[l]){try{l=localStorage.getItem('mindgarden-lang');}catch(e){}}
+ if(!TXT[l]){try{const s=JSON.parse(localStorage.getItem('mindgarden-settings')||'null');l=s&&s.lang;}catch(e){}}return TXT[l]?l:'en';}
+function writeLang(l){try{localStorage.setItem('mindgarden-lang',l);const s=JSON.parse(localStorage.getItem('mindgarden-settings')||'{}')||{};s.lang=l;localStorage.setItem('mindgarden-settings',JSON.stringify(s));}catch(e){}}
+let lang=readLang();const T=()=>TXT[lang];
+let size='small',rows=6,startH=[],F=[],H=[],history=[],selected=-1,hinted=[],message='',warn='',helpUsed=false,busy=false,confirming=null,pendingSize=null;
+let stats={cleared:{},solo:{},earlier:0};
+/* ---------- persistence ---------- */
+function save(){try{localStorage.setItem(KEY,JSON.stringify({schema:1,size,rows,startH,F,history,helpUsed,stats}));}catch(e){}}
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'null');
+ if(d&&d.schema===1){if(d.stats&&typeof d.stats==='object')stats={cleared:Object.assign({},d.stats.cleared),solo:Object.assign({},d.stats.solo),earlier:+d.stats.earlier||0};
+  if(SIZES.includes(d.size)&&Array.isArray(d.startH)&&Array.isArray(d.F)&&Array.isArray(d.history)){const L=MJ.layout(d.size);
+   if(d.startH.length===L.H.length&&d.F.length===L.H.length&&d.startH.every((h,i)=>Number.isInteger(h)&&h>=0&&h<=L.H[i]&&Array.isArray(d.F[i])&&d.F[i].length===L.H[i]&&d.F[i].every(f=>Number.isInteger(f)&&f>=0&&f<MJ.NFACES))){
+    size=d.size;rows=L.rows;startH=d.startH.slice();F=d.F.map(c=>c.slice());H=startH.slice();history=[];
+    for(const p of d.history){if(!Array.isArray(p)||p.length!==2)break;const [a,b]=p;if(!MJ.isFree(H,a)||!MJ.isFree(H,b)||a===b||F[a][H[a]-1]!==F[b][H[b]-1])break;H[a]--;H[b]--;history.push([a,b]);}
+    helpUsed=!!d.helpUsed;return true;}}}
+ else{const old=JSON.parse(localStorage.getItem('mindgarden-mahjong-v1')||'null');if(old&&old.completedRecords&&typeof old.completedRecords==='object')stats.earlier=Math.min(100000,Object.keys(old.completedRecords).length);}
+ }catch(e){}return false;}
+/* ---------- game ---------- */
+function newBoard(sz){size=sz||size;const b=MJ.newBoard(size);rows=b.rows;startH=b.H.slice();F=b.F;H=startH.slice();history=[];selected=-1;hinted=[];warn='';helpUsed=false;message=T().start;save();buildBoard();render();}
+const left=()=>MJ.total(H)/2;
+function checkState(){warn='';if(!MJ.total(H))return;const ms=MJ.matches(H,F);
+ if(!ms.length){warn=T().stuck;return;}
+ if(MJ.solvable(H,F,30000)===false){const h=MJ.hint(H,F,history);warn=h.undo?fmt(T().deadEnd,{n:h.undo}):T().deadEndRe;}}
+function finish(){const won=!MJ.total(H);if(won){stats.cleared[size]=(stats.cleared[size]||0)+1;if(!helpUsed)stats.solo[size]=(stats.solo[size]||0)+1;message=helpUsed?T().won:T().wonSolo;}
+ save();render();if(won)$('board').classList.add('cleared');}
+function tap(cell){if(busy||confirming)return;if(!H[cell])return;
+ if(!MJ.isFree(H,cell)){message=T().blocked;shake(cell);render();return;}
+ if(selected===-1){selected=cell;message=T().pick;hinted=hinted.includes(cell)?hinted:[];render();return;}
+ if(selected===cell){selected=-1;message='';render();return;}
+ const fa=F[selected][H[selected]-1],fb=F[cell][H[cell]-1];
+ if(fa!==fb){message=T().notMatch;shake(cell);selected=cell;render();return;}
+ const a=selected,b=cell;busy=true;selected=-1;hinted=[];
+ for(const c of [a,b])tiles[c]&&tiles[c].classList.add('vanish');
+ setTimeout(()=>{H[a]--;H[b]--;history.push([a,b]);message=T().match;busy=false;checkState();finish();},230);}
+function shake(cell){const el=tiles[cell];if(!el)return;el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');}
+function undo(){if(!history.length||busy)return;const [a,b]=history.pop();H[a]++;H[b]++;helpUsed=true;selected=-1;hinted=[];message=T().undone;$('board').classList.remove('cleared');checkState();save();render();}
+function restart(){if(busy)return;H=startH.slice();history=[];helpUsed=true;selected=-1;hinted=[];warn='';message=T().restarted;$('board').classList.remove('cleared');save();render();}
+function rearrange(){if(busy||!MJ.total(H))return;const NF=MJ.rearrange(H,F);if(!NF)return;F=NF;startH=H.slice();history=[];helpUsed=true;selected=-1;hinted=[];warn='';message=T().rearranged;save();render();}
+function hint(){if(busy||!MJ.total(H))return;helpUsed=true;const h=MJ.hint(H,F,history);
+ if(h.pair){hinted=h.pair;selected=-1;message=fmt(T().hintMsg,{name:MJTiles.name(F[h.pair[0]][H[h.pair[0]]-1],lang)});warn='';}
+ else{hinted=[];warn=h.undo?fmt(T().deadEnd,{n:h.undo}):T().deadEndRe;}save();render();}
+/* ---------- rendering ---------- */
+let tiles=[];
+function buildBoard(){const root=$('board');root.innerHTML='';root.style.gridTemplateRows=`repeat(${rows},auto)`;root.classList.remove('cleared');tiles=[];
+ for(let i=0;i<rows*MJ.COLS;i++){const slot=document.createElement('div');slot.className='slot';const b=document.createElement('button');b.type='button';b.className='tile';
+  b.addEventListener('click',()=>tap(i));slot.appendChild(b);root.appendChild(slot);tiles.push(b);}}
+function stackShadow(h){const L=[];for(let k=1;k<h;k++)L.push(`${k*2.5}px ${k*3.5}px 0 ${k%2?'#d6c49a':'#c4ae7c'}`);L.push(`${h*2.5+1}px ${h*3.5+2}px 5px #5a4a2a55`);return L.join(',');}
+function render(){const t=T();
+ document.documentElement.lang=lang==='zh'?'zh-Hans':lang==='zt'?'zh-Hant':lang;document.title='MindGarden — '+t.title;
+ $('title').textContent='🀄 '+t.title;$('subtitle').textContent=t.sub;$('langLabel').textContent='🌐 '+t.language;$('lang').value=lang;$('sizeLabel').textContent=t.size;
+ $('size').innerHTML=SIZES.map(s=>`<option value="${s}">${t.sizes[s]}</option>`).join('');$('size').value=size;
+ const ms=MJ.total(H)?MJ.matches(H,F):[];
+ $('pairs').innerHTML=`${t.pairsLeft}: <b>${left()}</b>`;$('avail').innerHTML=`${t.available}: <b>${ms.length}</b>`;
+ const won=!MJ.total(H);$('msg').textContent=message||t.start;$('msg').className='msg'+(won?' win':'');$('warn').textContent=warn;$('warn').hidden=!warn||won;
+ $('hintBtn').textContent='💡 '+t.hint;$('undoBtn').textContent='↶ '+t.undo;$('reBtn').textContent='🔀 '+t.rearrange;$('restartBtn').textContent='⟲ '+t.restart;$('newBtn').textContent=(won?'🌸 ':'＋ ')+t.newBoard;
+ $('hintBtn').disabled=won;$('undoBtn').disabled=!history.length;$('reBtn').disabled=won;$('restartBtn').disabled=!history.length;$('newBtn').classList.toggle('primary',won);
+ $('confirm').hidden=!confirming;$('confirmText').textContent=t.confirmSize;$('confirmYes').textContent=t.yes;$('confirmNo').textContent=t.no;
+ $('howTitle').textContent=t.how;$('howText').textContent=t.howText;$('gardenTitle').textContent=t.garden;$('notice').textContent=t.notice;
+ $('gardenText').innerHTML=`<p>${t.cleared}</p>`+SIZES.map(s=>`<div>${t.sizes[s].split(' · ')[0]}: <b>${stats.cleared[s]||0}</b> · ${t.solo}: <b>${stats.solo[s]||0}</b></div>`).join('')+(stats.earlier?`<div>${t.earlier}: <b>${stats.earlier}</b></div>`:'');
+ for(let i=0;i<tiles.length;i++){const el=tiles[i],h=H[i];
+  if(!h){el.hidden=true;el.parentNode.classList.add('empty');continue;}
+  el.hidden=false;el.parentNode.classList.remove('empty');const f=F[i][h-1],free=MJ.isFree(H,i);
+  let cls='tile'+(free?' free':' blocked')+(i===selected?' sel':'')+(hinted.includes(i)?' hint':'');el.className=cls;
+  el.style.boxShadow=stackShadow(h);el.style.transform=`translate(${-(h-1)*2.5}px,${-(h-1)*3.5}px)`;
+  const key=f+':'+h;if(el._k!==key){el._k=key;el.innerHTML=MJTiles.svg(f)+(h>1?`<span class="badge">${h}</span>`:'');}
+  el.setAttribute('aria-label',MJTiles.name(f,lang)+(h>1?` (${h})`:'')+(free?'':' — blocked'));el.setAttribute('aria-disabled',String(!free));}}
+/* ---------- events ---------- */
+$('lang').addEventListener('change',e=>{lang=e.target.value;writeLang(lang);message='';if(warn)checkState();render();});
+$('size').addEventListener('change',e=>{const v=e.target.value;if(history.length&&MJ.total(H)){pendingSize=v;confirming=true;e.target.value=size;render();return;}newBoard(v);});
+$('confirmYes').addEventListener('click',()=>{confirming=null;const s=pendingSize||size;pendingSize=null;newBoard(s);});
+$('confirmNo').addEventListener('click',()=>{confirming=null;pendingSize=null;render();});
+$('hintBtn').addEventListener('click',hint);$('undoBtn').addEventListener('click',undo);$('reBtn').addEventListener('click',rearrange);$('restartBtn').addEventListener('click',restart);
+$('newBtn').addEventListener('click',()=>{if(history.length&&MJ.total(H)){confirming=true;pendingSize=size;render();return;}newBoard(size);});
+/* ---------- start ---------- */
+if(load()){buildBoard();message=T().restored;checkState();render();}else newBoard('small');
+window.MG_MAHJONG={get H(){return H},get F(){return F},tap,hint:()=>MJ.hint(H,F,history)};
+if('serviceWorker' in navigator&&location.protocol==='https:')window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
+})();
+</script>
+</body></html>
