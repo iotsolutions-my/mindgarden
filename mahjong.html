@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#164c3c"><meta name="mindgarden-build" content="3.15.0">
+<meta name="theme-color" content="#164c3c"><meta name="mindgarden-build" content="3.15.1">
 <title>MindGarden — Mahjong Garden</title><meta name="description" content="Relaxing Mahjong solitaire with real tiles: 100 levels, a daily puzzle, stars and a garden that grows. English, Bahasa Melayu and Chinese. No ads.">
 <meta property="og:type" content="website"><meta property="og:site_name" content="MindGarden"><meta property="og:title" content="MindGarden — Mahjong Garden"><meta property="og:description" content="Relaxing Mahjong solitaire with real tiles: 100 levels, a daily puzzle, stars and a garden that grows. English, Bahasa Melayu and Chinese. No ads.">
 <meta property="og:image" content="./social-preview.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
@@ -42,7 +42,7 @@ details{margin-top:4px}summary{font-weight:750;cursor:pointer;min-height:44px;di
 .topbar{display:flex;align-items:center;gap:8px;padding:8px 10px;background:linear-gradient(120deg,#164c3c,#2f7b5c);color:#fff}
 .topbar button{min-height:44px;border:0;border-radius:12px;background:#ffffff26;color:#fff;font-weight:700;padding:6px 12px}
 .topbar .t{flex:1;font-weight:800;font-size:1.1rem;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.topbar .p{font-weight:700;white-space:nowrap}
-.msgbar{min-height:2.6em;padding:6px 12px;font-size:1rem;line-height:1.3;color:#22513e;font-weight:600;display:flex;align-items:center}
+.msgbar{min-height:2.6em;transition:background .2s;padding:6px 12px;font-size:1rem;line-height:1.3;color:#22513e;font-weight:600;display:flex;align-items:center}
 .warn{margin:0 10px 6px;background:#fff3df;border:2px solid #e8b779;color:#6d4415;border-radius:14px;padding:8px 10px;display:flex;align-items:center;gap:10px;justify-content:space-between;font-weight:600}
 .warn button{min-height:44px;border:0;border-radius:12px;background:#a65d12;color:#fff;font-weight:800;padding:6px 12px;white-space:nowrap}
 #stage{flex:1;position:relative;margin:0 6px;border-radius:18px;display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:0}
@@ -75,6 +75,7 @@ details{margin-top:4px}summary{font-weight:750;cursor:pointer;min-height:44px;di
 .dots span{min-height:34px;border-radius:10px;background:#f1ecdc;display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#b9ad8a;letter-spacing:-1px}
 .dots span.done{background:#fff3cf;color:#d39400}.dots span.here{background:#1f6d50;color:#fff;font-size:.95rem}
 .nextup{color:#4f6a5b;font-size:.98rem;margin-top:4px}
+.msgbar.alert{background:#fff3df;color:#7a4510;border-radius:12px;margin:0 8px 6px;padding:6px 10px}
 </style></head>
 <body>
 <div id="home" class="wrap">
@@ -91,7 +92,6 @@ details{margin-top:4px}summary{font-weight:750;cursor:pointer;min-height:44px;di
 <div id="game" hidden>
 <div class="topbar"><button type="button" id="backBtn"></button><span id="lvlTitle" class="t"></span><span id="pairsLeft" class="p"></span></div>
 <div id="msg" class="msgbar" aria-live="polite"></div>
-<div id="warn" class="warn" role="status" hidden><span id="warnText"></span><button type="button" id="warnBtn"></button></div>
 <div id="stage"><div id="board"></div>
 <div id="stuck" class="overlay" hidden><div class="dialog"><h2 id="stuckTitle"></h2><p id="stuckText"></p><button type="button" id="stuckShuf" class="go"></button><button type="button" id="stuckUndo"></button></div></div>
 </div>
@@ -281,20 +281,20 @@ if(typeof module!=='undefined')module.exports=MJTiles;
 'use strict';
 (function(){
 const TXT={
-en:{progOf:'{n} of 100 levels cleared',chapterN:'Chapter {n}',nextUp:'Next: level {n}',title:'Mahjong Garden',sub:'Relaxing tile matching. No timer, no penalties.',language:'Language',
+en:{undoHint:'Tap Undo {n}× to get back on track.',shuffleHint:'Tap Shuffle to continue.',progOf:'{n} of 100 levels cleared',chapterN:'Chapter {n}',nextUp:'Next: level {n}',title:'Mahjong Garden',sub:'Relaxing tile matching. No timer, no penalties.',language:'Language',
  cont:'Continue',level:'Level',playLevel:'Play level {n}',resume:'Resume level {n}',daily:'Today’s puzzle',dailyPlay:'Play today’s puzzle',dailyDone:'Done for today ✓ — come back tomorrow!',
  streak:'{n}-day streak',noStreak:'Play daily to build a streak',garden:'My garden',stars:'stars',allDone:'All 100 levels cleared — wonderful! Replay any level or try today’s puzzle.',
  levels:'Levels',pairs:'{n} pairs left',hint:'Hint',undo:'Undo',shuffle:'Shuffle',restart:'Restart',
  start:'Tap two matching bright tiles. Grey tiles are blocked.',pick:'Now tap the matching tile.',match:'Lovely match! 🌿',notMatch:'Not the same — try another tile.',
  blocked:'That tile is blocked. A tile can be used when nothing is on top of it and its left or right side is open.',hintMsg:'Try these two: {name}',
- deadEnd:'From here the board can no longer be cleared.',undoN:'↶ Undo {n}',reshuffled:'Tiles shuffled — this layout can be cleared.',restarted:'Level restarted.',undone:'Last pair put back.',
+ deadEnd:'This board can no longer be cleared.',undoN:'↶ Undo {n}',reshuffled:'Tiles shuffled — this layout can be cleared.',restarted:'Level restarted.',undone:'Last pair put back.',
  stuckTitle:'No more matches',stuckText:'Shuffle the remaining tiles, or undo a few moves.',
  won:'Garden cleared!',wonDaily:'Today’s puzzle done!',next:'Next level ▶',toLevels:'All levels',home:'Home',starNote:['','Cleared with help','A little help (up to 2) — 2 stars','No help at all — 3 stars!'],
  how:'How to play',howText:'Remove all tiles in pairs. Tap two identical tiles to remove them. Only bright tiles can be used: a tile is free when no tile lies on top of it and its left or right side is open. Tiles stacked higher must be cleared first. Hint always shows a pair that still lets you finish. Earn 3 stars by clearing a level without Hint, Undo, Shuffle or Restart; every star plants a flower in your garden.',
  notice:'No ads, no timers, no sound. Progress is saved on this device. For recreation, not medical treatment.',
  stages:['Seedling','Sprout','Budding garden','Blossoming garden','Flower grove','Garden paradise','Master gardener'],
  chapters:['Jasmine Path','Orchid Valley','Hibiscus Hill','Lotus Pond','Plum Blossom Court','Chrysanthemum Terrace','Rose Garden','Peony Pavilion','Sunflower Field','Lily Lake']},
-ms:{progOf:'{n} daripada 100 tahap selesai',chapterN:'Bab {n}',nextUp:'Seterusnya: tahap {n}',title:'Taman Mahjong',sub:'Padankan jubin dengan santai. Tiada pemasa, tiada penalti.',language:'Bahasa',
+ms:{undoHint:'Ketik Undur {n}× untuk kembali ke laluan betul.',shuffleHint:'Ketik Kocok untuk teruskan.',progOf:'{n} daripada 100 tahap selesai',chapterN:'Bab {n}',nextUp:'Seterusnya: tahap {n}',title:'Taman Mahjong',sub:'Padankan jubin dengan santai. Tiada pemasa, tiada penalti.',language:'Bahasa',
  cont:'Teruskan',level:'Tahap',playLevel:'Main tahap {n}',resume:'Sambung tahap {n}',daily:'Teka-teki hari ini',dailyPlay:'Main teka-teki hari ini',dailyDone:'Selesai hari ini ✓ — datang lagi esok!',
  streak:'{n} hari berturut-turut',noStreak:'Main setiap hari untuk kumpul rentetan',garden:'Taman saya',stars:'bintang',allDone:'Semua 100 tahap selesai — hebat! Main semula mana-mana tahap atau cuba teka-teki hari ini.',
  levels:'Tahap',pairs:'{n} pasangan lagi',hint:'Petunjuk',undo:'Undur',shuffle:'Kocok',restart:'Mula semula',
@@ -307,7 +307,7 @@ ms:{progOf:'{n} daripada 100 tahap selesai',chapterN:'Bab {n}',nextUp:'Seterusny
  notice:'Tiada iklan, tiada pemasa, tiada bunyi. Kemajuan disimpan dalam peranti ini. Untuk rekreasi, bukan rawatan perubatan.',
  stages:['Benih','Tunas','Taman berputik','Taman berbunga','Rimbunan bunga','Taman syurga','Pakar taman'],
  chapters:['Laluan Melati','Lembah Orkid','Bukit Bunga Raya','Kolam Teratai','Laman Bunga Plum','Teres Kekwa','Taman Ros','Wakaf Peoni','Ladang Bunga Matahari','Tasik Lili']},
-zh:{progOf:'已完成 {n} / 100 关',chapterN:'第{n}章',nextUp:'下一关：第{n}关',title:'麻将花园',sub:'轻松配对，无计时，无惩罚。',language:'语言',
+zh:{undoHint:'点“撤销”{n}次即可回到正确路线。',shuffleHint:'点“洗牌”继续。',progOf:'已完成 {n} / 100 关',chapterN:'第{n}章',nextUp:'下一关：第{n}关',title:'麻将花园',sub:'轻松配对，无计时，无惩罚。',language:'语言',
  cont:'继续',level:'第{n}关',playLevel:'开始第{n}关',resume:'继续第{n}关',daily:'今日一局',dailyPlay:'玩今日一局',dailyDone:'今天已完成 ✓ 明天再来！',
  streak:'连续{n}天',noStreak:'每天玩一局，累积连续天数',garden:'我的花园',stars:'颗星',allDone:'100关全部完成，太棒了！可以重玩任何一关，或玩今日一局。',
  levels:'关卡',pairs:'剩{n}对',hint:'提示',undo:'撤销',shuffle:'洗牌',restart:'重来',
@@ -320,7 +320,7 @@ zh:{progOf:'已完成 {n} / 100 关',chapterN:'第{n}章',nextUp:'下一关：�
  notice:'无广告、无计时、无声音。进度保存在本设备。仅供休闲，不作医疗用途。',
  stages:['种子','发芽','含苞待放','花开满园','百花丛','花园天堂','园艺大师'],
  chapters:['茉莉小径','兰花谷','大红花山','莲花池','梅花庭','菊花台','玫瑰园','牡丹亭','向日葵田','百合湖']},
-zt:{progOf:'已完成 {n} / 100 關',chapterN:'第{n}章',nextUp:'下一關：第{n}關',title:'麻將花園',sub:'輕鬆配對，無計時，無懲罰。',language:'語言',
+zt:{undoHint:'點「撤銷」{n}次即可回到正確路線。',shuffleHint:'點「洗牌」繼續。',progOf:'已完成 {n} / 100 關',chapterN:'第{n}章',nextUp:'下一關：第{n}關',title:'麻將花園',sub:'輕鬆配對，無計時，無懲罰。',language:'語言',
  cont:'繼續',level:'第{n}關',playLevel:'開始第{n}關',resume:'繼續第{n}關',daily:'今日一局',dailyPlay:'玩今日一局',dailyDone:'今天已完成 ✓ 明天再來！',
  streak:'連續{n}天',noStreak:'每天玩一局，累積連續天數',garden:'我的花園',stars:'顆星',allDone:'100關全部完成，太棒了！可以重玩任何一關，或玩今日一局。',
  levels:'關卡',pairs:'剩{n}對',hint:'提示',undo:'撤銷',shuffle:'洗牌',restart:'重來',
@@ -419,6 +419,7 @@ function layout(){if(!G)return;const st=$('stage'),W=st.clientWidth-12,Hh=st.cli
  G.P.forEach((p,i)=>{const e=els[i];e.style.width=tw+'px';e.style.height=th+'px';e.style.left=(p.x/2*tw+(maxZ-p.z)*dz)+'px';e.style.top=(p.y/2*th+(maxZ-p.z)*dz)+'px';
   e.style.setProperty('--d',dz+'px');e.style.borderRadius=Math.round(tw*0.13)+'px';});}
 window.addEventListener('resize',()=>{if(G&&!$('game').hidden)layout();});
+if(window.ResizeObserver)new ResizeObserver(()=>{if(G&&!$('game').hidden)layout();}).observe($('stage'));
 /* ---------- rendering ---------- */
 let msg='';function setMsg(m){msg=m;}
 function render(){const t=T();if(!G)return;const B=G.B;
@@ -429,7 +430,7 @@ function render(){const t=T();if(!G)return;const B=G.B;
  for(let i=0;i<B.N;i++){const e=els[i];if(!B.alive[i]){if(!e.classList.contains('gone'))e.hidden=true;continue;}e.hidden=false;
   e.className='tile'+(B.free(i)?' free':' blocked')+(i===selected?' sel':'')+(hinted.includes(i)?' hint':'');
   e.setAttribute('aria-label',MJTiles.name(G.F[i],lang)+(B.free(i)?'':' — blocked'));}
- $('msg').textContent=msg;$('warn').hidden=!warnUndo&&!warnShown;$('warnText').textContent=t.deadEnd;$('warnBtn').hidden=!warnUndo;$('warnBtn').textContent=fmt(t.undoN,{n:warnUndo});
+ const dead=warnShown||warnUndo>0;$('msg').textContent=dead?t.deadEnd+' '+(warnUndo?fmt(t.undoHint,{n:warnUndo}):t.shuffleHint):msg;$('msg').classList.toggle('alert',dead);
  const stuck=B.left&&!B.matches().length&&!busy;$('stuck').hidden=!stuck;$('stuckTitle').textContent=t.stuckTitle;$('stuckText').textContent=t.stuckText;$('stuckShuf').textContent='🔀 '+t.shuffle;$('stuckUndo').textContent='↶ '+t.undo;$('stuckUndo').disabled=!G.history.length;}
 /* ---------- play ---------- */
 function tap(i){if(busy||!G)return;const B=G.B;if(!B.alive[i])return;
@@ -475,7 +476,7 @@ $('contBtn').addEventListener('click',()=>{const g=prog.game;if(g&&g.kind==='lev
 $('dailyBtn').addEventListener('click',()=>startGame('daily',today(),true));
 $('backBtn').addEventListener('click',()=>{persist();G=null;show('home');});
 $('hintBtn').addEventListener('click',hint);$('undoBtn').addEventListener('click',()=>undo(1));$('shufBtn').addEventListener('click',shuffleTiles);$('restBtn').addEventListener('click',restart);
-$('warnBtn').addEventListener('click',()=>undo(warnUndo));$('stuckShuf').addEventListener('click',shuffleTiles);$('stuckUndo').addEventListener('click',()=>undo(1));
+$('stuckShuf').addEventListener('click',shuffleTiles);$('stuckUndo').addEventListener('click',()=>undo(1));
 $('winNext').addEventListener('click',()=>{$('win').hidden=true;startGame('level',G.id+1,false);});
 $('winHome').addEventListener('click',()=>{$('win').hidden=true;G=null;show('home');});
 /* ---------- start ---------- */
