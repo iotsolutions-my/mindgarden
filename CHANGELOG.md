@@ -1,5 +1,58 @@
 # MindGarden changelog
 
+## v3.23.0 — Smart City Phase 2: gameplay that matters
+**Emergencies on the map**
+- Fires, crime, vandalism, road accidents and dengue calls now appear on the map: flames and smoke for fires, flashing beacons for police calls, a red marker for medical calls.
+- Tap the flashing spot (or the first mission button) to send a real crew: a 🚒 fire truck, 🚓 police car or 🚑 ambulance leaves the nearest connected station and drives there along your roads.
+- Response time depends on where you built your stations. Arriving within 10 seconds earns +RM 150, and within 20 seconds +RM 70. Slow responses suggest building closer.
+- The mission button shows the expected arrival time. With no station connected by road, it says so, and you can still hire outside help.
+- Coverage view: choose the Police, Fire station, Hospital or Clinic tool to see which roads are reached quickly (green), slowly (yellow), and which homes are too far (red).
+
+**A friendlier daily rhythm**
+- 4 missions a day instead of 10 (2 incidents, 1 building goal, 1 community event), with a short 4-second pause instead of 15 seconds.
+- **Next Day is never locked.** Unfinished missions add a little disruption and reset the streak, but the game never stops you.
+- Older saves keep the first four missions of the current day.
+
+**Residents have a voice**
+- Speech bubbles above homes say what residents need: a clinic, a park, shops, a bus stop, police, a fire station, a road, water, power, jobs, or less traffic. Happy neighbourhoods say so too.
+- Tap a bubble to pick the building that helps. The 💬 button turns bubbles on or off.
+
+**Demand bars and a growing city**
+- A "What residents want" bar shows demand for Homes, Shops and Jobs. Tap a bar to choose a matching building.
+- Residents now upgrade their own homes for free: in happy, connected neighbourhoods with water, power, shops and jobs, houses become apartments and apartments become condominiums, behind the construction crane. Turn this on or off under City administration.
+
+**Smaller changes**
+- New, smaller traffic lights with red, amber and green lamps, and a slimmer IoT sensor.
+- All 7 existing Smart City regression tests still pass. Your city save is unchanged.
+
+## v3.22.0 — Smart City Phase 1: a city that looks alive
+**Graphics**
+- Sunlight and soft shadows: every building casts a shadow, and walls get gentle shading so the city looks solid.
+- Day and night: an automatic cycle (about 6 minutes) with sunset colours. At night, windows, street lamps, headlights, shop fronts and aircraft lights glow. A new 🌓 button switches between automatic, always day and night (saved on the device).
+- Weather: rain falls during flood and landslide missions; a haze tint appears during haze alerts or when pollution is high.
+- New building models, each with variations so neighbours don't look identical:
+  - Houses in three styles (gable roof, hip roof, double-storey terrace), with different wall and roof colours, gardens and parked cars.
+  - Apartments: brick blocks with balconies, in three heights. Condominiums: glass towers on a podium with a rooftop pool, or twin towers.
+  - Offices: glass towers with fins, a rooftop helipad, antenna or crown. Shops: shophouses with a five-foot way, awnings and signboards.
+  - City Hall with columns, pediment, copper dome and flag. Community hall with porch. Factory with sawtooth roof and striped chimney.
+  - Hotel with balconies, glowing sign and pool. Mall with glass atrium and rooftop car park. Hospital with red cross and rooftop helipad.
+  - Police station with a parked patrol car. Fire station with garage doors, fire truck and hose tower. Warehouse with roller doors. Logistics hub with loading docks and trucks.
+- Vehicles now face the way they drive, keep to the left lane, and each type has its own shape: cars, taxis with roof signs, police cars with light bars, ambulances with crosses, fire trucks with ladders, long buses, and lorries with coloured containers. Emergency lights flash.
+- Aircraft: helicopters with spinning main and tail rotors, quad-rotor drones, and passenger planes that take off from and land at your airport.
+- Ships: container ships stacked with containers, barges, and yachts with sails, all turning to follow their route, with a wake.
+- Construction: a new building rises behind scaffolding with a turning tower crane (about 18 seconds).
+- Chimney smoke now rises from the factory chimney and drifts with the wind.
+
+**Performance**
+- The city is now drawn in cached 16×16-tile blocks and only rebuilt where something changed, instead of rebuilding the whole scene 60 times a second. Much more detail now draws at about the same speed as the old, simpler scene in testing.
+
+**Tidy-up**
+- Smart City now follows the language chosen on the main menu, and changing it in Smart City updates the menu too.
+- "← MindGarden" returns to the Big games list in the right language.
+- Removed the old "v3.2.31" from the title; added the build number and social-sharing tags.
+- Translated the remaining English-only labels on the dashboard (Pollution, Environment (ESG), Ports, routes).
+- Your existing city save (`mindgarden_city3d_v2_single`) is unchanged and loads as before. All existing Smart City regression tests pass.
+
 ## v3.21.0 — Logic Squares diagonal rule
 - **Challenge** and **Expert** now use the diagonal rule: both long diagonals (shaded purple) must also contain each number once, as well as every row, column and box.
 - Challenge: 4×4 grid with diagonals and fewer starting numbers. Expert: 6×6 grid with diagonals (about 23 empty squares).

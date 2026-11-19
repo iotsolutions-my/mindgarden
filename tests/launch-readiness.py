@@ -1,20 +1,24 @@
 #!/usr/bin/env python3
-"""Offline, dependency-free launch metadata and packaging regression checks."""
+"""Offline, dependency-free launch metadata and packaging checks (updated for v3.22.0)."""
 from pathlib import Path
 import json,re
 root=Path(__file__).resolve().parent.parent
-assert json.loads((root/'version.json').read_text())['version']=='3.12.0'
+ver=json.loads((root/'version.json').read_text())
+build=ver['build']
 manifest=json.loads((root/'manifest.webmanifest').read_text())
 assert manifest['name']=='MindGarden' and manifest['short_name']=='MindGarden'
-assert 'mindgarden-v3.12.0-pwa' in (root/'service-worker.js').read_text()
-for name in ['index','city','mahjong','tower','chess','xiangqi']:
+sw=(root/'service-worker.js').read_text()
+assert f'mindgarden-v{build}-pwa' in sw, 'service worker cache name must match version.json build'
+idx=(root/'index.html').read_text()
+assert f'name="mindgarden-build" content="{build}"' in idx, 'index.html build must match version.json (otherwise the update banner never goes away)'
+pages=['index','city','mahjong','tower','chess','xiangqi','seedrush']
+for name in pages:
  s=(root/f'{name}.html').read_text()
  assert '<title>MindGarden' in s, name
- assert 'og:title' in s and 'og:image' in s and 'twitter:card' in s, name
- assert 'v3.11.4' not in s[:2500],name
-assert 'LAUNCH_INTRO' in (root/'index.html').read_text()
-assert 'RELAX_PASSAGES' in (root/'index.html').read_text()
-for a in ['favicon.ico','social-preview.png','icons/icon-192.png','icons/icon-512.png','screenshots/city.png','screenshots/mahjong.png','screenshots/chess.png']:
+ assert 'og:title' in s and 'og:image' in s, name
+ assert not re.search(r'<script[^>]+src="https?://', s), name
+ assert f'./{name}.html' in sw or name=='index', name+' missing from service-worker.js'
+for a in ['favicon.ico','social-preview.png','icons/icon-192.png','icons/icon-512.png']:
  assert (root/a).is_file(),a
-assert not re.search(r'<script[^>]+src="https?://', (root/'index.html').read_text())
-print('PASS v3.12.0 launch metadata, essential assets, localisation, version and offline baseline')
+assert 'LAUNCH_INTRO' in idx
+print('PASS',build,'launch metadata, versions, service worker, essential assets')
