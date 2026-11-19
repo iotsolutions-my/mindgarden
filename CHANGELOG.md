@@ -1,5 +1,12 @@
 # MindGarden changelog
 
+## v3.30.3 — Seed Rush: tap or hold to move on phones
+- Seed Rush is now easy to steer on a phone. Tap any spot on the maze and the ladybird walks there by itself along the shortest route, then stops. A pulsing red ring shows where it is heading.
+- Keep your finger on the maze and the ladybird follows it as you move.
+- Tapping a hedge picks the nearest path the ladybird can reach.
+- The arrow keys and arrow buttons still work as before.
+- Seed Rush build 3.20.2.
+
 ## v3.30.2 — Smart City: air-show smoke instead of the banner
 - The tourism helicopter now trails 5 ribbons of coloured smoke (red, orange, yellow, green and blue), like an air show, instead of a plain banner.
 - The smoke widens and fades to white as it drifts behind the helicopter.
