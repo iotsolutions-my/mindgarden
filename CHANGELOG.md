@@ -1,5 +1,20 @@
 # MindGarden changelog
 
+## v3.30.2 — Smart City: air-show smoke instead of the banner
+- The tourism helicopter now trails 5 ribbons of coloured smoke (red, orange, yellow, green and blue), like an air show, instead of a plain banner.
+- The smoke widens and fades to white as it drifts behind the helicopter.
+- The "✈️ Visit Malaysia!" or "🧳 Cuti-cuti Malaysia!" sign now follows the helicopter itself.
+
+## v3.30.1 — Smart City fix: aircraft clear tall buildings; no drawn flags
+- Fixed: drones and helicopters could fly through high-rise buildings. They used to fly at a fixed height.
+  - Each flight path now measures the real height of every building under and beside it, then flies above the tallest one.
+  - This covers airport helicopters, drones and the Visit Malaysia banner helicopter.
+  - Flight heights update automatically as the city grows.
+- Removed all drawn flags, because a simplified flag can look like an incorrect national flag:
+  - The banner is now plain white with a gold edge. The sign above it reads "✈️ Visit Malaysia!" or "🧳 Cuti-cuti Malaysia!".
+  - Street decorations for Merdeka and Malaysia Day are now gold and blue festive pennants.
+  - Flag emoji are replaced: 🎆 Merdeka Day, 🎊 Malaysia Day and 🎉 on the celebration card.
+
 ## v3.30.0 — Smart City: festival streets, Cuti-cuti Malaysia and the banner helicopter
 **Closed streets now show the celebration**
 - A street closed for a festival now has red-and-white barricades with "no entry" signs and traffic cones at both ends.
@@ -7,14 +22,14 @@
   - Chinese New Year: red and gold stalls, a string of red lanterns and two lion dancers (red and yellow) that move up and down the street.
   - Hari Raya and the Malaysian open house: green and gold bazaar stalls with pelita lamps.
   - Deepavali: a large kolam on the road, oil lamps, and orange and pink stalls.
-  - Merdeka and Malaysia Day: Jalur Gemilang flags along both sides and a parade float driving down the street.
+  - Merdeka and Malaysia Day: festive pennants along both sides and a parade float driving down the street.
   - Thaipusam: devotees in yellow carrying kavadi.
   - Wesak: a lit float procession. The Mid-Autumn festival gets coloured lanterns.
 - Lanterns, lamps and stall lights glow at night. The street reopens the next day as before.
 
 **New missions**
 - 🧳 Cuti-cuti Malaysia weekend: holidaymakers from other states visit. Promoting food trails and homestays earns more for each food place and heritage building.
-- 🚁 Visit Malaysia tourism expo: with the "Banner helicopter and expo booths" option, a yellow helicopter circles the city for the rest of the day towing a Jalur Gemilang banner with a "Visit Malaysia!" sign. Income grows with your heritage buildings.
+- 🚁 Visit Malaysia tourism expo: with the "Banner helicopter and expo booths" option, a yellow helicopter circles the city for the rest of the day towing a banner with a "Visit Malaysia!" sign. Income grows with your heritage buildings.
 - Both missions are available from the first village, with no penalty for small towns.
 - The banner sign is in all 4 languages.
 
