@@ -1,5 +1,5 @@
 {
-  "version": "3.28.1",
-  "build": "3.28.1",
+  "version": "3.29.0",
+  "build": "3.29.0",
   "notes": "Smart City fix: a new day starts with clear missions; Undo no longer crosses into the previous day."
 }

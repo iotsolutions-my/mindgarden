@@ -1,5 +1,57 @@
 # MindGarden changelog
 
+## v3.29.0 — Smart City: Malaysian festivals at national scale, local food and heritage
+**National celebrations now involve most of the city**
+- Major festivals are celebrated by most Malaysians at open houses, in their neighbourhoods and at places of worship, so they now draw most of the city instead of a few hundred people:
+  - Merdeka Day: about 90% of residents.
+  - Malaysia Day, Hari Raya Aidilfitri and Chinese New Year: about 85%.
+  - Deepavali and the Malaysian open house: about 80%.
+  - Gawai and Kaamatan, and the Mid-Autumn lantern festival: about 70%.
+  - Wesak Day: about 65%.
+  - Thaipusam: about 60% of residents, but the highest share of visitors from other towns.
+- Residents celebrate at home and in their own neighbourhood, so venues no longer cap how many residents take part. Parks, roads, food places, places of worship and heritage sites decide how many visitors the city can welcome.
+- Rewards grow with the crowd, so national festivals are now a good source of income for small towns.
+- Concerts, expos and other ticketed events keep the venue-based model. Gotong-royong stays at about 30%.
+- The result line is in all 4 languages, for example: "(340 participants · 85% of residents celebrating · 30 visitors)".
+- The mission card shows "National celebration" with residents celebrating, the share of residents, visitors expected and room for visitors.
+
+**New celebrations**
+- 🇲🇾 Malaysia Day (16 September), 🌾 Gawai and Kaamatan harvest festival, 🪷 Wesak Day and 🏮 Mid-Autumn lantern festival.
+- 🍛 Malaysian food festival (nasi lemak, roti canai, char kuey teow, satay, teh tarik). It earns more for each food place in the city.
+- 🏛️ Heritage walk. It earns more for each heritage building.
+- Merdeka, CNY, Hari Raya, Deepavali and Thaipusam have new descriptions and options that reflect open-house culture. The stewarded option can close a street for the day for every major festival.
+
+**Festive decorations**
+- After a celebration is held, the city is decorated for the rest of that day:
+  - Merdeka and Malaysia Day: Jalur Gemilang flags.
+  - Chinese New Year: red lanterns.
+  - Hari Raya and the open house: pelita lamps.
+  - Deepavali: kolam patterns and oil lamps.
+  - Mid-Autumn: coloured lanterns.
+  - Wesak: yellow lanterns.
+- Lanterns and lamps glow at night.
+
+**New local food and heritage buildings** (in "🍜 Local food & heritage")
+
+| Building | Price | Unlocks at | Visitors | Income |
+|---|---|---|---|---|
+| ☕ Kopitiam (heritage coffee shop) | RM 650 | start | +6 | +RM 110/day |
+| 🍛 Mamak restaurant (24 hours) | RM 700 | start | +8 | +RM 130/day |
+| 🏡 Kampung house homestay | RM 600 | start | +12 | +RM 80/day |
+| 🏪 Heritage shophouses | RM 1,200 | Town | +30 | +RM 180/day |
+| 🏺 Heritage museum | RM 2,600 | Town | +70 | +RM 260/day |
+| 🥁 Cultural performance centre | RM 3,600 | City | +120 | +RM 420/day |
+
+- Kopitiam: marble tables and a red signboard.
+- Mamak: zinc awning, plastic stools and a "24 hours" sign that lights up at night.
+- Kampung house: stilts, a coconut tree and wooden stairs.
+- Heritage shophouses: a row of 3 pastel shophouses with a five-foot way and red lanterns.
+- Heritage museum: a colonial building with columns and gold domes.
+- Cultural performance centre: a curved-horn roof and an open-air stage with dancers.
+- The kopitiam and mamak meet residents' need for shops. Heritage buildings also add happiness (up to +8) and bring more visitors to festivals.
+- The food court is now called "Food court / hawker centre", because the mamak has its own building.
+- New building goals for the kopitiam, mamak, kampung house, shophouses and museum.
+
 ## v3.28.1 — Smart City fix: clean mission list each day
 - Fixed: a new day could show ✓ ticks on missions not yet played. Cause: pressing Undo after Next Day took the city back to the previous day while keeping the new day's mission records, so the same day number came round twice.
 - Undo now works only within the current day ("Nothing to undo" after Next Day).
