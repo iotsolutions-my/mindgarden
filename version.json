@@ -1,5 +1,5 @@
 {
-  "version": "3.24.0",
-  "build": "3.24.0",
-  "notes": "Smart City Phase 3: tabs with the map first, city levels and landmarks, daily report cards, scenario maps, postcards."
+  "version": "3.25.0",
+  "build": "3.25.0",
+  "notes": "Smart City Phase 4: airport runways, curved bridges and rivers, more coverage maps, money on the map."
 }

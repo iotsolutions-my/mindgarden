@@ -1,5 +1,33 @@
 # MindGarden changelog
 
+## v3.25.0 — Smart City Phase 4: airports, bridges, coverage and money you can see
+**Airports with real runways**
+- A new airport now comes with a terminal, control tower and a 4-tile runway, laid out automatically in a straight line beside the terminal (it needs 4 empty tiles in a row).
+- Planes land on the runway, roll to the terminal, turn around, take off and climb away, instead of flying into the building. A small plane is parked at the gate. Runway edge lights glow at night.
+- Existing airports get a runway automatically when there is room; otherwise they keep the old flight path.
+- Bulldozing any part of the runway removes the airport (with the usual partial refund).
+
+**Bridges and rivers that bend**
+- Bridges are drawn like roads: straight sections, corners, T-junctions and crossings, with railings only on the open sides.
+- Rivers join their neighbouring river, pond, sea and wetland tiles, so curves and bends look continuous, with sandy banks.
+- Roads can now cross rivers: building a road on a river tile makes a road bridge (RM 480). Bulldozing it gives the river back.
+
+**Smoke and steam**
+- Fixed: some nuclear plants and factories had no smoke when the city had many of them. Smoke now follows what's on screen, and both nuclear cooling towers release steam.
+
+**Coverage maps for more services**
+- Coverage now shows for the Police station, Fire station, Hospital, Clinic, Bus terminal, Subway station, Taxi stop, and community buildings (Community hall, Mosque/Surau, Temple, Church, Event hall).
+- It also shows when you use 🔎 Inspect on one of these buildings.
+- A legend on the map explains the colours: quick to reach, slow to reach, too far.
+
+**Money always visible**
+- A 💰 cash card on the map shows your cash, the expected daily balance (▲ profit or ▼ loss per day) and the price of the building you've selected. It turns orange when cash is low or the city is losing money.
+- The daily balance uses exactly the same calculation as Next Day.
+- Every build, bulldoze and refund shows a short "−RM" or "+RM" label above the plot.
+- Cash is now the first number in the stats row.
+
+All 7 Smart City regression tests and the earlier browser checks still pass.
+
 ## v3.24.0 — Smart City Phase 3: reasons to come back
 **Simpler screen, map first**
 - The map now comes first on phones, with Undo and Next Day right below it.
