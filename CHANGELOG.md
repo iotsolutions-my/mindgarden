@@ -1,5 +1,23 @@
 # MindGarden changelog
 
+## v3.30.0 — Smart City: festival streets, Cuti-cuti Malaysia and the banner helicopter
+**Closed streets now show the celebration**
+- A street closed for a festival now has red-and-white barricades with "no entry" signs and traffic cones at both ends.
+- Inside the barricades there are food stalls and a crowd of residents in festive colours:
+  - Chinese New Year: red and gold stalls, a string of red lanterns and two lion dancers (red and yellow) that move up and down the street.
+  - Hari Raya and the Malaysian open house: green and gold bazaar stalls with pelita lamps.
+  - Deepavali: a large kolam on the road, oil lamps, and orange and pink stalls.
+  - Merdeka and Malaysia Day: Jalur Gemilang flags along both sides and a parade float driving down the street.
+  - Thaipusam: devotees in yellow carrying kavadi.
+  - Wesak: a lit float procession. The Mid-Autumn festival gets coloured lanterns.
+- Lanterns, lamps and stall lights glow at night. The street reopens the next day as before.
+
+**New missions**
+- 🧳 Cuti-cuti Malaysia weekend: holidaymakers from other states visit. Promoting food trails and homestays earns more for each food place and heritage building.
+- 🚁 Visit Malaysia tourism expo: with the "Banner helicopter and expo booths" option, a yellow helicopter circles the city for the rest of the day towing a Jalur Gemilang banner with a "Visit Malaysia!" sign. Income grows with your heritage buildings.
+- Both missions are available from the first village, with no penalty for small towns.
+- The banner sign is in all 4 languages.
+
 ## v3.29.1 — Smart City fix: the postcard can be copied
 - Fixed: the 📷 postcard button opened the Windows share window and never copied the picture, so pasting into WhatsApp or Paint gave nothing.
 - The button now opens a preview of the postcard with these buttons:
