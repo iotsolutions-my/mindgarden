@@ -1,5 +1,20 @@
 # MindGarden changelog
 
+## v3.20.0 — Category menu, new Sentence Detective, Logic Squares fix
+**Main menu**
+- The home screen now shows four large category buttons: Words & Language, Memory & Attention, Numbers & Logic, and Big games. Tapping one opens that category's own game list. No sideways scrolling and no long page to scroll through.
+- **Back** returns to the screen you came from (game → category → home). If a game was opened from a bookmark, Back goes to its category. A 🏠 button jumps straight home from anywhere.
+- Today's three and the daily streak stay on the home screen, under the category buttons.
+- On phones, Settings is shown as an icon so the top bar has room for the screen title.
+
+**Sentence Detective (English and Malay), new content**
+- Replaced the old 10 paragraphs (reused five times each) with **100 different passages per language**: 25 for each comfort level, from simple daily-life sentences (Relax) to linking words and cause and effect (Challenge) and precise vocabulary (Expert).
+- Every passage has one blank and three hand-written wrong choices that fit the grammar but not the meaning. A wrong choice never appears in the passage itself, so the answer can no longer be guessed by spotting the word that isn't there.
+- Each comfort level keeps its own ✓ completion marks.
+
+**Logic Squares fix**
+- Fixed: a correctly filled grid was sometimes not accepted, because some puzzles had more than one valid answer and only the stored one counted. Puzzles are now generated with exactly one solution, and any complete grid with no clashes counts as a win.
+
 ## v3.19.0 — New home menu and upgraded puzzle games
 **Main page (`index.html`)**
 - New app-style layout: a slim top bar with **Back** and **Settings**, a clean home menu, a separate game screen and a separate Settings screen. The games no longer sit underneath the whole menu.
