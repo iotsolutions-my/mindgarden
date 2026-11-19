@@ -1,129 +1,417 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#164c3c"><meta name="google" content="notranslate">
-<title>Tower Escape — MindGarden</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#164c3c"><meta name="google" content="notranslate"><meta name="mindgarden-build" content="3.17.1">
+<title>MindGarden — Tower Escape</title><meta name="description" content="Climb 36 towers, collect seeds and outsmart robots. Tap to walk, big friendly controls. English, Bahasa Melayu and Chinese. No ads.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="MindGarden"><meta property="og:title" content="MindGarden — Tower Escape"><meta property="og:description" content="Climb 36 towers, collect seeds and outsmart robots. Tap to walk, big friendly controls. English, Bahasa Melayu and Chinese. No ads.">
+<meta property="og:image" content="./social-preview.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="MindGarden — Tower Escape"><meta name="twitter:description" content="Climb 36 towers, collect seeds and outsmart robots. Tap to walk, big friendly controls. English, Bahasa Melayu and Chinese. No ads."><meta name="twitter:image" content="./social-preview.png">
+<link rel="icon" href="./favicon.ico" sizes="any"><link rel="manifest" href="./manifest.webmanifest">
 <style>
-:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1e4236;background:#f3f8f1}*{box-sizing:border-box}body{margin:0}button,select{font:inherit}button{cursor:pointer;touch-action:manipulation}button:focus-visible,select:focus-visible{outline:3px solid #eeb166;outline-offset:2px}.wrap{max-width:960px;margin:auto;padding:16px 14px 60px}.hero{background:linear-gradient(120deg,#164c3c,#2b7758);color:white;border-radius:22px;padding:19px 21px}.top{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}h1{font-size:1.65rem;line-height:1.15;margin:8px 0}.muted{color:#e0f0e5;margin:4px 0 0}a.back{display:inline-block;color:#fff;text-decoration:none;background:#ffffff20;padding:9px 14px;border-radius:12px;font-weight:700}select{border:2px solid #d1e3d3;background:#fff;color:#1e4236;border-radius:12px;padding:9px;min-height:45px}.panel{margin-top:14px;background:white;border:1px solid #dce9d9;border-radius:22px;padding:16px;box-shadow:0 7px 22px #22462e10}.stats{display:flex;gap:9px;flex-wrap:wrap;align-items:center;justify-content:space-between}.stat{border-radius:11px;background:#eef6e8;padding:10px 13px;font-weight:700}.board{border:4px solid #8ab5a1;overflow:hidden;border-radius:16px;background:#d3ead9;position:relative;margin-top:13px;touch-action:pan-y}.board canvas{display:block;width:100%;max-width:100%;height:auto;image-rendering:auto}.board.zoomed canvas{width:100%;height:auto}#arcadeMode{font-size:.84rem;white-space:nowrap}.message{min-height:46px;padding:11px 13px;border-radius:12px;background:#eef7e8;line-height:1.4;margin-top:11px;font-weight:600}.row{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.action{background:#f2f8f0;border:2px solid #bbd7c2;border-radius:13px;padding:11px 14px;min-height:48px;color:#20523d;font-weight:750;flex:1}.action.primary{background:#287856;color:white;border-color:#287856}.controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:365px;margin:14px auto 4px}.control{font-size:1.38rem;font-weight:800;min-height:60px;border:2px solid #b6d5bf;border-radius:15px;background:#eaf5e8;color:#20513b;user-select:none;-webkit-user-select:none;touch-action:none}.control:active{background:#bce6c6}.instructions{font-size:.93rem;line-height:1.6;color:#50695b;margin-top:14px}.foot{text-align:center;color:#718677;font-size:.82rem;margin:20px 0}.row label{font-size:.85rem}.badge{display:inline-block;padding:4px 9px;border-radius:999px;background:#e3f1e6;color:#286644;font-size:.83rem}#notice{font-size:.94rem}@media(max-width:550px){.wrap{padding:10px 8px 30px}.hero{padding:15px}.panel{padding:10px}.stat{font-size:.85rem;padding:8px 9px}.control{min-height:55px}.action{font-size:.9rem;padding:10px}.top select{max-width:142px}}
-</style>
-</head><body>
-<main class="wrap">
-<header class="hero"><div class="top"><a class="back" href="./index.html" id="back">← MindGarden</a><select id="lang" aria-label="Language"><option value="en">English</option><option value="ms">Bahasa Melayu</option><option value="zh">简体中文</option><option value="zt">繁體中文</option></select></div><h1 id="title">🌱 Tower Escape</h1><p class="muted" id="tagline">Collect seeds, climb, dig and outsmart rolling obstacles.</p></header>
-<section class="panel">
-<div class="stats"><span class="stat" id="level">Level 1 / 36</span><span class="stat" id="seeds">Seeds: 0 / 0</span><span class="stat" id="lives">Hearts: ♥♥♥</span><span class="stat" id="arcadeMode">Arcade Adventure</span></div>
-<div class="board"><canvas id="game" width="768" height="448" role="img" aria-label="Tower Escape game board"></canvas></div>
-<div class="message" id="notice" role="status" aria-live="polite"></div>
-<div class="controls" aria-label="Touch controls">
-<span></span><button class="control" id="up" aria-label="Up">↑</button><span></span>
-<button class="control" id="left" aria-label="Left">←</button><button class="control" id="down" aria-label="Down">↓</button><button class="control" id="right" aria-label="Right">→</button>
-<button class="control" id="digLeft" aria-label="Dig left">⛏ ↙</button><button class="control" id="stop" aria-label="Pause">⏸</button><button class="control" id="digRight" aria-label="Dig right">⛏ ↘</button>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#22392f;background:#f3f7f1;font-size:17px;-webkit-text-size-adjust:100%}
+*{box-sizing:border-box}body{margin:0}body.playing{overflow:hidden}button,select{font:inherit;color:inherit}button{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #eeaf64;outline-offset:2px}[hidden]{display:none!important}
+.wrap{max-width:640px;margin:auto;padding:14px 12px 48px}
+.hero{border-radius:22px;padding:14px 18px 16px;color:#fff;background:linear-gradient(120deg,#164c3c,#2f7b5c)}
+.back{display:inline-flex;align-items:center;min-height:44px;color:#fff;text-decoration:none;background:#ffffff26;border-radius:12px;padding:8px 14px;font-weight:650}
+.hero h1{font-size:1.7rem;margin:10px 0 2px}.hero p{margin:4px 0 0;color:#e3f2dc}
+.ctrl{display:flex;align-items:center;gap:10px;font-weight:650;margin:12px 2px}.ctrl select{min-height:48px;border:2px solid #c3d8c7;border-radius:12px;background:#fff;padding:8px 10px;flex:1;max-width:280px}
+.big{display:block;width:100%;min-height:64px;border:0;border-radius:18px;background:#1f6d50;color:#fff;font-size:1.25rem;font-weight:800;box-shadow:0 5px 0 #154c38;margin:6px 0 14px}
+.big:active{transform:translateY(3px);box-shadow:0 2px 0 #154c38}
+.card{background:#fff;border:1px solid #dcebd9;border-radius:20px;padding:14px;box-shadow:0 6px 18px #274b3312;margin-bottom:14px}.card h2{margin:0 0 6px;font-size:1.15rem}
+.bar{height:14px;background:#e6efe3;border-radius:8px;overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;background:linear-gradient(90deg,#7cc28d,#f0b429)}
+.alldone{background:#fff4e2;border:2px solid #e2b26a;border-radius:14px;padding:10px 12px;margin-bottom:12px;font-weight:650}
+.replay select{width:100%;min-height:48px;border:2px solid #c3d8c7;border-radius:12px;background:#fff;padding:8px 10px;margin-top:6px}
+details summary{font-weight:750;cursor:pointer;min-height:44px;display:flex;align-items:center;font-size:1.05rem}.note{line-height:1.6;color:#2f4b3e}
+.legend{display:grid;gap:8px;margin-top:6px}.lg{display:flex;align-items:center;gap:12px;line-height:1.35}.lg canvas{width:44px;height:44px;flex:none;background:#eef5ec;border-radius:10px}
+.notice{color:#4f6a5b;font-size:.95rem;text-align:center;margin-top:16px;line-height:1.5}
+/* ---------- game ---------- */
+#game{position:fixed;inset:0;display:flex;flex-direction:column;background:#f3f7f1;height:100vh;height:100dvh}
+.topbar{display:flex;align-items:center;gap:8px;padding:8px 10px;background:linear-gradient(120deg,#164c3c,#2f7b5c);color:#fff}
+.topbar button{min-height:44px;border:0;border-radius:12px;background:#ffffff26;color:#fff;font-weight:700;padding:6px 12px}
+.topbar .t{flex:1;font-weight:800;font-size:1.1rem;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hearts{font-size:1.3rem;color:#ffb3c1;letter-spacing:2px;white-space:nowrap}
+.infobar{display:flex;align-items:center;gap:6px;padding:6px 8px}
+.chip{font-weight:800;font-size:1.05rem;background:#fff7dc;border:2px solid #f0d488;border-radius:12px;padding:6px 10px;white-space:nowrap}
+.infobar button{min-height:44px;border:2px solid #b9d5bf;border-radius:12px;background:#e9f4ec;color:#1f5540;font-weight:750;padding:4px 8px;flex:1 1 0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.infobar #pauseBtn{flex:0 0 48px;padding:4px}.chip{flex:none}
+#stage{flex:1;position:relative;margin:0 6px;border-radius:16px;overflow:hidden;min-height:0;border:3px solid #9cc2ac}
+#cv{display:block;touch-action:none}
+.msgbar{min-height:2.6em;padding:5px 12px;font-size:1rem;line-height:1.3;color:#22513e;font-weight:600;display:flex;align-items:center}
+.pad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:0 8px calc(8px + env(safe-area-inset-bottom));max-width:520px;margin:0 auto;width:100%}
+.pad button{min-height:56px;border:2px solid #b6d5bf;border-radius:16px;background:#eaf5e8;color:#20513b;font-size:1.5rem;font-weight:800;user-select:none;-webkit-user-select:none;touch-action:none}
+.pad button:active{background:#bce6c6}.pad .dig{background:#fbf0dc;border-color:#e2c38c;color:#7a4a10;font-size:1.2rem}
+.overlay{position:fixed;inset:0;background:#0f2d2366;display:flex;align-items:center;justify-content:center;z-index:900;padding:16px}
+.dialog{background:#fffdf6;border-radius:24px;padding:22px 18px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 50px #0005}
+.dialog h2{margin:6px 0;font-size:1.5rem;color:#1d5a40}.dialog p{font-size:1.05rem;line-height:1.45;margin:8px 0 14px}
+.dialog button{display:block;width:100%;min-height:56px;margin-top:10px;border-radius:16px;font-weight:800;font-size:1.1rem;border:2px solid #b9d5bf;background:#e9f4ec;color:#1f5540}
+.dialog button.go{background:#1f6d50;border-color:#1f6d50;color:#fff}
+.stars{font-size:3rem;letter-spacing:6px;color:#d9d2bf}.stars span{display:inline-block}.stars .on{color:#f2b51c;animation:pop .5s backwards}
+@keyframes pop{0%{transform:scale(0) rotate(-30deg)}80%{transform:scale(1.25)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.stars .on{animation:none}}
+@media(max-width:440px){.wrap{padding:8px 6px 32px}.hero h1{font-size:1.45rem}.infobar{gap:4px;padding:6px 5px}.infobar button{font-size:.88rem;padding:4px 4px}.chip{font-size:.95rem;padding:6px 7px}}
+@media(min-width:900px){.pad{max-width:420px}}
+</style></head>
+<body>
+<div id="home" class="wrap">
+<header class="hero"><a class="back" href="./index.html">← MindGarden</a><h1 id="title"></h1><p id="subtitle"></p></header>
+<label class="ctrl"><span id="langLabel">Language</span><select id="lang"><option value="en">English</option><option value="ms">Bahasa Melayu</option><option value="zh">简体中文</option><option value="zt">繁體中文</option></select></label>
+<button type="button" id="playBtn" class="big"></button>
+<p id="allDone" class="alldone" hidden></p>
+<section class="card"><h2 id="progTitle"></h2><div class="bar"><i id="progBar"></i></div><div id="progStars"></div>
+<div id="replayBox" class="replay"><label><span id="replayLabel"></span><select id="replay"></select></label></div></section>
+<details class="card" open><summary id="howTitle"></summary><p id="howText" class="note"></p><div id="legend" class="legend"></div></details>
+<p id="notice" class="notice"></p>
 </div>
-<div class="row"><button class="action" id="hint">💡 Hint</button><button class="action" id="zoom">🔍 Zoom</button><button class="action" id="restart">↻ Retry</button><button class="action" id="skip">⇥ Skip</button><button class="action primary" id="next" hidden>Next level →</button></div>
-<details class="level-picker" style="margin-top:12px;border:1px solid #cddfcd;border-radius:13px;padding:11px"><summary id="chooseText" style="font-weight:700;cursor:pointer">Choose an unlocked tower</summary><div class="row" style="align-items:center"><select id="chooseLevel" aria-label="Choose unlocked tower"></select><span id="mapInfo" class="badge"></span></div></details>
-<p class="instructions" id="instructions">Use ← → to move, ↑ ↓ for ladders, Z / X to dig diagonally. Collect all seeds, then reach the glowing exit. Avoid robots and rolling stones. No timer.</p>
-</section><p class="foot" id="footer">Free · No ads · No music · Automatic local saves · No installation required</p>
-</main>
+<div id="game" hidden>
+<div class="topbar"><button type="button" id="backBtn"></button><span id="towerTitle" class="t"></span><span id="hearts" class="hearts" aria-label="hearts"></span></div>
+<div class="infobar"><span id="seedCount" class="chip"></span><button type="button" id="hintBtn"></button><button type="button" id="mapBtn"></button><button type="button" id="retryBtn"></button><button type="button" id="pauseBtn" aria-label="Pause"></button></div>
+<div id="stage"><canvas id="cv" role="img" aria-label="Tower Escape game board"></canvas></div>
+<div id="msg" class="msgbar" aria-live="polite"></div>
+<div class="pad" aria-label="Controls">
+<span></span><button type="button" id="bUp" aria-label="Up">↑</button><span></span>
+<button type="button" id="bLeft" aria-label="Left">←</button><button type="button" id="bDown" aria-label="Down">↓</button><button type="button" id="bRight" aria-label="Right">→</button>
+</div>
+</div>
+<div id="win" class="overlay" hidden><div class="dialog"><div id="winStars" class="stars"></div><h2 id="winTitle"></h2><p id="winNote"></p><button type="button" id="winNext" class="go"></button><button type="button" id="winHome"></button></div></div>
+<div id="lose" class="overlay" hidden><div class="dialog"><h2 id="loseTitle"></h2><p id="loseText"></p><button type="button" id="loseRetry" class="go"></button><button type="button" id="loseHome"></button></div></div>
+<div id="confirm" class="overlay" hidden><div class="dialog"><p id="confirmText"></p><button type="button" id="confirmYes" class="go"></button><button type="button" id="confirmNo"></button></div></div>
+<noscript><p style="text-align:center">Please enable JavaScript to play.</p></noscript>
 <script>
+/* MindGarden Tower Escape v2 — original, offline. Collect every seed, then reach the garden gate. */
 'use strict';
-(()=>{
-const COUNT=36,T=32,VIEW_W=22,VIEW_H=14,SAVE_KEY='mindgarden_tower_escape_v1';
-const $=id=>document.getElementById(id),canvas=$('game'),ctx=canvas.getContext('2d'),board=document.querySelector('.board');
-const LANG={
- en:{name:'🌱 Tower Escape',sub:'36 towers · Arcade Adventure · Compact controls',level:'Level',seeds:'Seeds',hearts:'Hearts',choose:'Choose an unlocked tower',floors:'floors',ready:'Collect the seeds and reach the gate. Watch the new obstacles!',hint:'Hint',retry:'Retry level',skip:'Skip level',next:'Next level',select:'Unlocked towers',locked:'Clear or skip a tower to unlock the next.',instructions:'Move with arrows / WASD or touch; climb ladders with ↑ ↓. Dig with Z/X. Watch spikes, conveyor belts, rolling stones and crumbling floors. No countdown.',foot:'No ads · No sound · Browser-playable · Autosave',pause:'Paused. Press ▶ to resume.',won:'Tower cleared! Next tower starting…',final:'All 36 towers explored! Replay any unlocked tower.',seed:'Seed found!',unlock:'Gate unlocked! Find the exit at the top right.',hit:'Watch out! Try another route.',trap:'A temporary hole was dug.',crumble:'Careful: this floor is crumbling!',goal:'Aim for the highlighted seed, then the exit.',back:'← MindGarden',mode:'Puzzle Adventure',arcade:'Arcade Adventure',zoom:'Zoom',confirm:'Restart this tower?',zoomInfo:'Tap Zoom to see the full tower; tap again to return to readable tiles.'},
- ms:{name:'🌱 Pelarian Menara',sub:'36 menara · Mod Arked · Kawalan ringkas',level:'Tahap',seeds:'Benih',hearts:'Nyawa',choose:'Pilih menara yang dibuka',floors:'tingkat',ready:'Kutip semua benih dan ke pintu keluar. Awas halangan baharu!',hint:'Petunjuk',retry:'Cuba lagi',skip:'Langkau tahap',next:'Tahap seterusnya',select:'Menara dibuka',locked:'Selesaikan atau langkau menara untuk membuka tahap berikutnya.',instructions:'Gerak dengan anak panah / WASD atau sentuhan; naik tangga dengan ↑ ↓. Gali dengan Z/X. Awas duri, tali sawat, batu bergolek dan lantai rapuh. Tiada masa tamat.',foot:'Tanpa iklan · Tiada bunyi · Main di web · Simpan automatik',pause:'Dijeda. Tekan ▶ untuk sambung.',won:'Menara selesai! Tahap seterusnya bermula…',final:'Semua 36 menara diterokai! Ulang mana-mana menara.',seed:'Benih ditemui!',unlock:'Pintu dibuka! Cari jalan ke kanan atas.',hit:'Awas! Cuba jalan lain.',trap:'Lubang sementara digali.',crumble:'Awas: lantai hampir runtuh!',goal:'Cari benih ditanda, kemudian keluar.',back:'← MindGarden',mode:'Pengembaraan Teka-teki',arcade:'Pengembaraan Arked',zoom:'Zum',confirm:'Mulakan semula menara ini?',zoomInfo:'Tekan Zum untuk melihat seluruh menara; tekan lagi untuk jubin besar.'},
- zh:{name:'🌱 高塔探险',sub:'36关 · 街机冒险 · 简洁操控',level:'关卡',seeds:'种子',hearts:'生命',choose:'选择已解锁关卡',floors:'层',ready:'收集种子，抵达出口。留意新增障碍！',hint:'提示',retry:'重试',skip:'跳过',next:'下一关',select:'已解锁关卡',locked:'完成或跳过当前关卡以解锁下一关。',instructions:'方向键 / WASD 或触控移动；↑ ↓ 爬梯，Z/X 挖洞。小心尖刺、传送带、滚石和易碎地板。没有倒计时。',foot:'无广告 · 无声音 · 网页游玩 · 自动保存',pause:'已暂停。按 ▶ 继续。',won:'成功过关！即将进入下一关…',final:'36关全部探索完成！可重玩已解锁关卡。',seed:'找到种子！',unlock:'出口已开启！前往右上角。',hit:'小心！换条路试试。',trap:'已挖出临时陷阱。',crumble:'小心！地板正在碎裂！',goal:'寻找标记的种子，然后前往出口。',back:'← MindGarden',mode:'益智冒险',arcade:'街机冒险',zoom:'缩放',confirm:'重新开始这一关？',zoomInfo:'点击缩放可看完整高塔，再点可恢复大方块。'},
- zt:{name:'🌱 高塔探險',sub:'36關 · 街機冒險 · 簡潔操控',level:'關卡',seeds:'種子',hearts:'生命',choose:'选择已解锁关卡',floors:'層',ready:'收集種子，抵達出口。留意新增障礙！',hint:'提示',retry:'重試',skip:'跳過',next:'下一關',select:'已解鎖關卡',locked:'完成或跳過目前關卡以解鎖下一關。',instructions:'方向鍵 / WASD 或觸控移動；↑ ↓ 爬梯，Z/X 挖洞。小心尖刺、輸送帶、滾石和易碎地板。沒有倒數。',foot:'無廣告 · 無聲音 · 網頁遊玩 · 自動儲存',pause:'已暫停。按 ▶ 繼續。',won:'成功過關！即將進入下一關…',final:'36關全部探索完成！可重玩已解鎖關卡。',seed:'找到種子！',unlock:'出口已開啟！前往右上角。',hit:'小心！換條路試試。',trap:'已挖出暫時陷阱。',crumble:'小心！地板正在碎裂！',goal:'尋找標記的種子，然後前往出口。',back:'← MindGarden',mode:'益智冒險',arcade:'街機冒險',zoom:'縮放',confirm:'重新開始這一關？',zoomInfo:'點擊縮放可看完整高塔，再點可恢復大方塊。'}
-};
-function initialLang(){const q=new URLSearchParams(location.search).get('lang');if(LANG[q])return q;try{const a=JSON.parse(localStorage.getItem('mindgarden-settings')||'{}');if(LANG[a.lang])return a.lang;}catch(_){}return localStorage.getItem('mindgarden-tower-language')||'en'}
-function rng(seed){let s=seed>>>0;return ()=>{s=(Math.imul(1664525,s)+1013904223)>>>0;return s/4294967296}}
+(function(){
+const COUNT=36,KEY='mindgarden-tower-v2';
+const TXT={
+en:{ready:'Robots start moving when you do.',zoomNames:['All','Mid','Near'],speed:'Robot speed',speeds:['Gentle (slower robots)','Normal'],title:'Tower Escape',sub:'Collect every seed, then climb to the garden gate.',language:'Language',play:'Play tower {n}',resume:'Resume tower {n}',
+ progress:'{n} of 36 towers cleared',stars:'stars',replay:'Replay a cleared tower',choose:'Choose…',tower:'Tower {n}',seeds:'{a}/{b}',
+ hint:'Hint',retry:'Retry',map:'Map',back:'← Home',
+ start:'Move with the arrow buttons. Tap left or right of the gardener to dig. Collect all {n} seeds, then reach the gate.',seed:'Seed collected! {n} to go.',allSeeds:'All seeds collected — the gate is open! Find it at the top right.',
+ gateLocked:'The gate opens when every seed is collected.',hit:'Ouch! You lost a heart. Back to a safe spot.',noRoute:'No walking route there yet. Try a ladder, or dig (⛏) down through the floor.',
+ hintMsg:'Follow the golden dots.',dug:'You dug a hole. Robots that step in get stuck for a while.',cantDig:'You can dig the brick marked ⛏ just beside your feet — also while on a ladder.',
+ mapOn:'Whole tower shown. Tap Map again to return.',paused:'Paused',won:'Tower cleared!',note:['','Cleared!','Only one heart lost — 2 stars','No hearts lost — 3 stars!'],
+ next:'Next tower ▶',home:'Home',lostTitle:'Out of hearts',lostText:'No problem — try this tower again. Watch where the robots walk.',tryAgain:'Try again',allDone:'All 36 towers cleared — wonderful! Replay any tower to collect more stars.',
+ how:'How to play',howText:'Move with the arrow buttons; climb ladders with ↑ and ↓. Tap left or right of the gardener to dig the brick marked ⛏ and drop to the floor below — robots that walk into a hole get stuck for a while, and you can walk over them. Collect every seed, then go to the gate. Each touch from a robot, boulder or thorns costs a heart; you restart from a safe spot. Lose all three hearts and the tower starts again. No timer.',
+ legend:[['seed','Seed — collect them all'],['gate','Garden gate — opens when all seeds are collected'],['robot','Robot — patrols its floor; shows ! when it spots you and may follow you one floor down; falls into holes'],['rock','Boulder — rolls along the dotted track'],['thorns','Thorns — do not step on them'],['crumble','Cracked floor — breaks soon after you step on it'],['belt','Moving floor — carries you along']],
+ notice:'No ads, no timers, no sound. Progress is saved on this device. Keyboard: arrows/WASD to move, Z/X to dig left/right, Space to pause.'},
+ms:{ready:'Robot mula bergerak apabila anda bergerak.',zoomNames:['Semua','Sedang','Dekat'],speed:'Kelajuan robot',speeds:['Lembut (robot perlahan)','Biasa'],title:'Pelarian Menara',sub:'Kutip semua benih, kemudian panjat ke pintu taman.',language:'Bahasa',play:'Main menara {n}',resume:'Sambung menara {n}',
+ progress:'{n} daripada 36 menara selesai',stars:'bintang',replay:'Main semula menara yang selesai',choose:'Pilih…',tower:'Menara {n}',seeds:'{a}/{b}',
+ hint:'Petunjuk',retry:'Cuba lagi',map:'Peta',back:'← Utama',
+ start:'Gerak dengan butang anak panah. Ketik di kiri atau kanan tukang kebun untuk menggali. Kutip semua {n} benih, kemudian ke pintu.',seed:'Benih dikutip! Tinggal {n}.',allSeeds:'Semua benih dikutip — pintu dibuka! Ia di kanan atas.',
+ gateLocked:'Pintu dibuka apabila semua benih dikutip.',hit:'Aduh! Satu nyawa hilang. Kembali ke tempat selamat.',noRoute:'Belum ada laluan berjalan ke sana. Cuba tangga, atau gali (⛏) ke bawah.',
+ hintMsg:'Ikut titik emas.',dug:'Anda menggali lubang. Robot yang masuk akan tersekat seketika.',cantDig:'Anda boleh menggali bata bertanda ⛏ di sebelah kaki anda — juga semasa di tangga.',
+ mapOn:'Seluruh menara dipaparkan. Ketik Peta sekali lagi untuk kembali.',paused:'Dijeda',won:'Menara selesai!',note:['','Selesai!','Hanya satu nyawa hilang — 2 bintang','Tiada nyawa hilang — 3 bintang!'],
+ next:'Menara seterusnya ▶',home:'Utama',lostTitle:'Nyawa habis',lostText:'Tidak mengapa — cuba menara ini sekali lagi. Perhatikan laluan robot.',tryAgain:'Cuba lagi',allDone:'Semua 36 menara selesai — hebat! Main semula untuk kumpul lebih bintang.',
+ how:'Cara bermain',howText:'Gerak dengan butang anak panah; panjat tangga dengan ↑ dan ↓. Ketik di kiri atau kanan tukang kebun untuk menggali bata bertanda ⛏ dan turun ke lantai bawah — robot yang masuk lubang akan tersekat seketika, dan anda boleh berjalan di atasnya. Kutip semua benih, kemudian ke pintu. Setiap sentuhan robot, batu atau duri menghilangkan satu nyawa; anda bermula semula di tempat selamat. Jika ketiga-tiga nyawa hilang, menara bermula semula. Tiada pemasa.',
+ legend:[['seed','Benih — kutip semuanya'],['gate','Pintu taman — dibuka selepas semua benih dikutip'],['robot','Robot — meronda lantainya; menunjukkan ! bila nampak anda dan boleh mengejar satu tingkat ke bawah; jatuh ke dalam lubang'],['rock','Batu — bergolek di sepanjang garis titik'],['thorns','Duri — jangan pijak'],['crumble','Lantai retak — pecah selepas dipijak'],['belt','Lantai bergerak — membawa anda']],
+ notice:'Tiada iklan, tiada pemasa, tiada bunyi. Kemajuan disimpan dalam peranti ini. Papan kekunci: anak panah/WASD untuk bergerak, Z/X untuk menggali, Space untuk jeda.'},
+zh:{ready:'你一动，机器人才开始动。',zoomNames:['全景','中','近'],speed:'机器人速度',speeds:['温和（机器人较慢）','正常'],title:'高塔逃脱',sub:'收集所有种子，再爬到花园大门。',language:'语言',play:'开始第{n}座塔',resume:'继续第{n}座塔',
+ progress:'已完成 {n} / 36 座塔',stars:'颗星',replay:'重玩已完成的塔',choose:'请选择…',tower:'第{n}座塔',seeds:'{a}/{b}',
+ hint:'提示',retry:'重来',map:'地图',back:'← 主页',
+ start:'用方向键移动，点园丁的左边或右边就能挖洞。收集全部 {n} 颗种子，再前往大门。',seed:'找到种子！还剩 {n} 颗。',allSeeds:'种子全部收集——大门已打开！在右上方。',
+ gateLocked:'收集完所有种子，大门才会打开。',hit:'哎呀！失去一颗心，回到安全位置。',noRoute:'暂时走不过去。试试爬梯子，或用 ⛏ 挖洞往下走。',
+ hintMsg:'跟着金色的点走。',dug:'挖了一个洞，机器人掉进去会被困住一会儿。',cantDig:'可以挖脚边标有 ⛏ 的砖块——站在梯子上也可以。',
+ mapOn:'正在显示整座塔，再点“地图”返回。',paused:'已暂停',won:'过关了！',note:['','过关！','只失去一颗心——2颗星','一颗心都没失去——3颗星！'],
+ next:'下一座塔 ▶',home:'主页',lostTitle:'心用完了',lostText:'没关系，再试一次这座塔。留意机器人走的路线。',tryAgain:'再试一次',allDone:'36座塔全部完成，太棒了！可以重玩赚取更多星星。',
+ how:'玩法说明',howText:'用方向键移动，用 ↑ ↓ 爬梯子。点园丁的左边或右边，就能挖开标有 ⛏ 的砖块，掉到下一层——机器人走进洞里会被困一会儿，你还可以从它头上走过。收集所有种子后前往大门。碰到机器人、滚石或荆棘会失去一颗心，并回到安全位置；三颗心都用完，这座塔重新开始。没有计时。',
+ legend:[['seed','种子——全部收集'],['gate','花园大门——收集完种子才打开'],['robot','机器人——在自己那层巡逻；发现你时出现“!”，最多追你到下一层；会掉进洞里'],['rock','滚石——沿着虚线来回滚动'],['thorns','荆棘——不要踩'],['crumble','裂开的地板——踩过后会碎掉'],['belt','传送带——会带着你移动']],
+ notice:'无广告、无计时、无声音。进度保存在本设备。键盘：方向键/WASD 移动，Z/X 挖洞，空格键暂停。'},
+zt:{ready:'你一動，機器人才開始動。',zoomNames:['全景','中','近'],speed:'機器人速度',speeds:['溫和（機器人較慢）','正常'],title:'高塔逃脫',sub:'收集所有種子，再爬到花園大門。',language:'語言',play:'開始第{n}座塔',resume:'繼續第{n}座塔',
+ progress:'已完成 {n} / 36 座塔',stars:'顆星',replay:'重玩已完成的塔',choose:'請選擇…',tower:'第{n}座塔',seeds:'{a}/{b}',
+ hint:'提示',retry:'重來',map:'地圖',back:'← 主頁',
+ start:'用方向鍵移動，點園丁的左邊或右邊就能挖洞。收集全部 {n} 顆種子，再前往大門。',seed:'找到種子！還剩 {n} 顆。',allSeeds:'種子全部收集——大門已打開！在右上方。',
+ gateLocked:'收集完所有種子，大門才會打開。',hit:'哎呀！失去一顆心，回到安全位置。',noRoute:'暫時走不過去。試試爬梯子，或用 ⛏ 挖洞往下走。',
+ hintMsg:'跟著金色的點走。',dug:'挖了一個洞，機器人掉進去會被困住一會兒。',cantDig:'可以挖腳邊標有 ⛏ 的磚塊——站在梯子上也可以。',
+ mapOn:'正在顯示整座塔，再點「地圖」返回。',paused:'已暫停',won:'過關了！',note:['','過關！','只失去一顆心——2顆星','一顆心都沒失去——3顆星！'],
+ next:'下一座塔 ▶',home:'主頁',lostTitle:'心用完了',lostText:'沒關係，再試一次這座塔。留意機器人走的路線。',tryAgain:'再試一次',allDone:'36座塔全部完成，太棒了！可以重玩賺取更多星星。',
+ how:'玩法說明',howText:'用方向鍵移動，用 ↑ ↓ 爬梯子。點園丁的左邊或右邊，就能挖開標有 ⛏ 的磚塊，掉到下一層——機器人走進洞裡會被困一會兒，你還可以從它頭上走過。收集所有種子後前往大門。碰到機器人、滾石或荊棘會失去一顆心，並回到安全位置；三顆心都用完，這座塔重新開始。沒有計時。',
+ legend:[['seed','種子——全部收集'],['gate','花園大門——收集完種子才打開'],['robot','機器人——在自己那層巡邏；發現你時出現「!」，最多追你到下一層；會掉進洞裡'],['rock','滾石——沿著虛線來回滾動'],['thorns','荊棘——不要踩'],['crumble','裂開的地板——踩過後會碎掉'],['belt','輸送帶——會帶著你移動']],
+ notice:'無廣告、無計時、無聲音。進度儲存在本裝置。鍵盤：方向鍵/WASD 移動，Z/X 挖洞，空白鍵暫停。'}};
+const $=id=>document.getElementById(id),fmt=(s,o)=>s.replace(/\{(\w+)\}/g,(_,k)=>o[k]);
+function readLang(){let l=null;try{l=new URLSearchParams(location.search).get('lang');}catch(e){}
+ if(!TXT[l]){try{l=localStorage.getItem('mindgarden-lang');}catch(e){}}
+ if(!TXT[l]){try{const s=JSON.parse(localStorage.getItem('mindgarden-settings')||'null');l=s&&s.lang;}catch(e){}}return TXT[l]?l:'en';}
+function writeLang(l){try{localStorage.setItem('mindgarden-lang',l);const s=JSON.parse(localStorage.getItem('mindgarden-settings')||'{}')||{};s.lang=l;localStorage.setItem('mindgarden-settings',JSON.stringify(s));}catch(e){}}
+let lang=readLang();const T=()=>TXT[lang];
+/* ================= level generation (deterministic, verified reachable) ================= */
+function rng(seed){let s=seed>>>0;return ()=>{s=(Math.imul(1664525,s)+1013904223)>>>0;return s/4294967296};}
 function generate(index){
  const r=rng(2803+index*98713),tier=Math.floor(index/8),floors=4+Math.min(3,tier),w=24+4*Math.min(3,tier)+(index%3)*2,h=floors*3+2;
- const floorRows=Array.from({length:floors},(_,f)=>3+3*f),grid=Array.from({length:h},()=>Array(w).fill(' '));
- for(const y of floorRows)for(let x=1;x<w-1;x++)grid[y][x]='#';
- const ladders=[];
- // Multiple alternate ladder paths connect adjacent floors; every floor stays reachable.
- for(let f=0;f<floors-1;f++){
-  let xs=[3+((index*3+f*7)%5),Math.floor(w*.45)+((index+f*3)%4),w-7-((index+f)%5)];
-  if(index>=12&&f%2===1)xs.push(Math.floor(w*.70));
-  xs=[...new Set(xs)].filter(x=>x>=2&&x<=w-3);
-  for(const x of xs){ladders.push({x,from:f,to:f+1});for(let y=2+3*f;y<=5+3*f;y++)grid[y][x]='H';}
- }
- // Alternating crumble/conveyor floors, with unmodified walkable routes alongside them.
- const brittle=[],belts=[],spikes=[];
- for(let f=0;f<floors;f++){
-  const walk=2+3*f,ground=walk+1;
-  if(index>=6&&f%2===index%2){const x=10+Math.floor(r()*(w-18));if(grid[ground][x]==='#') {grid[ground][x]='C';brittle.push({x,y:ground})}}
-  if(index>=10&&f%2===0){let x=5+Math.floor(r()*(w-12));if(grid[ground][x]==='#'){grid[ground][x]=f%3===0?'>':'<';belts.push({x,y:ground})}}
-  if(index>=4&&f>0){const x=9+Math.floor(r()*(w-16));if(grid[ground][x]==='#' && !ladders.some(l=>l.x===x&&Math.abs(f-l.from)<=1))spikes.push({x,y:walk});}
- }
- const seedCount=5+Math.floor(index/3)+Math.min(3,tier),gems=[],used=new Set([`${2},${h-3}`,`${w-2},2`]);
+ const grid=Array.from({length:h},()=>Array(w).fill(' '));for(let f=0;f<floors;f++)for(let x=1;x<w-1;x++)grid[3+3*f][x]='#';
+ for(let f=0;f<floors-1;f++){let xs=[3+((index*3+f*7)%5),Math.floor(w*.45)+((index+f*3)%4),w-7-((index+f)%5)];if(index>=12&&f%2===1)xs.push(Math.floor(w*.70));
+  xs=[...new Set(xs)].filter(x=>x>=2&&x<=w-3);for(const x of xs)for(let y=2+3*f;y<=5+3*f;y++)grid[y][x]='H';}
+ const spikes=[];
+ for(let f=0;f<floors;f++){const walk=2+3*f,ground=walk+1;
+  if(index>=6&&f%2===index%2){const x=10+Math.floor(r()*(w-18));if(grid[ground][x]==='#')grid[ground][x]='C';}
+  if(index>=10&&f%2===0){const x=5+Math.floor(r()*(w-12));if(grid[ground][x]==='#')grid[ground][x]=f%3===0?'>':'<';}
+  if(index>=4&&f>0){const x=9+Math.floor(r()*(w-16));if(grid[ground][x]==='#'&&grid[walk][x]!=='H'&&grid[walk][x-1]!=='H'&&grid[walk][x+1]!=='H')spikes.push({x,y:walk});}}
+ const spawn={x:2,y:h-3},exit={x:w-2,y:2};const spk=new Set(spikes.map(s=>s.x+','+s.y));
+ const seedCount=5+Math.floor(index/3)+Math.min(3,tier),gems=[],used=new Set([spawn.x+','+spawn.y,exit.x+','+exit.y]);
  for(let i=0;i<seedCount;i++){const f=i%floors;let x=2+Math.floor(r()*(w-4)),y=2+3*f,n=0;
- while((used.has(`${x},${y}`)||grid[y][x]==='H'||spikes.some(s=>s.x===x&&s.y===y))&&n++<w){x=2+(x+3)%(w-4)}
- used.add(`${x},${y}`);gems.push({x,y})}
- const guards=[],rocks=[];
- const guardCount=Math.min(7,1+Math.floor(index/6)),rockCount=index<3?0:Math.min(5,Math.ceil(index/9));
- for(let i=0;i<guardCount;i++){const f=(i*2+index)%floors;let x=4+Math.floor(r()*(w-8)),y=2+3*f;guards.push({x,y,dir:i%2?1:-1,trapped:false})}
- for(let i=0;i<rockCount;i++){const f=(i*3+1)%floors;rocks.push({x:w-6-(i%4)*2,y:2+3*f,dir:i%2?1:-1})}
- return {index,w,h,floors,grid,gems,guards,rocks,spikes,brittle,belts,spawn:{x:2,y:h-3},exit:{x:w-2,y:2},theme:Math.min(4,Math.floor(index/8))};
-}
-let lang=LANG[initialLang()]?initialLang():'en',mode='arcade',stage=0,unlocked=0,level=null,grid=[],gems=[],guards=[],rocks=[],player={x:2,y:11},hearts=3,paused=false,cleared=false,msg='',invulnerable=0,hintAt=null,advanceAt=0,tick=0,lastTime=0,acc=0,holes=new Map(),crumble=new Map(),zoomed=false,camX=0,camY=0;
-function validSave(s){return s&&[1,2].includes(s.v)&&Number.isInteger(s.level)&&s.level>=0&&s.level<COUNT&&s.player&&Number.isInteger(s.player.x)&&Number.isInteger(s.player.y)&&s.player.x>=1&&s.player.x<=45&&s.player.y>=1&&s.player.y<=30&&Array.isArray(s.gems)&&s.gems.length<=30&&s.gems.every(g=>g&&Number.isInteger(g.x)&&g.x>=1&&g.x<=45&&Number.isInteger(g.y)&&g.y>=1&&g.y<=30)&&Number.isInteger(s.hearts)&&s.hearts>=0&&s.hearts<=3&&typeof s.cleared==='boolean'&&['puzzle','arcade'].includes(s.mode)&&(!('unlocked' in s)||(Number.isInteger(s.unlocked)&&s.unlocked>=0&&s.unlocked<COUNT))}
-function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify({v:2,level:stage,unlocked,player,hearts,gems,cleared,mode}));}catch(_){}}
-function say(s){msg=s;$('notice').textContent=s}
-function pos(){camX=Math.max(0,Math.min(level.w-VIEW_W,player.x-Math.floor(VIEW_W/2)));camY=Math.max(0,Math.min(level.h-VIEW_H,player.y-Math.floor(VIEW_H/2)))}
-function loadLevel(n,restore){mode='arcade';stage=Math.max(0,Math.min(COUNT-1,n));level=generate(stage);grid=level.grid.map(a=>[...a]);gems=level.gems.map(p=>({...p}));guards=level.guards.map(g=>({...g}));rocks=level.rocks.map(g=>({...g}));if(mode==='arcade')rocks.push({x:level.w-7,y:2,dir:-1});player={...level.spawn};hearts=3;cleared=false;paused=false;invulnerable=0;holes.clear();crumble.clear();hintAt=null;tick=0;advanceAt=0;acc=0;
- if(restore&&validSave(restore)&&restore.level===stage&&restore.v===2&&restore.player.x<level.w-1&&restore.player.y<level.h-1){player={...restore.player};gems=restore.gems.map(g=>({...g}));hearts=restore.hearts||3;cleared=restore.cleared;if(cleared&&stage<COUNT-1)advanceAt=Date.now()+1500;}
- canvas.width=VIEW_W*T;canvas.height=VIEW_H*T;canvas.style.width='100%';canvas.style.height='auto';board.classList.toggle('zoomed',zoomed);pos();say(LANG[lang].ready);refresh();save()}
-function tile(x,y){if(x<0||x>=level.w||y<0||y>=level.h)return '#';return grid[y][x]}
-function solid(x,y){return ['#','C','>','<'].includes(tile(x,y))}
-function available(x,y){return x>=1&&x<level.w-1&&y>=1&&y<level.h-1&&!solid(x,y)}
-function grounded(x,y){return solid(x,y+1)||tile(x,y)==='H'||tile(x,y+1)==='H'}
-function fall(){let n=0;while(n++<level.h && player.y<level.h-3&&tile(player.x,player.y)!=='H'&&!solid(player.x,player.y+1)&&tile(player.x,player.y+1)!=='H')player.y++}
-function pick(){let prev=gems.length;gems=gems.filter(g=>g.x!==player.x||g.y!==player.y);if(gems.length<prev)say(gems.length?LANG[lang].seed:LANG[lang].unlock)}
-function hit(){if(invulnerable>0)return;if([...guards.filter(g=>!g.trapped),...rocks,...level.spikes].some(o=>o.x===player.x&&o.y===player.y)){hearts--;invulnerable=12;player={...level.spawn};if(hearts<=0){hearts=3;say(LANG[lang].hit)}else say(LANG[lang].hit);pos()}}
-function win(){if(cleared)return;cleared=true;paused=true;unlocked=Math.max(unlocked,Math.min(COUNT-1,stage+1));advanceAt=stage===COUNT-1?0:Date.now()+1700;say(stage===COUNT-1?LANG[lang].final:LANG[lang].won);save();refresh()}
-function move(dir){if(paused||cleared)return;const {x,y}=player;let nx=x,ny=y;if(dir==='left')nx--;else if(dir==='right')nx++;else if(dir==='up'){if(tile(x,y)==='H'||tile(x,y-1)==='H')ny--;else return;}else if(dir==='down'){if(tile(x,y)==='H'||tile(x,y+1)==='H')ny++;else return;}
- if(!available(nx,ny))return;player={x:nx,y:ny};fall();pick();hit();if(tile(player.x,player.y+1)==='C')beginCrumble(player.x,player.y+1);if(player.x===level.exit.x&&player.y===level.exit.y&&gems.length===0)win();pos();refresh();save()}
-function dig(side){if(paused||cleared)return;const x=player.x+side,y=player.y+1;if(x<1||x>=level.w-1||y>=level.h-1||tile(x,y)!=='#')return;grid[y][x]=' ';holes.set(y*level.w+x,Date.now()+(mode==='arcade'?3800:5500));for(const g of guards)trap(g);say(LANG[lang].trap);save()}
-function trap(g){if(g.trapped)return;const k=(g.y+1)*level.w+g.x;if(holes.has(k)){g.y++;g.trapped=true}}
-function beginCrumble(x,y){const k=y*level.w+x;if(!crumble.has(k))crumble.set(k,Date.now()+1250)}
-function update(){tick++;for(const [k,time] of holes)if(Date.now()>=time){const x=k%level.w,y=Math.floor(k/level.w);grid[y][x]='#';holes.delete(k);for(const g of guards)if(g.trapped&&g.x===x&&g.y===y){g.y=Math.max(1,g.y-1);g.trapped=false}}
- for(const [k,time] of crumble)if(Date.now()>=time){const x=k%level.w,y=Math.floor(k/level.w);if(grid[y][x]==='C'){grid[y][x]=' ';crumble.set(k,Date.now()+2100)}else{grid[y][x]='C';crumble.delete(k)}}
- if(invulnerable>0)invulnerable--;
- const cadence=mode==='arcade'?2:3;
- if(tick%cadence===0){for(const g of guards){if(g.trapped)continue;trap(g);if(g.trapped)continue;
- if(g.y===player.y&&Math.abs(player.x-g.x)<16)g.dir=player.x>g.x?1:-1;
- let nx=g.x+g.dir;if(!available(nx,g.y)||(!grounded(nx,g.y)&&!holes.has((g.y+1)*level.w+nx))){g.dir*=-1;nx=g.x+g.dir}
- if(available(nx,g.y)&&(grounded(nx,g.y)||holes.has((g.y+1)*level.w+nx)))g.x=nx;trap(g)}
- for(const r of rocks){let nx=r.x+r.dir;if(!available(nx,r.y)||!grounded(nx,r.y)){r.dir*=-1;nx=r.x+r.dir}if(available(nx,r.y)&&grounded(nx,r.y))r.x=nx}}
- if(tick%4===0){const below=tile(player.x,player.y+1);if(below==='>'||below==='<'){const nx=player.x+(below==='>'?1:-1);if(available(nx,player.y)){player.x=nx;fall();pick();pos()}}}
- if(!grounded(player.x,player.y))fall();hit();if(player.x===level.exit.x&&player.y===level.exit.y&&!gems.length)win();refresh()}
-function refresh(){const t=LANG[lang];$('level').textContent=`${t.level} ${stage+1} / ${COUNT}`;$('seeds').textContent=`${t.seeds}: ${level.gems.length-gems.length} / ${level.gems.length}`;$('lives').textContent=`${t.hearts}: ${'♥'.repeat(hearts)}${'♡'.repeat(3-hearts)}`;$('mapInfo').textContent=`${level.w}×${level.h} · ${level.floors} ${t.floors}`;$('notice').textContent=msg;$('stop').textContent=paused?'▶':'⏸';$('next').hidden=!cleared;$('arcadeMode').textContent=t.arcade;
- const choice=$('chooseLevel'),selected=choice.value;choice.replaceChildren();for(let i=0;i<=unlocked;i++){let o=document.createElement('option');o.value=i;o.textContent=`${t.level} ${i+1}`;choice.append(o)}choice.value=String(stage)}
-function changeLang(l){if(!LANG[l])return;lang=l;let t=LANG[l];document.documentElement.lang=l==='zt'?'zh-Hant':l==='zh'?'zh-Hans':l;$('lang').value=l;$('title').textContent=t.name;$('tagline').textContent=t.sub;$('chooseText').textContent=t.choose;$('back').textContent=t.back;$('hint').textContent='💡 '+t.hint;$('restart').textContent='↻ '+t.retry;$('skip').textContent='⇥ '+t.skip;$('next').textContent=t.next+' →';$('zoom').textContent='🔍 '+t.zoom;$('instructions').textContent=t.instructions;$('footer').textContent=t.foot;msg=t.ready;refresh();try{localStorage.setItem('mindgarden-tower-language',l)}catch(_){}}
-function hint(){if(cleared)return;const closest=[...gems].sort((a,b)=>Math.abs(a.x-player.x)+Math.abs(a.y-player.y)-Math.abs(b.x-player.x)-Math.abs(b.y-player.y))[0];hintAt=closest||level.exit;say(LANG[lang].goal)}
-const rr=(x,y,w,h,c,r=4)=>{ctx.fillStyle=c;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill()};
-function draw(ts){const w=canvas.width,h=canvas.height;ctx.setTransform(1,0,0,1,0,0);const palettes=[['#ddf0df','#c8e5cd'],['#dfeaf4','#d2ddea'],['#e5e9e0','#cbd8cf'],['#f5e9d6','#e8dac5'],['#e9e4f2','#d8d0eb']];const theme=palettes[level.theme];ctx.fillStyle=theme[0];ctx.fillRect(0,0,w,h);let scale=1,ox=-camX*T,oy=-camY*T;if(zoomed){scale=Math.min(w/(level.w*T),h/(level.h*T));ox=(w-level.w*T*scale)/2;oy=(h-level.h*T*scale)/2;}ctx.setTransform(scale,0,0,scale,ox,oy);ctx.fillStyle=theme[1];for(let i=0;i<Math.ceil(level.w*T/130);i++)ctx.fillRect(i*137+23,(i*71+34)%(level.h*T),68,4);
- for(let y=0;y<level.h;y++)for(let x=0;x<level.w;x++){const t=tile(x,y),u=x*T,v=y*T;
- if(solid(x,y)){rr(u+1,v+3,30,28,'#ad8168');rr(u+3,v+4,26,7,'#ceab88');if(t==='C'){ctx.strokeStyle='#735c4d';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(u+8,v+8);ctx.lineTo(u+18,v+19);ctx.lineTo(u+10,v+29);ctx.stroke()}if(t==='>'||t==='<'){ctx.fillStyle='#f0d65e';ctx.font='bold 23px system-ui';ctx.textAlign='center';ctx.fillText(t==='>'?'→':'←',u+16,v+25)}}
- if(t==='H'){ctx.strokeStyle='#bd7a42';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(u+7,v);ctx.lineTo(u+7,v+31);ctx.moveTo(u+25,v);ctx.lineTo(u+25,v+31);ctx.stroke();ctx.strokeStyle='#f8da93';ctx.lineWidth=3;for(let k=7;k<31;k+=9){ctx.beginPath();ctx.moveTo(u+7,v+k);ctx.lineTo(u+25,v+k);ctx.stroke()}}
- }
- for(const spike of level.spikes){const x=spike.x*T,y=spike.y*T;ctx.fillStyle='#bc5461';for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(x+2+i*10,y+31);ctx.lineTo(x+7+i*10,y+12);ctx.lineTo(x+12+i*10,y+31);ctx.fill()}}
- for(const gem of gems){let x=gem.x*T+16,y=gem.y*T+16;ctx.fillStyle='#f3bc37';ctx.beginPath();ctx.moveTo(x,y-12);ctx.lineTo(x+10,y);ctx.lineTo(x,y+12);ctx.lineTo(x-10,y);ctx.closePath();ctx.fill()}
- let ex=level.exit.x*T+16,ey=level.exit.y*T+16;rr(ex-12,ey-16,24,31,gems.length?'#849c91':'#e4c85c');ctx.fillStyle='#204d40';ctx.font='bold 22px system-ui';ctx.textAlign='center';ctx.fillText(gems.length?'×':'✓',ex,ey+8);
- for(const o of rocks){ctx.fillStyle='#767e89';ctx.beginPath();ctx.arc(o.x*T+16,o.y*T+16,11,0,7);ctx.fill();ctx.fillStyle='#adb4bd';ctx.beginPath();ctx.arc(o.x*T+12,o.y*T+11,4,0,7);ctx.fill()}
- for(const g of guards){rr(g.x*T+5,g.y*T+5,22,24,g.trapped?'#9a8b63':'#ae5149',7);ctx.fillStyle='white';ctx.fillRect(g.x*T+11,g.y*T+12,4,4);ctx.fillRect(g.x*T+19,g.y*T+12,4,4);if(g.trapped){ctx.strokeStyle='#ebb551';ctx.lineWidth=3;ctx.strokeRect(g.x*T+2,g.y*T+2,28,28)}}
- if(invulnerable===0||Math.floor(ts/120)%2===0){rr(player.x*T+5,player.y*T+6,22,25,'#2c7299',6);ctx.fillStyle='#f4d39f';ctx.beginPath();ctx.arc(player.x*T+16,player.y*T+8,8,0,7);ctx.fill();rr(player.x*T+7,player.y*T,18,6,'#2c5944')}
- if(hintAt){ctx.strokeStyle='#f1aa36';ctx.lineWidth=4;ctx.setLineDash([5,4]);ctx.strokeRect(hintAt.x*T+2,hintAt.y*T+2,28,28);ctx.setLineDash([])}
- ctx.setTransform(1,0,0,1,0,0);if(paused||cleared){ctx.fillStyle='#183d33ba';ctx.fillRect(0,0,w,h);ctx.fillStyle='white';ctx.font='bold 22px system-ui';ctx.textAlign='center';const text=cleared?(stage===COUNT-1?LANG[lang].final:LANG[lang].won):LANG[lang].pause;ctx.fillText(text.slice(0,38),w/2,h/2)}}
-function loop(t){if(cleared&&advanceAt&&Date.now()>advanceAt){advanceAt=0;loadLevel(stage+1)}if(!lastTime)lastTime=t;const delta=Math.min(100,t-lastTime);lastTime=t;if(!paused&&!cleared){acc+=delta;while(acc>=190){update();acc-=190}}draw(t);requestAnimationFrame(loop)}
-let hold=null;function held(id,fn){const el=$(id);el.addEventListener('pointerdown',e=>{e.preventDefault();fn();clearInterval(hold);hold=setInterval(fn,160);try{el.setPointerCapture(e.pointerId)}catch(_){}});for(const ev of ['pointerup','pointercancel','lostpointercapture','pointerleave'])el.addEventListener(ev,()=>{clearInterval(hold);hold=null})}
-[['left',()=>move('left')],['right',()=>move('right')],['up',()=>move('up')],['down',()=>move('down')],['digLeft',()=>dig(-1)],['digRight',()=>dig(1)]].forEach(([id,fn])=>held(id,fn));
-document.addEventListener('keydown',e=>{if(e.target.tagName==='SELECT')return;const map={ArrowLeft:()=>move('left'),ArrowRight:()=>move('right'),ArrowUp:()=>move('up'),ArrowDown:()=>move('down'),a:()=>move('left'),d:()=>move('right'),w:()=>move('up'),s:()=>move('down'),z:()=>dig(-1),x:()=>dig(1),' ':()=>{paused=!paused;refresh()}};if(map[e.key]){e.preventDefault();map[e.key]()}});
-$('stop').onclick=()=>{if(cleared)return;paused=!paused;say(paused?LANG[lang].pause:LANG[lang].ready);refresh()};$('hint').onclick=hint;$('zoom').onclick=()=>{zoomed=!zoomed;board.classList.toggle('zoomed',zoomed);pos();say(LANG[lang].zoomInfo)};$('restart').onclick=()=>{if(confirm(LANG[lang].confirm))loadLevel(stage)};$('skip').onclick=()=>{unlocked=Math.max(unlocked,Math.min(COUNT-1,stage+1));loadLevel((stage+1)%COUNT)};$('next').onclick=()=>loadLevel((stage+1)%COUNT);$('chooseLevel').onchange=e=>{let n=Number(e.target.value);if(Number.isInteger(n)&&n>=0&&n<=unlocked)loadLevel(n)};$('lang').onchange=e=>changeLang(e.target.value);
-let previous=null;try{previous=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');if(validSave(previous)){stage=previous.level;mode='arcade';unlocked=Math.max(stage,previous.unlocked||stage)}}catch(_){}
-loadLevel(stage,previous);changeLang(lang);requestAnimationFrame(loop);
+  while((used.has(x+','+y)||grid[y][x]==='H'||spk.has(x+','+y))&&n++<w)x=2+(x+3)%(w-4);used.add(x+','+y);gems.push({x,y});}
+ const guards=[],rocks=[];const guardCount=Math.min(7,1+Math.floor(index/6)),rockCount=index<3?0:Math.min(5,Math.ceil(index/9));
+ const perFloor=new Array(floors).fill(0);
+ for(let i=0;i<guardCount;i++){let f=(i*2+index)%floors;for(let k=0;k<floors&&perFloor[f]>=2;k++)f=(f+1)%floors;perFloor[f]++;let y=2+3*f,x=4+Math.floor(r()*(w-8));
+  if(y===spawn.y&&x<12)x=12+Math.floor(r()*(w-16)); // never start right next to the player
+  while(spk.has(x+','+y)||grid[y][x]==='H')x=Math.min(w-3,x+1);guards.push({x,y});}
+ for(let i=0;i<rockCount;i++){const f=(i*3+1)%floors;rocks.push({x:w-6-(i%4)*2,y:2+3*f,dir:i%2?1:-1});}
+ if(index>=2)rocks.push({x:w-7,y:2,dir:-1});
+ return {index,w,h,floors,grid,gems,guards,rocks,spikes,spawn,exit,theme:Math.min(4,Math.floor(index/8))};}
+/* ================= game state ================= */
+let prog={unlocked:0,stars:{},cur:null,speed:'gentle',zoom:1};
+function save(){try{localStorage.setItem(KEY,JSON.stringify(Object.assign({schema:1},prog)));}catch(e){}}
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'null');
+ if(d&&d.schema===1){prog.unlocked=Math.max(0,Math.min(COUNT-1,d.unlocked|0));for(const k in d.stars||{}){const n=+k,v=d.stars[k]|0;if(n>=0&&n<COUNT&&v>=1&&v<=3)prog.stars[n]=v;}
+  if(d.cur&&Number.isInteger(d.cur.tower)&&d.cur.tower>=0&&d.cur.tower<=prog.unlocked)prog.cur=d.cur;if(d.speed==='normal')prog.speed='normal';if(d.zoom===0||d.zoom===1||d.zoom===2)prog.zoom=d.zoom;return;}
+ const old=JSON.parse(localStorage.getItem('mindgarden_tower_escape_v1')||'null');if(old&&Number.isInteger(old.level))prog.unlocked=Math.max(0,Math.min(COUNT-1,Math.max(old.level,old.unlocked|0)));}catch(e){}}
+let L=null,grid=null,S=null; // S: running state
+const STEP=165,FALL=95;
+function slow(){return 1;}
+function guardStep(i){return Math.max(270,450-i*5)*slow();}
+function chaseRange(i){return 5+Math.floor(i/3);}
+function isSolid(x,y){const t=x<0||y<0||x>=L.w||y>=L.h?'#':grid[y][x];return t==='#'||t==='C'||t==='>'||t==='<';}
+const tileAt=(x,y)=>x<0||y<0||x>=L.w||y>=L.h?'#':grid[y][x];
+const isLadder=(x,y)=>tileAt(x,y)==='H';
+const inside=(x,y)=>x>=1&&x<L.w-1&&y>=1&&y<L.h-1;
+const holeAt=(x,y)=>S.holes.has(y*L.w+x);
+function trappedGuardAt(x,y){return S.guards.some(g=>g.trapped&&g.x===x&&g.y===y);}
+function canStand(x,y){return isSolid(x,y+1)||isLadder(x,y)||isLadder(x,y+1)||trappedGuardAt(x,y+1);}
+function canEnter(x,y){return inside(x,y)&&!isSolid(x,y);}
+/* moves for path finding: walking, ladders and falling (no digging) */
+function neighbours(x,y,avoidSpikes){const out=[];const add=(nx,ny)=>{if(avoidSpikes&&S.spike.has(nx+','+ny))return;out.push([nx,ny]);};
+ if(!canStand(x,y)){if(canEnter(x,y+1))add(x,y+1);return out;}
+ for(const dx of [-1,1])if(canEnter(x+dx,y))add(x+dx,y);
+ if(isLadder(x,y)&&canEnter(x,y-1))add(x,y-1);
+ if((isLadder(x,y+1)||isLadder(x,y))&&canEnter(x,y+1))add(x,y+1);
+ return out;}
+function bfs(sx,sy,goal,avoid,limit){const key=(x,y)=>y*L.w+x;const prev=new Map([[key(sx,sy),-1]]);const q=[[sx,sy]];let qi=0;
+ while(qi<q.length){const [x,y]=q[qi++];if(goal(x,y)){const path=[];let k=key(x,y);while(k!==key(sx,sy)){path.unshift([k%L.w,(k/L.w)|0]);k=prev.get(k);}return path;}
+  if(limit&&qi>limit)break;for(const [nx,ny] of neighbours(x,y,avoid)){const k=key(nx,ny);if(!prev.has(k)){prev.set(k,key(x,y));q.push([nx,ny]);}}}
+ return null;}
+function startTower(n,resume){L=generate(n);grid=L.grid.map(r=>r.slice());
+ S={n,gems:L.gems.map(g=>({...g,got:false})),guards:L.guards.map((g,i)=>({id:i,x:g.x,y:g.y,sx:g.x,sy:g.y,fx:g.x,fy:g.y,t:1,dur:1,trapped:0,dir:i%2?1:-1,home:{x:g.x,y:g.y},alert:false,seen:0})),
+  rocks:L.rocks.map(r=>({x:r.x,y:r.y,fx:r.x,fy:r.y,t:1,dur:1,dir:r.dir,spin:0})),spike:new Set(L.spikes.map(s=>s.x+','+s.y)),
+  p:{x:L.spawn.x,y:L.spawn.y,fx:L.spawn.x,fy:L.spawn.y,t:1,dur:1,face:1,climb:false},safe:{x:L.spawn.x,y:L.spawn.y},hearts:3,lost:0,inv:0,
+  holes:new Map(),crumble:new Map(),beltT:0,started:false,clock:0,path:[],target:null,hint:null,hintUntil:0,paused:false,over:false,map:false,cam:{x:0,y:0,init:false},msg:'',flash:0,acc:0};
+ if(resume&&prog.cur&&prog.cur.tower===n){const c=prog.cur;if(Array.isArray(c.got))c.got.forEach(i=>{if(S.gems[i])S.gems[i].got=true;});
+  if(Number.isInteger(c.x)&&Number.isInteger(c.y)&&canEnter(c.x,c.y)){S.p.x=S.p.fx=c.x;S.p.y=S.p.fy=c.y;S.safe={x:c.x,y:c.y};}if(c.hearts>=1&&c.hearts<=3){S.hearts=c.hearts;S.lost=3-c.hearts;}}
+ persist();show('game');say(fmt(T().start,{n:S.gems.length}));renderHud();resize();}
+function persist(){if(!S||S.over)return;prog.cur={tower:S.n,got:S.gems.map((g,i)=>g.got?i:-1).filter(i=>i>=0),x:S.p.x,y:S.p.y,hearts:S.hearts};save();}
+const seedsLeft=()=>S.gems.filter(g=>!g.got).length;
+function say(m){S.msg=m;$('msg').textContent=m;}
+/* ================= player actions ================= */
+let held=null;
+function tryStep(dx,dy){const p=S.p;let nx=p.x+dx,ny=p.y+dy;
+ if(dy<0){if(!isLadder(p.x,p.y)||!canEnter(nx,ny))return false;}
+ else if(dy>0){if(!(isLadder(p.x,p.y+1)||isLadder(p.x,p.y))||!canEnter(nx,ny))return false;}
+ else if(!canEnter(nx,ny))return false;
+ if(dx)p.face=dx;moveActor(p,nx,ny,STEP);p.climb=dy!==0;return true;}
+function moveActor(a,nx,ny,dur){if(S&&a===S.p)S.started=true;a.fx=a.x;a.fy=a.y;a.x=nx;a.y=ny;a.t=0;a.dur=dur;}
+function dig(side){if(!S||S.paused||S.over||S.map)return;const p=S.p;if(p.t<1||!canStand(p.x,p.y))return;
+ const x=p.x+side,y=p.y+1;if(tileAt(x,y)!=='#'||!canEnter(x,p.y)||isLadder(x,p.y)){say(T().cantDig);return;}
+ S.started=true;grid[y][x]=' ';S.holes.set(y*L.w+x,{x,y,until:S.clock+5200});p.face=side;say(T().dug);}
+function goTo(tx,ty){const p=S.p;if(tx===p.x&&ty===p.y)return;
+ // a tap on empty air above a floor means "the floor spot below it"
+ let gy=ty;while(gy<L.h-2&&canEnter(tx,gy)&&!canStand(tx,gy))gy++;
+ const path=bfs(p.x,p.y,(x,y)=>x===tx&&y===gy,true);if(!path){say(T().noRoute);S.target={x:tx,y:gy,bad:performance.now()+900};return;}
+ S.path=path;S.target={x:tx,y:gy,until:performance.now()+1200};}
+function hint(){if(!S||S.over)return;const p=S.p;const left=seedsLeft();
+ const path=bfs(p.x,p.y,(x,y)=>left?S.gems.some(g=>!g.got&&g.x===x&&g.y===y):(x===L.exit.x&&y===L.exit.y),true);
+ if(path){S.hint=path;S.hintUntil=performance.now()+6000;say(T().hintMsg);}else say(T().noRoute);}
+/* ================= simulation ================= */
+function update(dt){S.clock+=dt;const now=S.clock,p=S.p;
+ // holes refill
+ for(const [k,h] of S.holes){if(now>=h.until){grid[h.y][h.x]='#';S.holes.delete(k);
+   for(const g of S.guards)if(g.x===h.x&&g.y===h.y){respawnGuard(g);}
+   if(p.x===h.x&&p.y===h.y)hurt();}}
+ // crumbling floor
+ for(const [k,c] of S.crumble){if(now>=c.at){if(c.state==='warn'){grid[c.y][c.x]=' ';c.state='gone';c.at=now+2600;}else{grid[c.y][c.x]='C';S.crumble.delete(k);if(p.x===c.x&&p.y===c.y)hurt();}}}
+ // player
+ if(p.t<1){p.t=Math.min(1,p.t+dt/p.dur);if(p.t>=1)arrive();}
+ if(p.t>=1&&!S.over){if(!canStand(p.x,p.y)&&canEnter(p.x,p.y+1)){moveActor(p,p.x,p.y+1,FALL);p.climb=false;}
+  else if(S.path.length&&(()=>{while(S.path.length&&S.path[0][0]===p.x&&S.path[0][1]===p.y)S.path.shift();return S.path.length;})()){const [nx,ny]=S.path[0];const dx=nx-p.x,dy=ny-p.y;if(Math.abs(dx)+Math.abs(dy)===1&&tryStep(dx,dy))S.path.shift();else S.path=[];}
+  else if(held){const d={left:[-1,0],right:[1,0],up:[0,-1],down:[0,1]}[held];tryStep(d[0],d[1]);}
+  else{const below=tileAt(p.x,p.y+1);if((below==='>'||below==='<')&&canStand(p.x,p.y)){S.beltT+=dt;if(S.beltT>380){S.beltT=0;const dx=below==='>'?1:-1;if(canEnter(p.x+dx,p.y))moveActor(p,p.x+dx,p.y,STEP);}}else S.beltT=0;}}
+ // robots: patrol their own floor; chase only when you are on the same floor and close by
+ const gi=guardStep(S.n),range=chaseRange(S.n);
+ for(const g of S.guards){if(g.t<1){g.t=Math.min(1,g.t+dt/g.dur);if(g.t>=1&&holeAt(g.x,g.y)&&!g.trapped){g.trapped=now+3200;g.alert=false;}continue;}
+  if(!S.started)continue;
+  if(g.trapped){if(now>=g.trapped){g.trapped=0;if(canEnter(g.x,g.y-1))moveActor(g,g.x,g.y-1,gi);}continue;}
+  if(!canStand(g.x,g.y)&&canEnter(g.x,g.y+1)){moveActor(g,g.x,g.y+1,FALL*1.6);continue;}
+  const sees=now>=(g.calm||0)&&p.y===g.y&&Math.abs(p.x-g.x)<=range&&clearRow(g.x,p.x,g.y);
+  // follow you one floor down: you are exactly one floor below, close by, that floor has room, and it is not below the robot's limit
+  const below=now>=(g.calm||0)&&canStand(p.x,p.y)&&p.y===g.home.y+3&&g.y>=g.home.y&&g.y<p.y&&Math.abs(p.x-g.x)<=range+2&&S.guards.filter(o=>o!==g&&o.y===p.y).length<2;
+  if(sees||below){g.alert=true;g.seen=now;}else if(g.alert&&now-g.seen>1500)g.alert=false;
+  let step=null;
+  if(g.alert&&below){const path=bfs(g.x,g.y,(x,y)=>y===p.y&&Math.abs(x-p.x)<=range,true,700);
+   if(path&&path.length&&path.length<=range+6&&path.every(([,y])=>y>=g.y&&y<=g.home.y+3))step=path[0];}
+  else if(!g.alert&&g.y!==g.home.y){const path=bfs(g.x,g.y,(x,y)=>y===g.home.y,true,700);if(path&&path.length)step=path[0];} // calm again: go back up home
+  if(step){if(!S.guards.some(o=>o!==g&&o.x===step[0]&&o.y===step[1])){if(step[0]!==g.x)g.dir=step[0]>g.x?1:-1;moveActor(g,step[0],step[1],gi*0.9);}continue;}
+  const dir=g.alert&&sees?(p.x===g.x?0:(p.x>g.x?1:-1)):g.dir;if(!dir)continue;
+  const nx=g.x+dir,ok=canEnter(nx,g.y)&&(canStand(nx,g.y)||holeAt(nx,g.y+1))&&!S.spike.has(nx+','+g.y)&&!S.guards.some(o=>o!==g&&o.x===nx&&o.y===g.y);
+  if(ok){g.dir=dir;moveActor(g,nx,g.y,g.alert?gi*0.85:gi);}else{g.dir=-dir;if(g.alert){g.alert=false;g.calm=now+2000;}}}
+ // rocks roll along their floor
+ for(const r of S.rocks){if(!S.started)break;if(r.t<1){r.t=Math.min(1,r.t+dt/r.dur);r.spin+=dt*0.012*r.dir;continue;}
+  let nx=r.x+r.dir;if(!canEnter(nx,r.y)||!isSolid(nx,r.y+1)&&!isLadder(nx,r.y+1)){r.dir*=-1;nx=r.x+r.dir;}if(canEnter(nx,r.y)&&(isSolid(nx,r.y+1)||isLadder(nx,r.y+1)))moveActor(r,nx,r.y,290*slow());}
+ // collisions (using animated positions)
+ if(S.inv>0)S.inv-=dt;else{const px=lerp(p.fx,p.x,p.t),py=lerp(p.fy,p.y,p.t);
+  const near=a=>{const ax=lerp(a.fx,a.x,a.t),ay=lerp(a.fy,a.y,a.t);return Math.abs(ax-px)<0.62&&Math.abs(ay-py)<0.62;};
+  if(S.guards.some(g=>!g.trapped&&near(g))||S.rocks.some(near)||(p.t>=1&&S.spike.has(p.x+','+p.y)))hurt();}}
+function lerp(a,b,t){return a+(b-a)*t;}
+function clearRow(x1,x2,y){const a=Math.min(x1,x2),b=Math.max(x1,x2);for(let x=a;x<=b;x++){if(!canEnter(x,y))return false;if(!canStand(x,y)&&!holeAt(x,y+1))return false;}return true;}
+function respawnGuard(g){g.trapped=0;g.x=g.fx=g.home.x;g.y=g.fy=g.home.y;g.t=1;}
+function arrive(){const p=S.p,now=S.clock;
+ const g=S.gems.find(s=>!s.got&&s.x===p.x&&s.y===p.y);if(g){g.got=true;const n=seedsLeft();say(n?fmt(T().seed,{n}):T().allSeeds);S.flash=now;persist();renderHud();}
+ if(p.x===L.exit.x&&p.y===L.exit.y){if(!seedsLeft()){win();return;}else say(T().gateLocked);}
+ const below=tileAt(p.x,p.y+1);if(below==='C'){const k=(p.y+1)*L.w+p.x;if(!S.crumble.has(k))S.crumble.set(k,{x:p.x,y:p.y+1,state:'warn',at:now+1300});}
+ // remember a safe spot: standing on a floor, no enemy close by
+ if(canStand(p.x,p.y)&&!S.spike.has(p.x+','+p.y)&&!S.guards.some(o=>Math.abs(o.x-p.x)+Math.abs(o.y-p.y)<4)&&!S.rocks.some(o=>o.y===p.y&&Math.abs(o.x-p.x)<4)&&isSolid(p.x,p.y+1)&&tileAt(p.x,p.y+1)==='#'){S.safe={x:p.x,y:p.y};}
+ if(Math.random()<0.2)persist();}
+function hurt(){if(S.inv>0||S.over)return;S.hearts--;S.lost++;renderHud();
+ if(S.hearts<=0){S.over=true;prog.cur=null;save();$('lose').hidden=false;$('loseTitle').textContent=T().lostTitle;$('loseText').textContent=T().lostText;$('loseRetry').textContent='⟲ '+T().tryAgain;$('loseHome').textContent=T().home;return;}
+ const p=S.p;p.x=p.fx=S.safe.x;p.y=p.fy=S.safe.y;p.t=1;S.path=[];S.inv=2200;
+ // move nearby robots away from the safe spot so the player is not caught again at once
+ for(const g of S.guards)if(Math.abs(g.x-p.x)+Math.abs(g.y-p.y)<5){respawnGuard(g);}
+ say(T().hit);persist();}
+function win(){S.over=true;const stars=S.lost===0?3:S.lost===1?2:1;prog.stars[S.n]=Math.max(prog.stars[S.n]||0,stars);prog.unlocked=Math.min(COUNT-1,Math.max(prog.unlocked,S.n+1));prog.cur=null;save();
+ const t=T();$('winStars').innerHTML=[1,2,3].map(k=>`<span class="${k<=stars?'on':''}" style="animation-delay:${k*0.25}s">★</span>`).join('');
+ $('winTitle').textContent=t.won;$('winNote').textContent=S.n===COUNT-1?t.allDone:t.note[stars];$('winNext').hidden=S.n>=COUNT-1;$('winNext').textContent=t.next;$('winHome').textContent=t.home;$('win').hidden=false;}
+/* ================= drawing ================= */
+const cv=$('cv'),ctx=cv.getContext('2d');let TS=40,DPR=1;
+const THEMES=[['#e3f1e1','#cfe6cf','#b98a6a','#d9b38f'],['#e2ecf5','#cddcea','#a98270','#d3b192'],['#ece8dc','#dad3bf','#9c7f68','#cdb08e'],['#f5ead7','#e8d8bb','#a5785c','#d6ab84'],['#ebe5f3','#d8cfe8','#957a8c','#c7a9b8']];
+function rrect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+function resize(){if(!S)return;const st=$('stage');const W=st.clientWidth,H=st.clientHeight;DPR=Math.min(2,window.devicePixelRatio||1);cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);cv.style.width=W+'px';cv.style.height=H+'px';
+ TS=Math.max(30,Math.min(64,Math.floor(W/9.5)));if(H/TS<7.5)TS=Math.max(26,Math.floor(H/7.5));}
+window.addEventListener('resize',resize);if(window.ResizeObserver)new ResizeObserver(resize).observe($('stage'));
+function draw(now){if(!S)return;const W=cv.width/DPR,H=cv.height/DPR;ctx.setTransform(DPR,0,0,DPR,0,0);const th=THEMES[L.theme];
+ ctx.fillStyle=th[0];ctx.fillRect(0,0,W,H);
+ let s=TS,ox,oy;const p=S.p,px=lerp(p.fx,p.x,p.t),py=lerp(p.fy,p.y,p.t);
+ const whole=Math.min(W/L.w,H/L.h);s=[whole,Math.max(whole,Math.min(34,W/12)),Math.max(whole,Math.min(50,W/8))][prog.zoom];
+ if(s<=whole+0.01){s=whole;ox=(W-L.w*s)/2;oy=(H-L.h*s)/2;}
+ else{const tx=Math.max(0,Math.min(L.w*s-W,(px+0.5)*s-W/2)),ty=Math.max(0,Math.min(L.h*s-H,(py+0.5)*s-H/2));
+  if(!S.cam.init){S.cam.x=tx;S.cam.y=ty;S.cam.init=true;}S.cam.x+=(tx-S.cam.x)*0.18;S.cam.y+=(ty-S.cam.y)*0.18;
+  ox=L.w*s<W?(W-L.w*s)/2:-S.cam.x;oy=L.h*s<H?(H-L.h*s)/2:-S.cam.y;}
+ S.view={s,ox,oy};
+ // backdrop stripes
+ ctx.fillStyle=th[1];for(let y=0;y<L.h;y+=3){const yy=oy+(y+1.6)*s;ctx.fillRect(0,yy,W,s*0.08);}
+ const x0=Math.max(0,Math.floor(-ox/s)),x1=Math.min(L.w,Math.ceil((W-ox)/s)),y0=Math.max(0,Math.floor(-oy/s)),y1=Math.min(L.h,Math.ceil((H-oy)/s));
+ for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++){const t=grid[y][x],u=ox+x*s,v=oy+y*s;
+  if(t==='#'||t==='C'){ctx.fillStyle=th[2];rrect(u+1,v+s*0.08,s-2,s*0.9,s*0.12);ctx.fill();ctx.fillStyle=th[3];rrect(u+s*0.08,v+s*0.12,s*0.84,s*0.22,s*0.08);ctx.fill();
+   ctx.strokeStyle='rgba(80,50,30,.25)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(u+s*0.5,v+s*0.42);ctx.lineTo(u+s*0.5,v+s*0.95);ctx.stroke();
+   if(t==='C'){const c=S.crumble.get(y*L.w+x);ctx.strokeStyle=c?'#7a2e1c':'#5b4030';ctx.lineWidth=Math.max(2,s*0.06);ctx.beginPath();ctx.moveTo(u+s*0.2,v+s*0.2);ctx.lineTo(u+s*0.45,v+s*0.55);ctx.lineTo(u+s*0.3,v+s*0.92);ctx.moveTo(u+s*0.45,v+s*0.55);ctx.lineTo(u+s*0.75,v+s*0.7);ctx.stroke();
+    if(c){ctx.globalAlpha=0.35+0.3*Math.sin(now/80);ctx.fillStyle='#ffb36b';ctx.fillRect(u,v,s,s);ctx.globalAlpha=1;}}}
+  else if(t==='>'||t==='<'){ctx.fillStyle='#5f6b72';rrect(u+1,v+s*0.1,s-2,s*0.85,s*0.2);ctx.fill();ctx.fillStyle='#f3d35a';const dir=t==='>'?1:-1,off=((now/18)%(s/2))*dir;ctx.save();ctx.beginPath();ctx.rect(u+2,v,s-4,s);ctx.clip();
+   for(let k=-1;k<3;k++){const cx=u+k*s/2+off+s/4;ctx.beginPath();ctx.moveTo(cx-dir*s*0.1,v+s*0.3);ctx.lineTo(cx+dir*s*0.1,v+s*0.52);ctx.lineTo(cx-dir*s*0.1,v+s*0.74);ctx.lineWidth=Math.max(2,s*0.07);ctx.strokeStyle='#f3d35a';ctx.stroke();}ctx.restore();}
+  else if(t==='H'){ctx.strokeStyle='#a8683a';ctx.lineWidth=Math.max(3,s*0.1);ctx.beginPath();ctx.moveTo(u+s*0.22,v);ctx.lineTo(u+s*0.22,v+s);ctx.moveTo(u+s*0.78,v);ctx.lineTo(u+s*0.78,v+s);ctx.stroke();ctx.strokeStyle='#e6b977';ctx.lineWidth=Math.max(2,s*0.08);for(let k=0.2;k<1;k+=0.33){ctx.beginPath();ctx.moveTo(u+s*0.22,v+s*k);ctx.lineTo(u+s*0.78,v+s*k);ctx.stroke();}}
+  const hole=S.holes.get(y*L.w+x);if(hole){const left=Math.max(0,(hole.until-S.clock)/5200);ctx.fillStyle='#3a2a20';rrect(u+2,v+s*0.1,s-4,s*0.85,s*0.1);ctx.fill();ctx.fillStyle=th[2];ctx.globalAlpha=0.7;ctx.fillRect(u+2,v+s*0.95-s*0.85*(1-left),s-4,s*0.85*(1-left));ctx.globalAlpha=1;}}
+ // bricks you can dig right now (tap left or right of the gardener)
+ if(p.t>=1&&canStand(p.x,p.y)&&!S.over){for(const side of [-1,1]){const hx=p.x+side,hy=p.y+1;if(tileAt(hx,hy)==='#'&&canEnter(hx,p.y)&&!isLadder(hx,p.y)){const u=ox+hx*s,v=oy+hy*s;
+   ctx.strokeStyle='rgba(255,236,170,.95)';ctx.lineWidth=Math.max(2,s*0.07);ctx.setLineDash([s*0.12,s*0.08]);rrect(u+s*0.08,v+s*0.12,s*0.84,s*0.78,s*0.1);ctx.stroke();ctx.setLineDash([]);
+   ctx.font=`${Math.round(s*0.42)}px system-ui`;ctx.textAlign='center';ctx.globalAlpha=0.85;ctx.fillText('⛏',u+s*0.5,v+s*0.68);ctx.globalAlpha=1;}}}
+ // hint trail
+ if(S.hint&&now<S.hintUntil){ctx.fillStyle='#e9a21e';for(let i=0;i<S.hint.length;i++){const [hx,hy]=S.hint[i];const a=0.5+0.5*Math.sin(now/180-i*0.6);ctx.globalAlpha=0.45+0.55*a;ctx.beginPath();ctx.arc(ox+(hx+0.5)*s,oy+(hy+0.55)*s,s*0.12,0,7);ctx.fill();}ctx.globalAlpha=1;}
+ // tap target
+ if(S.target&&(S.target.until>now||S.target.bad>now)){ctx.strokeStyle=S.target.bad>now?'#c0392b':'#1f6d50';ctx.lineWidth=3;ctx.beginPath();ctx.arc(ox+(S.target.x+0.5)*s,oy+(S.target.y+0.5)*s,s*0.38,0,7);ctx.stroke();}
+ // thorns
+ for(const k of S.spike){const [sx,sy]=k.split(',').map(Number),u=ox+sx*s,v=oy+sy*s;ctx.fillStyle='#4e7a3a';ctx.fillRect(u+s*0.1,v+s*0.86,s*0.8,s*0.1);ctx.fillStyle='#b8323f';for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(u+s*(0.12+i*0.27),v+s*0.96);ctx.lineTo(u+s*(0.25+i*0.27),v+s*0.42);ctx.lineTo(u+s*(0.38+i*0.27),v+s*0.96);ctx.fill();}}
+ // seeds
+ for(const g of S.gems){if(g.got)continue;const cx=ox+(g.x+0.5)*s,cy=oy+(g.y+0.55)*s+Math.sin(now/300+g.x)*s*0.05;
+  ctx.fillStyle='#f0b429';ctx.beginPath();ctx.ellipse(cx,cy+s*0.08,s*0.17,s*0.22,0,0,7);ctx.fill();ctx.fillStyle='#fff3c4';ctx.beginPath();ctx.ellipse(cx-s*0.05,cy,s*0.05,s*0.08,0,0,7);ctx.fill();
+  ctx.fillStyle='#3f9a4f';ctx.beginPath();ctx.ellipse(cx+s*0.1,cy-s*0.2,s*0.13,s*0.07,-0.6,0,7);ctx.fill();}
+ // gate
+ {const u=ox+L.exit.x*s,v=oy+L.exit.y*s,open=!seedsLeft();ctx.fillStyle=open?'#2f9a5f':'#8a978f';rrect(u+s*0.1,v-s*0.15,s*0.8,s*1.1,s*0.35);ctx.fill();ctx.fillStyle=open?'#c9f2c6':'#c7cdc9';rrect(u+s*0.22,v+s*0.02,s*0.56,s*0.9,s*0.25);ctx.fill();
+  if(open){ctx.globalAlpha=0.35+0.25*Math.sin(now/200);ctx.fillStyle='#fff9b0';ctx.beginPath();ctx.arc(u+s/2,v+s*0.45,s*0.75,0,7);ctx.fill();ctx.globalAlpha=1;ctx.fillStyle='#e85d8a';for(let i=0;i<3;i++){ctx.beginPath();ctx.arc(u+s*(0.3+i*0.2),v+s*0.02,s*0.08,0,7);ctx.fill();}}
+  else{ctx.fillStyle='#5b6660';rrect(u+s*0.4,v+s*0.42,s*0.2,s*0.2,s*0.04);ctx.fill();ctx.strokeStyle='#5b6660';ctx.lineWidth=Math.max(2,s*0.05);ctx.beginPath();ctx.arc(u+s*0.5,v+s*0.42,s*0.08,Math.PI,0);ctx.stroke();}}
+ // boulder tracks (so you can see where they roll)
+ ctx.strokeStyle='rgba(90,100,110,.35)';ctx.lineWidth=Math.max(2,s*0.06);ctx.setLineDash([s*0.15,s*0.15]);
+ for(const r of S.rocks){let a=r.x,b=r.x;while(canEnter(a-1,r.y)&&(isSolid(a-1,r.y+1)||isLadder(a-1,r.y+1)))a--;while(canEnter(b+1,r.y)&&(isSolid(b+1,r.y+1)||isLadder(b+1,r.y+1)))b++;ctx.beginPath();ctx.moveTo(ox+(a+0.2)*s,oy+(r.y+0.97)*s);ctx.lineTo(ox+(b+0.8)*s,oy+(r.y+0.97)*s);ctx.stroke();}
+ ctx.setLineDash([]);
+ // rocks
+ for(const r of S.rocks){const cx=ox+(lerp(r.fx,r.x,r.t)+0.5)*s,cy=oy+(r.y+0.58)*s;ctx.fillStyle='#6f7782';ctx.beginPath();ctx.arc(cx,cy,s*0.36,0,7);ctx.fill();ctx.save();ctx.translate(cx,cy);ctx.rotate(r.spin);ctx.fillStyle='#9aa3ad';ctx.beginPath();ctx.arc(-s*0.12,-s*0.1,s*0.09,0,7);ctx.fill();ctx.beginPath();ctx.arc(s*0.12,s*0.08,s*0.06,0,7);ctx.fill();ctx.restore();}
+ // robots
+ for(const g of S.guards){const gx=ox+(lerp(g.fx,g.x,g.t))*s,gy=oy+(lerp(g.fy,g.y,g.t))*s;ctx.save();if(g.trapped){ctx.beginPath();ctx.rect(gx-2,gy-s,s+4,s*1.45);ctx.clip();}
+  ctx.fillStyle=g.trapped?'#a08f5e':'#c84b3c';rrect(gx+s*0.16,gy+s*0.22,s*0.68,s*0.66,s*0.16);ctx.fill();ctx.strokeStyle='#5c2a22';ctx.lineWidth=Math.max(2,s*0.05);ctx.beginPath();ctx.moveTo(gx+s*0.5,gy+s*0.22);ctx.lineTo(gx+s*0.5,gy+s*0.06);ctx.stroke();ctx.fillStyle='#f3c74a';ctx.beginPath();ctx.arc(gx+s*0.5,gy+s*0.06,s*0.06,0,7);ctx.fill();
+  ctx.fillStyle=g.alert?'#ffd0c8':'#fff';const e=g.dir*s*0.05;ctx.beginPath();ctx.arc(gx+s*0.37+e,gy+s*0.45,s*0.08,0,7);ctx.arc(gx+s*0.63+e,gy+s*0.45,s*0.08,0,7);ctx.fill();ctx.fillStyle=g.alert?'#d0021b':'#2b1b17';ctx.beginPath();ctx.arc(gx+s*0.37+e*1.6,gy+s*0.46,s*0.035,0,7);ctx.arc(gx+s*0.63+e*1.6,gy+s*0.46,s*0.035,0,7);ctx.fill();
+  ctx.fillStyle='#5c2a22';ctx.fillRect(gx+s*0.34,gy+s*0.66,s*0.32,s*0.05);ctx.restore();
+  if(g.alert&&!g.trapped){ctx.fillStyle='#fff';rrect(gx+s*0.62,gy-s*0.42,s*0.36,s*0.38,s*0.1);ctx.fill();ctx.strokeStyle='#d0021b';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#d0021b';ctx.font=`900 ${Math.round(s*0.32)}px system-ui`;ctx.textAlign='center';ctx.fillText('!',gx+s*0.8,gy-s*0.12);}}
+ // player (gardener)
+ if(!(S.inv>0&&Math.floor(now/120)%2)){const gx=ox+px*s,gy=oy+py*s,bob=p.t<1&&!p.climb?Math.sin(p.t*Math.PI)*s*0.04:0,f=p.face;
+  ctx.fillStyle='#2b6f9e';rrect(gx+s*0.27,gy+s*0.48-bob,s*0.46,s*0.38,s*0.08);ctx.fill();ctx.fillStyle='#3b8bc2';ctx.fillRect(gx+s*0.33,gy+s*0.48-bob,s*0.34,s*0.12);
+  ctx.fillStyle='#244b63';const step=p.t<1?Math.sin(p.t*Math.PI*2)*s*0.06:0;ctx.fillRect(gx+s*0.31,gy+s*0.84-bob,s*0.14,s*0.14+step);ctx.fillRect(gx+s*0.55,gy+s*0.84-bob,s*0.14,s*0.14-step);
+  ctx.fillStyle='#f2c9a0';ctx.beginPath();ctx.arc(gx+s*0.5,gy+s*0.33-bob,s*0.17,0,7);ctx.fill();ctx.fillStyle='#2b1b17';ctx.beginPath();ctx.arc(gx+s*(0.5+0.07*f),gy+s*0.32-bob,s*0.03,0,7);ctx.fill();
+  ctx.fillStyle='#e7c25a';ctx.beginPath();ctx.ellipse(gx+s*0.5,gy+s*0.2-bob,s*0.3,s*0.07,0,0,7);ctx.fill();rrect(gx+s*0.36,gy+s*0.06-bob,s*0.28,s*0.15,s*0.06);ctx.fill();ctx.fillStyle='#4f9a55';ctx.fillRect(gx+s*0.36,gy+s*0.15-bob,s*0.28,s*0.04);}
+ // red arrows at the screen edge for robots and boulders just out of view
+ const viewAll=L.w*s<=W+1&&L.h*s<=H+1;
+ if(!viewAll){for(const a of [...S.guards.filter(g=>!g.trapped),...S.rocks]){const ax=ox+(lerp(a.fx,a.x,a.t)+0.5)*s,ay=oy+(lerp(a.fy,a.y,a.t)+0.5)*s;
+   if(ax>=0&&ax<=W&&ay>=0&&ay<=H)continue;if(Math.abs(a.x-p.x)+Math.abs(a.y-p.y)>14)continue;
+   const cx=Math.max(16,Math.min(W-16,ax)),cy=Math.max(16,Math.min(H-16,ay)),ang=Math.atan2(ay-cy,ax-cx);
+   ctx.save();ctx.translate(cx,cy);ctx.rotate(ang);ctx.fillStyle=a.dur!==undefined&&S.rocks.includes(a)?'#6f7782':'#d0021b';ctx.globalAlpha=0.85;ctx.beginPath();ctx.moveTo(12,0);ctx.lineTo(-8,-10);ctx.lineTo(-4,0);ctx.lineTo(-8,10);ctx.closePath();ctx.fill();ctx.restore();}}
+ if(!S.started){ctx.fillStyle='rgba(255,255,255,.85)';const msg=T().ready;ctx.font=`700 ${Math.max(14,Math.round(Math.min(W,H)/24))}px system-ui`;ctx.textAlign='center';const tw=ctx.measureText(msg).width+28;rrect(W/2-tw/2,10,tw,38,12);ctx.fill();ctx.fillStyle='#1f5540';ctx.fillText(msg,W/2,35);}
+ if(S.paused){ctx.fillStyle='rgba(15,45,35,.55)';ctx.fillRect(0,0,W,H);ctx.fillStyle='#fff';ctx.font=`800 ${Math.round(W/12)}px system-ui`;ctx.textAlign='center';ctx.fillText(T().paused,W/2,H/2);}}
+/* ================= loop ================= */
+let last=0;function loop(t){requestAnimationFrame(loop);if(!S||$('game').hidden){last=t;return;}const dt=Math.min(60,t-(last||t));last=t;if(!S.paused&&!S.over&&!S.map)update(dt);draw(t);}
+requestAnimationFrame(loop);
+/* ================= screens & HUD ================= */
+function show(w){$('home').hidden=w!=='home';$('game').hidden=w!=='game';document.body.classList.toggle('playing',w==='game');if(w==='home')renderHome();window.scrollTo(0,0);}
+function renderHud(){if(!S)return;const t=T();$('towerTitle').textContent='🌱 '+fmt(t.tower,{n:S.n+1});$('hearts').textContent='♥'.repeat(Math.max(0,S.hearts))+'♡'.repeat(3-Math.max(0,S.hearts));
+ $('seedCount').textContent='🌰 '+fmt(t.seeds,{a:S.gems.length-seedsLeft(),b:S.gems.length});$('backBtn').textContent=t.back;
+ $('hintBtn').textContent='💡 '+t.hint;$('retryBtn').textContent='⟲ '+t.retry;$('mapBtn').textContent='🔍 '+t.zoomNames[prog.zoom];$('pauseBtn').textContent=S.paused?'▶':'❚❚';}
+function renderHome(){const t=T();document.documentElement.lang=lang==='zh'?'zh-Hans':lang==='zt'?'zh-Hant':lang;document.title='MindGarden — '+t.title;
+ $('title').textContent='🌱 '+t.title;$('subtitle').textContent=t.sub;$('langLabel').textContent='🌐 '+t.language;$('lang').value=lang;
+ const cleared=Object.keys(prog.stars).length,next=prog.unlocked;const cur=prog.cur;
+ $('playBtn').textContent='▶ '+(cur?fmt(t.resume,{n:cur.tower+1}):fmt(t.play,{n:next+1}));
+ $('progTitle').textContent=fmt(t.progress,{n:cleared});$('progBar').style.width=(cleared/COUNT*100)+'%';
+ const stars=Object.values(prog.stars).reduce((a,b)=>a+b,0);$('progStars').textContent=`★ ${stars} / ${COUNT*3} ${t.stars}`;
+ $('allDone').hidden=!prog.stars[COUNT-1];$('allDone').textContent=t.allDone;
+ $('replayLabel').textContent=t.replay;const opts=[`<option value="">${t.choose}</option>`];for(let i=0;i<COUNT;i++)if(prog.stars[i])opts.push(`<option value="${i}">${fmt(t.tower,{n:i+1})} ${'★'.repeat(prog.stars[i])}</option>`);
+ $('replay').innerHTML=opts.join('');$('replayBox').hidden=!cleared;
+  $('howTitle').textContent=t.how;$('howText').textContent=t.howText;$('notice').textContent=t.notice;
+ $('legend').innerHTML=t.legend.map(([k,label])=>`<div class="lg"><canvas data-k="${k}" width="88" height="88"></canvas><span>${label}</span></div>`).join('');drawLegend();}
+function drawLegend(){for(const c of document.querySelectorAll('#legend canvas'))drawTiny(c.getContext('2d'),c.dataset.k);}
+function drawTiny(c,k){c.clearRect(0,0,88,88);c.lineCap='round';
+ const R=(x,y,w,h,r)=>{c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();};
+ c.fillStyle='#b98a6a';R(4,66,80,18,5);c.fill();
+ if(k==='seed'){c.fillStyle='#f0b429';c.beginPath();c.ellipse(44,46,13,17,0,0,7);c.fill();c.fillStyle='#3f9a4f';c.beginPath();c.ellipse(54,28,11,6,-0.6,0,7);c.fill();}
+ if(k==='gate'){c.fillStyle='#2f9a5f';R(24,14,40,52,16);c.fill();c.fillStyle='#c9f2c6';R(31,22,26,42,11);c.fill();}
+ if(k==='robot'){c.fillStyle='#c84b3c';R(22,30,44,36,10);c.fill();c.fillStyle='#fff';c.beginPath();c.arc(36,45,6,0,7);c.arc(52,45,6,0,7);c.fill();c.strokeStyle='#5c2a22';c.lineWidth=3;c.beginPath();c.moveTo(44,30);c.lineTo(44,20);c.stroke();}
+ if(k==='rock'){c.fillStyle='#6f7782';c.beginPath();c.arc(44,46,20,0,7);c.fill();c.fillStyle='#9aa3ad';c.beginPath();c.arc(37,40,5,0,7);c.fill();}
+ if(k==='thorns'){c.fillStyle='#b8323f';for(let i=0;i<3;i++){c.beginPath();c.moveTo(14+i*22,66);c.lineTo(25+i*22,30);c.lineTo(36+i*22,66);c.fill();}}
+ if(k==='crumble'){c.fillStyle='#ffb36b';R(4,66,80,18,5);c.fill();c.strokeStyle='#7a2e1c';c.lineWidth=3;c.beginPath();c.moveTo(30,66);c.lineTo(42,76);c.lineTo(36,84);c.moveTo(42,76);c.lineTo(58,80);c.stroke();}
+ if(k==='belt'){c.fillStyle='#5f6b72';R(4,62,80,22,8);c.fill();c.strokeStyle='#f3d35a';c.lineWidth=4;for(let i=0;i<3;i++){c.beginPath();c.moveTo(18+i*22,66);c.lineTo(26+i*22,73);c.lineTo(18+i*22,80);c.stroke();}}}
+/* ================= input ================= */
+cv.addEventListener('pointerdown',e=>{e.preventDefault();if(!S||S.over||S.paused)return;const r=cv.getBoundingClientRect();const v=S.view;if(!v)return;
+ const pxs=r.left+v.ox+(lerp(S.p.fx,S.p.x,S.p.t)+0.5)*v.s;dig(e.clientX<pxs?-1:1);});
+cv.addEventListener('_unused',e=>{const r=cv.getBoundingClientRect(),v=S.view;
+ const tx=Math.floor((e.clientX-r.left-v.ox)/v.s),ty=Math.floor((e.clientY-r.top-v.oy)/v.s);if(tx<0||ty<0||tx>=L.w||ty>=L.h)return;held=null;goTo(tx,ty);});
+function bindHold(id,dir){const el=$(id);el.addEventListener('pointerdown',e=>{e.preventDefault();if(!S)return;S.path=[];held=dir;try{el.setPointerCapture(e.pointerId);}catch(_){} });
+ for(const ev of ['pointerup','pointercancel','lostpointercapture'])el.addEventListener(ev,()=>{if(held===dir)held=null;});}
+bindHold('bLeft','left');bindHold('bRight','right');bindHold('bUp','up');bindHold('bDown','down');
+
+const KEYS={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down',a:'left',d:'right',w:'up',s:'down',A:'left',D:'right',W:'up',S:'down'};
+document.addEventListener('keydown',e=>{if(!S||$('game').hidden||e.target.tagName==='SELECT')return;if(KEYS[e.key]){e.preventDefault();S.path=[];held=KEYS[e.key];}
+ else if(e.key==='z'||e.key==='Z'){dig(-1);}else if(e.key==='x'||e.key==='X'){dig(1);}else if(e.key===' '){e.preventDefault();togglePause();}});
+document.addEventListener('keyup',e=>{if(KEYS[e.key]&&held===KEYS[e.key])held=null;});
+function togglePause(){if(!S||S.over)return;S.paused=!S.paused;renderHud();}
+$('pauseBtn').addEventListener('click',togglePause);$('hintBtn').addEventListener('click',hint);
+$('mapBtn').addEventListener('click',()=>{if(!S||S.over)return;prog.zoom=(prog.zoom+2)%3;save();S.cam.init=false;renderHud();});
+$('retryBtn').addEventListener('click',()=>{if(!S)return;$('confirm').hidden=false;S.paused=true;renderHud();});
+$('confirmYes').addEventListener('click',()=>{$('confirm').hidden=true;prog.cur=null;startTower(S.n,false);});
+$('confirmNo').addEventListener('click',()=>{$('confirm').hidden=true;S.paused=false;renderHud();});
+$('backBtn').addEventListener('click',()=>{persist();S=null;held=null;show('home');});
+$('winNext').addEventListener('click',()=>{$('win').hidden=true;startTower(S.n+1,false);});
+$('winHome').addEventListener('click',()=>{$('win').hidden=true;S=null;show('home');});
+$('loseRetry').addEventListener('click',()=>{$('lose').hidden=true;startTower(S.n,false);});
+$('loseHome').addEventListener('click',()=>{$('lose').hidden=true;S=null;show('home');});
+$('playBtn').addEventListener('click',()=>{const c=prog.cur;if(c)startTower(c.tower,true);else startTower(prog.unlocked,false);});
+$('replay').addEventListener('change',e=>{const v=e.target.value;if(v==='')return;startTower(+v,false);});
+$('lang').addEventListener('change',e=>{lang=e.target.value;writeLang(lang);renderHome();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&S&&!S.over&&!S.paused){S.paused=true;renderHud();persist();}});
+/* confirm dialog text */
+function confirmText(){const t=T();$('confirmText').textContent={en:'Start this tower again from the beginning?',ms:'Mulakan semula menara ini dari awal?',zh:'从头重新开始这座塔？',zt:'從頭重新開始這座塔？'}[lang];
+ $('confirmYes').textContent=t.retry;$('confirmNo').textContent={en:'Keep playing',ms:'Teruskan',zh:'继续玩',zt:'繼續玩'}[lang];}
+$('retryBtn').addEventListener('click',confirmText);
+/* ================= start ================= */
+load();show('home');
+window.MG_TOWER={generate,get S(){return S},get L(){return L},bfs:(...a)=>bfs(...a),startTower,goTo,dig,hint,neighbours:(x,y)=>neighbours(x,y,true),setInv:v=>{if(S)S.inv=v;},digLanding:(x,y,side)=>{if(!canStand(x,y)||isLadder(x,y))return null;const hx=x+side,hy=y+1;if(tileAt(hx,hy)!=='#'||!canEnter(hx,y)||isLadder(hx,y)||S.spike.has(hx+','+y))return null;grid[hy][hx]=' ';let fy=y;while(fy<L.h-2&&!canStand(hx,fy)&&canEnter(hx,fy+1))fy++;grid[hy][hx]='#';return S.spike.has(hx+','+fy)?null:[hx,fy];},tick:(n,dt)=>{for(let i=0;i<n&&S&&!S.over;i++)update(dt||16);},prog:()=>prog};
+if('serviceWorker' in navigator&&location.protocol==='https:')window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
 })();
 </script>
 </body></html>
