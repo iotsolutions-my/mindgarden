@@ -1,5 +1,11 @@
 # MindGarden changelog
 
+## v3.21.0 — Logic Squares diagonal rule
+- **Challenge** and **Expert** now use the diagonal rule: both long diagonals (shaded purple) must also contain each number once, as well as every row, column and box.
+- Challenge: 4×4 grid with diagonals and fewer starting numbers. Expert: 6×6 grid with diagonals (about 23 empty squares).
+- Every puzzle still has exactly one solution, checked with the diagonal rule included. A diagonal repeat shows in red and does not count as a win.
+- Relax and Gentle are unchanged.
+
 ## v3.20.1 — Seed Rush label and tidy-up
 - Seed Rush: the 🌱 counter in the top bar now reads **Seeds left: 204** (Benih tinggal / 剩余种子 / 剩餘種子), so players know what it counts.
 - Seed Rush is now cached by the offline service worker (`service-worker.js`, cache `mindgarden-v3.20.1-pwa`).
