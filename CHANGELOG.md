@@ -1,5 +1,22 @@
 # MindGarden changelog
 
+## v3.26.0 — Smart City: missions grow with your city
+Missions are the main source of income for a small city, so they now follow the city's size:
+
+| City level | Missions per day | Penalties | Rewards | New missions |
+| --- | --- | --- | --- | --- |
+| 🌱 Village (under 120 residents) | 8 | **None** | normal | — |
+| 🏘️ Growing town (120+) | 8 | Small (half) | normal | 🧹 Gotong-royong day |
+| 🏙️ Regional city (360+) | 10 | Full | +20% | 🎤 Big concert night, 🚨 Street protest (police can be dispatched) |
+| 🌆 Metropolitan city (900+) | 12 | Heavier (×1.5) | +40% | 🌏 World Expo (big reward with a World Trade Centre or event hall) |
+
+- In a village, deferring a mission or leaving missions unfinished costs nothing, so a small city can't run out of money from penalties.
+- Unfinished missions at Next Day are capped at 4 for penalty purposes.
+- Bigger cities get one to three tough missions a day. Concerts use the stadium or sports centre; the World Expo pays more when you have visitors, hotels and an airport.
+- The Missions tab now explains the current rules under your city level.
+- A day already in progress keeps its mission count; the new count starts from the next day.
+- Fixed: the "All buildings are available" note ran into the level text, and the finished-day summary said "The next one is coming" when all missions were done. Deferred incidents no longer say "Skip this building mission".
+
 ## v3.25.0 — Smart City Phase 4: airports, bridges, coverage and money you can see
 **Airports with real runways**
 - A new airport now comes with a terminal, control tower and a 4-tile runway, laid out automatically in a straight line beside the terminal (it needs 4 empty tiles in a row).
