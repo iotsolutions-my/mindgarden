@@ -1,5 +1,16 @@
 # MindGarden changelog
 
+## v3.27.0 — Smart City: smoother traffic and growing shops
+**Traffic**
+- Fixed: some cars and emergency vehicles looked like they were spinning on the spot. They had very short routes (1–2 road tiles) and turned around every half-second.
+- Every vehicle now gets a route of at least 3 road tiles, pauses briefly at each end before turning back, and turns around at most once every 3 seconds.
+
+**Shops grow with the city**
+- Upgrade a shop yourself: choose Shopping mall and tap a shop. You pay only the difference (RM 1,850), just like upgrading houses to apartments.
+- Shop owners expand on their own: from Regional city size, when residents want more shops, one busy shop with plenty of homes nearby becomes a mall each day (turn off with the same "Residents may upgrade" switch in City administration).
+- Shophouses get taller as the city grows: 2 storeys in a village, 3 in a town, and 4 with a lit rooftop sign in a city.
+- 🔎 Inspect now tells you how to upgrade houses, apartments, shops and factories, and how much it costs.
+
 ## v3.26.0 — Smart City: missions grow with your city
 Missions are the main source of income for a small city, so they now follow the city's size:
 

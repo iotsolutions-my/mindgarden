@@ -1,5 +1,5 @@
 {
-  "version": "3.26.0",
-  "build": "3.26.0",
-  "notes": "Smart City: missions grow with the city; no penalties for villages; tougher missions for big cities."
+  "version": "3.27.0",
+  "build": "3.27.0",
+  "notes": "Smart City: smoother traffic (no more spinning vehicles), shops upgrade to malls, taller shophouses."
 }
