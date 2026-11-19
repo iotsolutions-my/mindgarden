@@ -1,5 +1,11 @@
 # MindGarden changelog
 
+## v3.20.1 — Seed Rush label and tidy-up
+- Seed Rush: the 🌱 counter in the top bar now reads **Seeds left: 204** (Benih tinggal / 剩余种子 / 剩餘種子), so players know what it counts.
+- Seed Rush is now cached by the offline service worker (`service-worker.js`, cache `mindgarden-v3.20.1-pwa`).
+- README: removed the three outdated development screenshots; updated the game list to 15 games including Seed Rush and Sky Coordinator.
+- `version.json` and the main page build set to 3.20.1 so the update banner only appears for real updates.
+
 ## v3.20.0 — Category menu, new Sentence Detective, Logic Squares fix
 **Main menu**
 - The home screen now shows four large category buttons: Words & Language, Memory & Attention, Numbers & Logic, and Big games. Tapping one opens that category's own game list. No sideways scrolling and no long page to scroll through.

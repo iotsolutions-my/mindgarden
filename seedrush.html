@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#164c3c"><meta name="google" content="notranslate"><meta name="mindgarden-build" content="3.20.1">
+<title>MindGarden — Seed Rush</title><meta name="description" content="A garden maze chase: 100 levels, clever robots that team up, power-ups, a hideout shed and a daily challenge. English, Bahasa Melayu and Chinese. No ads.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="MindGarden"><meta property="og:title" content="MindGarden — Seed Rush"><meta property="og:description" content="A garden maze chase: 100 levels, clever robots that team up, power-ups, a hideout shed and a daily challenge. English, Bahasa Melayu and Chinese. No ads.">
+<meta property="og:image" content="./social-preview.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="MindGarden — Seed Rush"><meta name="twitter:description" content="A garden maze chase: 100 levels, clever robots that team up, power-ups, a hideout shed and a daily challenge. English, Bahasa Melayu and Chinese. No ads."><meta name="twitter:image" content="./social-preview.png">
+<link rel="icon" href="./favicon.ico" sizes="any"><link rel="manifest" href="./manifest.webmanifest">
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#22392f;background:#f3f7f1;font-size:17px;-webkit-text-size-adjust:100%}
+*{box-sizing:border-box}body{margin:0}body.playing{overflow:hidden;overscroll-behavior:none}button,select{font:inherit;color:inherit}button{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #eeaf64;outline-offset:2px}[hidden]{display:none!important}
+.wrap{max-width:640px;margin:auto;padding:14px 12px 48px}
+.hero{border-radius:22px;padding:14px 18px 16px;color:#fff;background:linear-gradient(120deg,#164c3c,#2f7b5c)}
+.back{display:inline-flex;align-items:center;min-height:44px;color:#fff;text-decoration:none;background:#ffffff26;border-radius:12px;padding:8px 14px;font-weight:650}
+.hero h1{font-size:1.7rem;margin:10px 0 2px}.hero p{margin:4px 0 0;color:#e3f2dc}
+.ctrl{display:flex;align-items:center;gap:10px;font-weight:650;margin:12px 2px}.ctrl select{min-height:48px;border:2px solid #c3d8c7;border-radius:12px;background:#fff;padding:8px 10px;flex:1;max-width:280px}
+.big{display:block;width:100%;min-height:64px;border:0;border-radius:18px;background:#1f6d50;color:#fff;font-size:1.25rem;font-weight:800;box-shadow:0 5px 0 #154c38;margin:6px 0 14px}
+.big:active{transform:translateY(3px);box-shadow:0 2px 0 #154c38}
+.card{background:#fff;border:1px solid #dcebd9;border-radius:20px;padding:14px;box-shadow:0 6px 18px #274b3312;margin-bottom:14px}.card h2{margin:0 0 6px;font-size:1.15rem}
+.daily .row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.streak{font-weight:700;color:#a14d0b}
+.daily button{min-height:52px;border:2px solid #e2b26a;background:#fff4e2;color:#7a4a10;border-radius:14px;font-weight:800;padding:8px 16px;width:100%;margin-top:8px;font-size:1.05rem}
+.daily button:disabled{border-color:#cfe0cf;background:#eef6ee;color:#2f6b4c;cursor:default}
+.bar{height:14px;background:#e6efe3;border-radius:8px;overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;background:linear-gradient(90deg,#7cc28d,#f0b429)}
+.replay select{width:100%;min-height:48px;border:2px solid #c3d8c7;border-radius:12px;background:#fff;padding:8px 10px;margin-top:6px}
+.skins{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}.skin{min-height:58px;border:2px solid #d7e5d5;border-radius:14px;background:#fbfdf9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:.8rem;font-weight:700;color:#6b7c70}
+.skin i{width:28px;height:28px;border-radius:50%;display:block;box-shadow:inset 0 0 0 3px #222}.skin.on{border-color:#1f6d50;box-shadow:0 0 0 3px #1f6d5044}.skin:disabled{opacity:.55;cursor:default}
+details summary{font-weight:750;cursor:pointer;min-height:44px;display:flex;align-items:center;font-size:1.05rem}.note{line-height:1.6;color:#2f4b3e}
+.legend{display:grid;gap:8px;margin-top:6px}.lg{display:flex;align-items:center;gap:12px;line-height:1.35}.lg .ic{width:40px;height:40px;flex:none;display:grid;place-items:center;background:#eef5ec;border-radius:10px;font-size:1.4rem;color:#c98a12}
+.notice{color:#4f6a5b;font-size:.95rem;text-align:center;margin-top:16px;line-height:1.5}
+/* game */
+#game{position:fixed;inset:0;display:flex;flex-direction:column;background:#f3f7f1;height:100vh;height:100dvh}
+.topbar{display:flex;align-items:center;gap:8px;padding:8px 10px;background:linear-gradient(120deg,#164c3c,#2f7b5c);color:#fff}
+.topbar button{min-height:44px;border:0;border-radius:12px;background:#ffffff26;color:#fff;font-weight:700;padding:6px 12px}
+.topbar .t{flex:1;font-weight:800;font-size:1.05rem;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.score{font-weight:800;font-size:1.15rem;font-variant-numeric:tabular-nums;min-width:64px;text-align:right}
+.infobar{display:flex;align-items:center;gap:8px;padding:6px 10px;font-weight:700;font-size:1.05rem}.infobar .grow{flex:1}.infobar button{min-height:44px;min-width:48px;border:2px solid #b9d5bf;border-radius:12px;background:#e9f4ec;color:#1f5540;font-weight:800}
+#stage{flex:1;position:relative;min-height:0;margin:0 4px}#cv{display:block;touch-action:none}
+.msgbar{min-height:1.6em;padding:2px 12px;font-size:.98rem;color:#22513e;font-weight:650;text-align:center}
+.pad{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(2,52px);gap:6px;justify-content:center;padding:4px 8px calc(8px + env(safe-area-inset-bottom))}
+.pad button{border:2px solid #b6d5bf;border-radius:16px;background:#eaf5e8;color:#20513b;font-size:1.5rem;font-weight:800;user-select:none;-webkit-user-select:none;touch-action:none}.pad button:active{background:#bce6c6}
+#bUp{grid-column:2;grid-row:1}#bLeft{grid-column:1;grid-row:2}#bDown{grid-column:2;grid-row:2}#bRight{grid-column:3;grid-row:2}
+.overlay{position:fixed;inset:0;background:#0f2d2366;display:flex;align-items:center;justify-content:center;z-index:900;padding:16px}
+.dialog{background:#fffdf6;border-radius:24px;padding:20px 18px;max-width:390px;width:100%;text-align:center;box-shadow:0 20px 50px #0005;max-height:92vh;overflow:auto}
+.dialog h2{margin:6px 0;font-size:1.5rem;color:#1d5a40}.dialog h3{margin:12px 0 6px;font-size:1.05rem}.dialog p{font-size:1.02rem;line-height:1.45;margin:8px 0}
+.dialog .new{background:#fff4e2;border:2px solid #e2b26a;border-radius:14px;padding:8px 10px;text-align:left}
+.goals{list-style:none;padding:0;margin:6px 0;text-align:left;line-height:1.7;font-size:1.02rem}.goals li{color:#5b6f62}.goals li.done{color:#1d5a40;font-weight:700}
+.dialog .hint{color:#5b6f62;font-size:.95rem}
+.dialog button{display:block;width:100%;min-height:56px;margin-top:10px;border-radius:16px;font-weight:800;font-size:1.1rem;border:2px solid #b9d5bf;background:#e9f4ec;color:#1f5540}
+.dialog button.go{background:#1f6d50;border-color:#1f6d50;color:#fff}
+.stars{font-size:3rem;letter-spacing:6px;color:#d9d2bf}.stars span{display:inline-block}.stars .on{color:#f2b51c;animation:pop .5s backwards}
+@keyframes pop{0%{transform:scale(0) rotate(-30deg)}80%{transform:scale(1.25)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.stars .on{animation:none}}
+@media(max-width:440px){.wrap{padding:8px 6px 32px}.hero h1{font-size:1.45rem}.skins{gap:5px}}
+</style></head>
+<body>
+<div id="home" class="wrap">
+<header class="hero"><a class="back" href="./index.html">← MindGarden</a><h1 id="title"></h1><p id="subtitle"></p></header>
+<label class="ctrl"><span id="langLabel">Language</span><select id="lang"><option value="en">English</option><option value="ms">Bahasa Melayu</option><option value="zh">简体中文</option><option value="zt">繁體中文</option></select></label>
+<button type="button" id="playBtn" class="big"></button>
+<section class="card daily"><div class="row"><h2 id="dailyTitle"></h2><span id="streak" class="streak"></span></div><button type="button" id="dailyBtn"></button></section>
+<section class="card"><h2 id="progTitle"></h2><div class="bar"><i id="progBar"></i></div><div id="progStars"></div>
+<div id="replayBox" class="replay"><label><span id="replayLabel"></span><select id="replay"></select></label></div></section>
+<section class="card"><h2 id="skinTitle"></h2><div id="skins" class="skins"></div></section>
+<details class="card"><summary id="howTitle"></summary><p id="howText" class="note"></p><div id="legend" class="legend"></div></details>
+<p id="notice" class="notice"></p>
+</div>
+<div id="game" hidden>
+<div class="topbar"><button type="button" id="backBtn"></button><span id="lvlTitle" class="t"></span><span id="scoreBox" class="score"></span></div>
+<div class="infobar"><span id="lives"></span><span id="seedsLeft"></span><span id="effects" class="grow"></span><button type="button" id="pauseBtn" aria-label="Pause"></button></div>
+<div id="stage"><canvas id="cv" role="img" aria-label="Seed Rush maze"></canvas></div>
+<div id="msg" class="msgbar" aria-live="polite"></div>
+<div class="pad"><button type="button" id="bUp" aria-label="Up">↑</button><button type="button" id="bLeft" aria-label="Left">←</button><button type="button" id="bDown" aria-label="Down">↓</button><button type="button" id="bRight" aria-label="Right">→</button></div>
+</div>
+<div id="intro" class="overlay" hidden><div class="dialog"><h2 id="introTitle"></h2><div id="introBody"></div><button type="button" id="introGo" class="go"></button></div></div>
+<div id="win" class="overlay" hidden><div class="dialog"><div id="winStars" class="stars"></div><h2 id="winTitle"></h2><p id="winScore"></p><ol id="winGoals" class="goals"></ol><p id="winExtra"></p><button type="button" id="winNext" class="go"></button><button type="button" id="winHome"></button></div></div>
+<div id="lose" class="overlay" hidden><div class="dialog"><h2 id="loseTitle"></h2><p id="loseText"></p><button type="button" id="loseRetry" class="go"></button><button type="button" id="loseHome"></button></div></div>
+<noscript><p style="text-align:center">Please enable JavaScript to play.</p></noscript>
+<script>
+/* MindGarden Seed Rush — maze levels. Deterministic (integer RNG), validated reachable. */
+'use strict';
+var MazeGen=(function(){
+const DIRS=[[0,-1],[1,0],[0,1],[-1,0]]; // up right down left
+function rng(seed){let a=seed>>>0;return()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
+/* Level settings: one difficulty curve for everyone. */
+function params(n,daily){const big=!daily&&n%10===0;
+ return {n,big,W:n<=20?15:19,H:n<=20?19:(big?27:23),robots:Math.min(8,2+Math.floor(n/12)+(big?1:0)),
+  chase:0.80+0.15*Math.min(1,(n-1)/99),patrol:0.62,scared:Math.max(2.5,7-n*0.045),alert:5+Math.floor(n/25),maxPack:n<30?2:3,
+  loops:0.04+Math.min(0.10,n*0.0012),tunnel:n>=4,mud:n>=10,oneway:n>=16,tele:n>=20?(n>=50?2:1):0,gates:n>=30?(n>=60?4:2):0,dark:n>=40&&n%5===0,
+  shed:n>=12,powers:['boots','freeze','shield','magnet'].filter((p,i)=>n>=[6,13,25,35][i]),symmetric:n<=60||n%3!==0,
+  challenge:['robots','fruit','time'][n%3],eatGoal:1+Math.floor(n/30)};}
+function build(n,daily){const p=params(daily?30+(n%61):n,daily);const r=rng(daily?n*2654435761:n*7919+101);
+ const W=p.W,H=p.H,wc=(W-1)/2,hc=(H-1)/2;
+ for(let attempt=0;attempt<40;attempt++){const g=carve(p,r,W,H,wc,hc);if(g)return Object.assign(g,{params:p,W,H,n,daily:!!daily});}
+ throw new Error('maze generation failed '+n);}
+function carve(p,r,W,H,wc,hc){
+ const G=Array.from({length:H},()=>Array(W).fill('#'));
+ const sym=p.symmetric,maxX=sym?wc:W-2;
+ // perfect maze on cells (odd coordinates); left half when symmetric
+ const seen=new Set(),stack=[[1,1]];seen.add('1,1');G[1][1]='.';
+ while(stack.length){const [x,y]=stack[stack.length-1];const opts=[];
+  for(const [dx,dy] of DIRS){const nx=x+dx*2,ny=y+dy*2;if(nx<1||ny<1||nx>maxX||ny>H-2||seen.has(nx+','+ny))continue;opts.push([nx,ny,dx,dy]);}
+  if(!opts.length){stack.pop();continue;}const [nx,ny,dx,dy]=opts[Math.floor(r()*opts.length)];G[y+dy][x+dx]='.';G[ny][nx]='.';seen.add(nx+','+ny);stack.push([nx,ny]);}
+ const mirror=()=>{if(!sym)return;for(let y=0;y<H;y++)for(let x=wc+1;x<W;x++)G[y][x]=G[y][W-1-x];};mirror();
+ const isCellLink=(x,y)=>(x%2)!==(y%2); // a wall between two cells
+ const set=(x,y,v)=>{G[y][x]=v;if(sym)G[y][W-1-x]=v;};
+ // robot dock in the centre, with a ring road around it
+ for(let y=hc-2;y<=hc+2;y++)for(let x=wc-4;x<=wc+4;x++){const ring=y===hc-2||y===hc+2||x===wc-4||x===wc+4;G[y][x]=ring?'.':'#';}
+ for(let x=wc-2;x<=wc+2;x++)G[hc][x]='H';G[hc-1][wc]='D';
+ // remove dead ends (braid) and add extra loops — symmetric
+ const open=(x,y)=>x>=0&&y>=0&&x<W&&y<H&&G[y][x]!=='#';
+ const core=(x,y)=>y>=hc-2&&y<=hc+2&&x>=wc-4&&x<=wc+4;
+ for(let pass=0;pass<4;pass++)for(let y=1;y<H-1;y+=2)for(let x=1;x<W-1;x+=2){if(G[y][x]!=='.'||core(x,y))continue;
+  const n=DIRS.filter(([dx,dy])=>open(x+dx,y+dy)).length;if(n>1)continue;
+  const cand=DIRS.filter(([dx,dy])=>{const wx=x+dx,wy=y+dy,bx=x+dx*2,by=y+dy*2;return wx>0&&wy>0&&wx<W-1&&wy<H-1&&G[wy][wx]==='#'&&open(bx,by)&&!core(wx,wy)&&!(G[by]&&(G[by][bx]==='H'||G[by][bx]==='D'));});
+  if(cand.length){const [dx,dy]=cand[Math.floor(r()*cand.length)];set(x+dx,y+dy,'.');}}
+ for(let y=1;y<H-1;y++)for(let x=1;x<=(sym?wc:W-2);x++){if(G[y][x]!=='#'||!isCellLink(x,y)||core(x,y))continue;
+  const h=x%2===0;const a=h?[x-1,y]:[x,y-1],b=h?[x+1,y]:[x,y+1];if(open(...a)&&open(...b)&&r()<p.loops&&!core(...a)&&!core(...b))set(x,y,'.');}
+ // join any separated parts
+ for(let guard=0;guard<50;guard++){const comp=components(G,W,H);if(comp.count<=1)break;
+  let joined=false;for(let y=1;y<H-1&&!joined;y++)for(let x=1;x<W-1&&!joined;x++){if(G[y][x]!=='#'||!isCellLink(x,y)||core(x,y))continue;const h=x%2===0;const a=h?[x-1,y]:[x,y-1],b=h?[x+1,y]:[x,y+1];
+   const ca=comp.id[a[1]*W+a[0]],cb=comp.id[b[1]*W+b[0]];if(ca>=0&&cb>=0&&ca!==cb){set(x,y,'.');joined=true;}}
+  if(!joined)return null;}
+ // tunnel (wraps left/right)
+ let tunnel=-1;if(p.tunnel&&r()<0.75){const rows=[];for(let y=3;y<H-3;y+=2)if(Math.abs(y-hc)>2&&G[y][1]==='.')rows.push(y);if(rows.length){tunnel=rows[Math.floor(r()*rows.length)];G[tunnel][0]='T';G[tunnel][W-1]='T';}}
+ const start={x:wc,y:hc+4};if(G[start.y][start.x]!=='.')return null;
+ const idx=(x,y)=>y*W+x;
+ const L={G,W,H,wc,hc,tunnel,start,door:{x:wc,y:hc-1},dock:{x:wc,y:hc},mud:new Set(),arrows:new Map(),gates:[],tele:new Map()};
+ const pathTiles=[];for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++)if(G[y][x]==='.'&&!core(x,y)&&!(x===start.x&&y===start.y))pathTiles.push([x,y]);
+ const deg=(x,y)=>DIRS.filter(([dx,dy])=>open(x+dx,y+dy)&&G[y+dy][x+dx]!=='H'&&G[y+dy][x+dx]!=='D').length;
+ const corridor=([x,y])=>deg(x,y)===2&&((open(x-1,y)&&open(x+1,y))||(open(x,y-1)&&open(x,y+1)));
+ const farFromStart=([x,y])=>Math.abs(x-start.x)+Math.abs(y-start.y)>4;
+ const pick=(list)=>list.splice(Math.floor(r()*list.length),1)[0];
+ // mud patches
+ if(p.mud){let c=pathTiles.filter(t=>corridor(t)&&farFromStart(t));for(let k=0;k<3+Math.floor(p.n/25)&&c.length;k++){const [x,y]=pick(c);L.mud.add(idx(x,y));if(sym)L.mud.add(idx(W-1-x,y));}}
+ // one-way paths (kept only if every place can still be reached and left)
+ if(p.oneway){let c=pathTiles.filter(t=>corridor(t)&&farFromStart(t)&&!L.mud.has(idx(...t)));let made=0;
+  for(let k=0;k<20&&made<2+Math.floor(p.n/30)&&c.length;k++){const [x,y]=pick(c);const horiz=open(x-1,y)&&open(x+1,y);const d=horiz?(r()<0.5?1:3):(r()<0.5?0:2);
+   L.arrows.set(idx(x,y),d);if(!stronglyConnected(L))L.arrows.delete(idx(x,y));else made++;}}
+ // teleport pads
+ let teleTries=0;for(let k=0;k<p.tele;k++){const padNear=t=>[...L.tele.keys()].some(k=>Math.abs(k%W-t[0])+Math.abs(((k/W)|0)-t[1])<3);const c=pathTiles.filter(t=>corridor(t)&&farFromStart(t)&&!L.mud.has(idx(...t))&&!L.arrows.has(idx(...t))&&!padNear(t));if(c.length<2)break;
+  const a=pick(c);const far=c.filter(t=>Math.abs(t[0]-a[0])+Math.abs(t[1]-a[1])>(W+H)/2&&Math.abs(t[0]-a[0])+Math.abs(t[1]-a[1])>=3);if(!far.length)break;const b=far[Math.floor(r()*far.length)];L.tele.set(idx(...a),idx(...b));L.tele.set(idx(...b),idx(...a));if(!stronglyConnected(L,false,true)){L.tele.delete(idx(...a));L.tele.delete(idx(...b));k--;if(++teleTries>12)break;}}
+ // timed gates on link tiles that are never needed (the maze stays connected with all gates closed)
+ if(p.gates){let c=[];for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++)if(G[y][x]==='.'&&isCellLink(x,y)&&!core(x,y)&&farFromStart([x,y])&&!L.arrows.has(idx(x,y))&&!L.mud.has(idx(x,y))&&!L.tele.has(idx(x,y)))c.push([x,y]);
+  for(let k=0;k<30&&L.gates.length<p.gates&&c.length;k++){const [x,y]=pick(c);L.gates.push({i:idx(x,y),x,y,phase:L.gates.length*1.7});if(!stronglyConnected(L,true,true))L.gates.pop();}}
+ // power flowers near the four corners, seeds everywhere else
+ const flowers=new Set();for(const [cx,cy] of [[1,3],[W-2,3],[1,H-4],[W-2,H-4]]){let best=null,bd=1e9;for(const [x,y] of pathTiles){const d=Math.abs(x-cx)+Math.abs(y-cy);if(d<bd&&!L.tele.has(idx(x,y))){bd=d;best=[x,y];}}if(best)flowers.add(idx(...best));}
+ L.flowers=flowers;L.seeds=new Set();for(const [x,y] of pathTiles){const i=idx(x,y);if(!flowers.has(i)&&!L.tele.has(i))L.seeds.add(i);}
+ for(let y=hc-2;y<=hc+2;y++)for(let x=wc-4;x<=wc+4;x++)if(G[y][x]==='.'&&!flowers.has(idx(x,y)))L.seeds.add(idx(x,y));
+ if(!stronglyConnected(L,true)||!stronglyConnected(L,true,true))return null;
+ // robot zones: spread centres across the maze (farthest-point sampling)
+ const centres=[pathTiles[Math.floor(r()*pathTiles.length)]];while(centres.length<p.robots){let best=null,bd=-1;for(const t of pathTiles){const d=Math.min(...centres.map(c=>Math.abs(c[0]-t[0])+Math.abs(c[1]-t[1])));if(d>bd){bd=d;best=t;}}centres.push(best);}
+ L.zoneOf=new Int8Array(W*H).fill(-1);for(const [x,y] of pathTiles){let bi=0,bd=1e9;centres.forEach((c,i)=>{const d=Math.abs(c[0]-x)+Math.abs(c[1]-y);if(d<bd){bd=d;bi=i;}});L.zoneOf[idx(x,y)]=bi;}
+ L.zones=centres.map((c,i)=>({cx:c[0],cy:c[1],tiles:pathTiles.filter(([x,y])=>L.zoneOf[idx(x,y)]===i).map(([x,y])=>idx(x,y))}));
+ return L;}
+function components(G,W,H){const id=new Int32Array(W*H).fill(-1);let count=0;
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){if(G[y][x]!=='.'||id[y*W+x]>=0)continue;const q=[[x,y]];id[y*W+x]=count;
+  while(q.length){const [cx,cy]=q.pop();for(const [dx,dy] of DIRS){const nx=cx+dx,ny=cy+dy;if(nx<0||ny<0||nx>=W||ny>=H)continue;if(G[ny][nx]!=='.'||id[ny*W+nx]>=0)continue;id[ny*W+nx]=count;q.push([nx,ny]);}}count++;}
+ return {id,count};}
+/* Player movement rules (shared with the game). gatesClosed: treat every gate as closed. */
+function step(L,x,y,d,opts){opts=opts||{};const [dx,dy]=DIRS[d];let nx=x+dx,ny=y+dy;
+ if(nx<0||nx>=L.W){if(y!==L.tunnel)return null;nx=(nx+L.W)%L.W;}if(ny<0||ny>=L.H)return null;
+ const t=L.G[ny][nx];if(t==='#')return null;
+ if((t==='D'||t==='H')&&!opts.dock)return null;
+ const ai=y*L.W+x,bi=ny*L.W+nx;
+ if(L.arrows.has(ai)&&L.arrows.get(ai)!==d)return null;if(L.arrows.has(bi)&&L.arrows.get(bi)!==d)return null;
+ if(opts.closed&&opts.closed(bi))return null;
+ return [nx,ny];}
+function stronglyConnected(L,gatesClosed,noPads){const W=L.W,H=L.H;const gateSet=new Set(L.gates.map(g=>g.i));if(noPads)for(const k of L.tele.keys())gateSet.add(k);const opts={closed:(gatesClosed||noPads)?(i=>gateSet.has(i)):null};
+ const nodes=[];for(let y=0;y<H;y++)for(let x=0;x<W;x++){const t=L.G[y][x];if((t==='.'||t==='T')&&!gateSet.has(y*W+x))nodes.push(y*W+x);}
+ const fwd=new Set([L.start.y*W+L.start.x]),q=[L.start.y*W+L.start.x];
+ while(q.length){const i=q.pop(),x=i%W,y=(i/W)|0;for(let d=0;d<4;d++){const s=step(L,x,y,d,opts);if(!s)continue;let j=s[1]*W+s[0];if(L.tele&&L.tele.has(j))j=L.tele.get(j);if(!fwd.has(j)){fwd.add(j);q.push(j);}}}
+ if(nodes.some(i=>!fwd.has(i)&&!(L.tele&&L.tele.has(i))))return false;
+ // every place can get back to the start
+ for(const i of nodes){if(L.tele&&L.tele.has(i))continue;const seen=new Set([i]),qq=[i];let ok=false;
+  while(qq.length&&!ok){const k=qq.pop();if(k===L.start.y*W+L.start.x){ok=true;break;}const x=k%W,y=(k/W)|0;for(let d=0;d<4;d++){const s=step(L,x,y,d,opts);if(!s)continue;let j=s[1]*W+s[0];if(L.tele.has(j))j=L.tele.get(j);if(!seen.has(j)){seen.add(j);qq.push(j);}}}
+  if(!ok)return false;}
+ return true;}
+return {build,params,step,DIRS,rng,stronglyConnected};
+})();
+if(typeof module!=='undefined')module.exports=MazeGen;
+</script>
+<script>
+/* MindGarden Seed Rush — original maze-chase game. Offline, no sound, no ads. */
+'use strict';
+(function(){
+const M=MazeGen,DIRS=M.DIRS,COUNT=100,KEY='mindgarden-seedrush-v1';
+const TXT={
+en:{title:'Seed Rush',sub:'Gather every seed in the garden maze — and outsmart the robots.',language:'Language',play:'Play level {n}',
+ daily:'Daily challenge',dailyPlay:'Play today’s maze',dailyDone:'Done for today ✓ — come back tomorrow!',streak:'{n}-day streak',noStreak:'Play daily to build a streak',
+ progress:'{n} of 100 levels cleared',stars:'stars',best:'Best total score',replay:'Replay a level',choose:'Choose…',skins:'Your ladybug',skinLocked:'{n}★',
+ level:'Level {n}',dailyT:'Daily maze',score:'Score',back:'← Home',left:'Seeds left',pause:'Pause',
+ goals:'Goals',g1:'Clear the garden',g2:'Lose no lives',gRobots:'Catch {n} robot(s) with a sunflower',gFruit:'Catch the bonus fruit',gTime:'Finish within {n} s',start:'Start',
+ newThing:'New',feat:{tunnel:'Tunnels on the edge take you to the other side.',boots:'Speed boots 👟 make you fast for a while.',shed:'A garden shed 🏠 sometimes appears. Hide inside for 8 seconds — robots cannot find you!',mud:'Mud 🟫 slows everyone down.',freeze:'Snowflake ❄️ freezes all robots.',oneway:'One-way paths ➜ can only be crossed in the arrow direction.',tele:'Teleport pads 🌀 carry you across the maze.',shield:'Shield 🛡️ protects you from one robot.',gates:'Wooden gates open and close by themselves.',magnet:'Magnet 🧲 pulls nearby seeds to you.',dark:'Night garden 🌙 — you only see what is near you.',more:'More robots tonight!'},
+ ready:'Ready…',go:'Go!',swipe:'Swipe or use the arrows.',spotted:'Spotted! Robots are coming.',flower:'Sunflower! Catch the robots!',hidden:'Hidden in the shed… {n}',shedUp:'A garden shed 🏠 appeared — hide inside if robots chase you!',shedGone:'The shed is gone — it will appear somewhere else later.',
+ caught:'Caught! {n} lives left.',lostAll:'Out of lives',lostText:'So close! Try this level again — you keep learning the robots’ routes.',tryAgain:'Try again',
+ won:'Garden cleared!',next:'Next level ▶',home:'Home',newBest:'New best score!',unlockSkin:'New ladybug colour unlocked!',
+ how:'How to play',howText:'Swipe on the maze or use the arrow buttons to steer. Eat every seed to clear the level. Each robot guards its own part of the garden; if you come close, it calls friends and they try to corner you. Eat a sunflower and, for a few seconds, robots run away — catch them for big points. Power-ups appear now and then. From level 12 a garden shed may appear: hide in it for a few seconds, then it vanishes and shows up elsewhere later.',
+ legend:[['seed','Seed — eat them all'],['flower','Sunflower — robots run away; catch them'],['robot','Robot — guards its area, chases with friends'],['shed','Garden shed — hide for 8 seconds'],['boots','Speed boots'],['freeze','Snowflake — freezes robots'],['shield','Shield — survive one catch'],['magnet','Magnet — pulls seeds to you']],
+ notice:'No ads, no sound. Progress is saved on this device. Keyboard: arrows/WASD, Space to pause.'},
+ms:{title:'Kejar Benih',sub:'Kutip semua benih di labirin taman — dan perdaya robot.',language:'Bahasa',play:'Main tahap {n}',
+ daily:'Cabaran harian',dailyPlay:'Main labirin hari ini',dailyDone:'Selesai hari ini ✓ — datang lagi esok!',streak:'{n} hari berturut-turut',noStreak:'Main setiap hari untuk kumpul rentetan',
+ progress:'{n} daripada 100 tahap selesai',stars:'bintang',best:'Jumlah skor terbaik',replay:'Main semula tahap',choose:'Pilih…',skins:'Kumbang anda',skinLocked:'{n}★',
+ level:'Tahap {n}',dailyT:'Labirin harian',score:'Skor',back:'← Utama',left:'Benih tinggal',pause:'Jeda',
+ goals:'Matlamat',g1:'Kosongkan taman',g2:'Tiada nyawa hilang',gRobots:'Tangkap {n} robot dengan bunga matahari',gFruit:'Tangkap buah bonus',gTime:'Selesai dalam {n} saat',start:'Mula',
+ newThing:'Baharu',feat:{tunnel:'Terowong di tepi membawa anda ke sebelah lain.',boots:'Kasut laju 👟 membuat anda pantas seketika.',shed:'Bangsal taman 🏠 kadang-kadang muncul. Sembunyi di dalam selama 8 saat — robot tidak dapat cari anda!',mud:'Lumpur 🟫 memperlahankan semua.',freeze:'Kepingan salji ❄️ membekukan semua robot.',oneway:'Laluan sehala ➜ hanya boleh dilalui mengikut arah anak panah.',tele:'Pad teleport 🌀 membawa anda merentas labirin.',shield:'Perisai 🛡️ melindungi anda daripada satu robot.',gates:'Pintu kayu terbuka dan tertutup sendiri.',magnet:'Magnet 🧲 menarik benih berdekatan.',dark:'Taman malam 🌙 — anda hanya nampak kawasan dekat.',more:'Lebih banyak robot!'},
+ ready:'Bersedia…',go:'Mula!',swipe:'Leret atau guna anak panah.',spotted:'Dikesan! Robot datang.',flower:'Bunga matahari! Tangkap robot!',hidden:'Bersembunyi di bangsal… {n}',shedUp:'Bangsal taman 🏠 muncul — sembunyi jika dikejar robot!',shedGone:'Bangsal hilang — ia akan muncul di tempat lain nanti.',
+ caught:'Ditangkap! Tinggal {n} nyawa.',lostAll:'Nyawa habis',lostText:'Hampir berjaya! Cuba lagi — anda makin kenal laluan robot.',tryAgain:'Cuba lagi',
+ won:'Taman dikosongkan!',next:'Tahap seterusnya ▶',home:'Utama',newBest:'Skor terbaik baharu!',unlockSkin:'Warna kumbang baharu dibuka!',
+ how:'Cara bermain',howText:'Leret pada labirin atau guna butang anak panah untuk bergerak. Makan semua benih untuk menyelesaikan tahap. Setiap robot menjaga kawasannya; jika anda dekat, ia memanggil kawan untuk mengepung anda. Makan bunga matahari dan robot akan lari seketika — tangkap untuk mata besar. Kuasa tambahan muncul sekali-sekala. Mulai tahap 12, bangsal taman mungkin muncul: sembunyi di dalam seketika, kemudian ia hilang dan muncul di tempat lain.',
+ legend:[['seed','Benih — makan semuanya'],['flower','Bunga matahari — robot lari; tangkap mereka'],['robot','Robot — menjaga kawasan, mengejar bersama kawan'],['shed','Bangsal taman — sembunyi 8 saat'],['boots','Kasut laju'],['freeze','Kepingan salji — membekukan robot'],['shield','Perisai — selamat sekali ditangkap'],['magnet','Magnet — menarik benih']],
+ notice:'Tiada iklan, tiada bunyi. Kemajuan disimpan dalam peranti ini. Papan kekunci: anak panah/WASD, Space untuk jeda.'},
+zh:{title:'种子大冒险',sub:'在花园迷宫里收集所有种子，还要智胜机器人。',language:'语言',play:'开始第{n}关',
+ daily:'每日挑战',dailyPlay:'玩今天的迷宫',dailyDone:'今天已完成 ✓ 明天再来！',streak:'连续{n}天',noStreak:'每天玩一局，累积连续天数',
+ progress:'已完成 {n} / 100 关',stars:'颗星',best:'最佳总分',replay:'重玩关卡',choose:'请选择…',skins:'你的瓢虫',skinLocked:'{n}★',
+ level:'第{n}关',dailyT:'每日迷宫',score:'分数',back:'← 主页',left:'剩余种子',pause:'暂停',
+ goals:'目标',g1:'清空花园',g2:'不失去生命',gRobots:'用向日葵抓到 {n} 个机器人',gFruit:'吃到奖励水果',gTime:'{n} 秒内完成',start:'开始',
+ newThing:'新内容',feat:{tunnel:'边上的隧道可以通到另一边。',boots:'加速鞋 👟 让你暂时变快。',shed:'花园小屋 🏠 偶尔出现，躲进去 8 秒，机器人找不到你！',mud:'泥地 🟫 会让大家变慢。',freeze:'雪花 ❄️ 冻住所有机器人。',oneway:'单行道 ➜ 只能按箭头方向通过。',tele:'传送点 🌀 把你送到迷宫另一边。',shield:'护盾 🛡️ 可以挡住一次机器人。',gates:'木门会自动开关。',magnet:'磁铁 🧲 把附近的种子吸过来。',dark:'夜晚花园 🌙 只能看到身边的地方。',more:'机器人变多了！'},
+ ready:'准备…',go:'开始！',swipe:'在迷宫上滑动或用方向键。',spotted:'被发现了！机器人来了。',flower:'向日葵！快抓机器人！',hidden:'躲在小屋里… {n}',shedUp:'花园小屋 🏠 出现了——被追时可以躲进去！',shedGone:'小屋消失了，稍后会在别处出现。',
+ caught:'被抓到了！还剩 {n} 条命。',lostAll:'生命用完了',lostText:'差一点！再试一次，你会越来越熟悉机器人的路线。',tryAgain:'再试一次',
+ won:'花园清空了！',next:'下一关 ▶',home:'主页',newBest:'新的最高分！',unlockSkin:'解锁了新的瓢虫颜色！',
+ how:'玩法说明',howText:'在迷宫上滑动或用方向键控制方向。吃完所有种子就过关。每个机器人守着自己的区域；你一靠近，它会叫上同伴一起包围你。吃到向日葵后，机器人会逃跑几秒——抓住它们得高分。不时会出现道具。从第12关起，花园小屋可能出现：躲进去几秒钟，之后它会消失，并在别处再出现。',
+ legend:[['seed','种子——全部吃掉'],['flower','向日葵——机器人逃跑，可以抓它们'],['robot','机器人——守护自己的区域，会和同伴一起追'],['shed','花园小屋——可躲 8 秒'],['boots','加速鞋'],['freeze','雪花——冻住机器人'],['shield','护盾——被抓一次也没事'],['magnet','磁铁——吸来种子']],
+ notice:'无广告、无声音。进度保存在本设备。键盘：方向键/WASD，空格键暂停。'},
+zt:{title:'種子大冒險',sub:'在花園迷宮裡收集所有種子，還要智勝機器人。',language:'語言',play:'開始第{n}關',
+ daily:'每日挑戰',dailyPlay:'玩今天的迷宮',dailyDone:'今天已完成 ✓ 明天再來！',streak:'連續{n}天',noStreak:'每天玩一局，累積連續天數',
+ progress:'已完成 {n} / 100 關',stars:'顆星',best:'最佳總分',replay:'重玩關卡',choose:'請選擇…',skins:'你的瓢蟲',skinLocked:'{n}★',
+ level:'第{n}關',dailyT:'每日迷宮',score:'分數',back:'← 主頁',left:'剩餘種子',pause:'暫停',
+ goals:'目標',g1:'清空花園',g2:'不失去生命',gRobots:'用向日葵抓到 {n} 個機器人',gFruit:'吃到獎勵水果',gTime:'{n} 秒內完成',start:'開始',
+ newThing:'新內容',feat:{tunnel:'邊上的隧道可以通到另一邊。',boots:'加速鞋 👟 讓你暫時變快。',shed:'花園小屋 🏠 偶爾出現，躲進去 8 秒，機器人找不到你！',mud:'泥地 🟫 會讓大家變慢。',freeze:'雪花 ❄️ 凍住所有機器人。',oneway:'單行道 ➜ 只能按箭頭方向通過。',tele:'傳送點 🌀 把你送到迷宮另一邊。',shield:'護盾 🛡️ 可以擋住一次機器人。',gates:'木門會自動開關。',magnet:'磁鐵 🧲 把附近的種子吸過來。',dark:'夜晚花園 🌙 只能看到身邊的地方。',more:'機器人變多了！'},
+ ready:'準備…',go:'開始！',swipe:'在迷宮上滑動或用方向鍵。',spotted:'被發現了！機器人來了。',flower:'向日葵！快抓機器人！',hidden:'躲在小屋裡… {n}',shedUp:'花園小屋 🏠 出現了——被追時可以躲進去！',shedGone:'小屋消失了，稍後會在別處出現。',
+ caught:'被抓到了！還剩 {n} 條命。',lostAll:'生命用完了',lostText:'差一點！再試一次，你會越來越熟悉機器人的路線。',tryAgain:'再試一次',
+ won:'花園清空了！',next:'下一關 ▶',home:'主頁',newBest:'新的最高分！',unlockSkin:'解鎖了新的瓢蟲顏色！',
+ how:'玩法說明',howText:'在迷宮上滑動或用方向鍵控制方向。吃完所有種子就過關。每個機器人守著自己的區域；你一靠近，它會叫上同伴一起包圍你。吃到向日葵後，機器人會逃跑幾秒——抓住它們得高分。不時會出現道具。從第12關起，花園小屋可能出現：躲進去幾秒鐘，之後它會消失，並在別處再出現。',
+ legend:[['seed','種子——全部吃掉'],['flower','向日葵——機器人逃跑，可以抓牠們'],['robot','機器人——守護自己的區域，會和同伴一起追'],['shed','花園小屋——可躲 8 秒'],['boots','加速鞋'],['freeze','雪花——凍住機器人'],['shield','護盾——被抓一次也沒事'],['magnet','磁鐵——吸來種子']],
+ notice:'無廣告、無聲音。進度儲存在本裝置。鍵盤：方向鍵/WASD，空白鍵暫停。'}};
+const $=id=>document.getElementById(id),fmt=(s,o)=>s.replace(/\{(\w+)\}/g,(_,k)=>o[k]);
+function readLang(){let l=null;try{l=new URLSearchParams(location.search).get('lang');}catch(e){}if(!TXT[l]){try{l=localStorage.getItem('mindgarden-lang');}catch(e){}}
+ if(!TXT[l]){try{const s=JSON.parse(localStorage.getItem('mindgarden-settings')||'null');l=s&&s.lang;}catch(e){}}return TXT[l]?l:'en';}
+function writeLang(l){try{localStorage.setItem('mindgarden-lang',l);const s=JSON.parse(localStorage.getItem('mindgarden-settings')||'{}')||{};s.lang=l;localStorage.setItem('mindgarden-settings',JSON.stringify(s));}catch(e){}}
+let lang=readLang();const T=()=>TXT[lang];
+const SKINS=[{c:'#d93a2f',need:0},{c:'#f2b51c',need:25},{c:'#2f7fd1',need:60},{c:'#2fae7a',need:100},{c:'#8a4fd1',need:150},{c:'rainbow',need:220}];
+const ROBOT_COLORS=['#d9473b','#e38b2c','#8a5bd6','#1f9aa0','#c94f8f','#5f7f2f','#3d6fd1','#a0662f'];
+/* ---------- progress ---------- */
+let prog={unlocked:1,stars:{},best:{},daily:{streak:0,last:0,best:0},skin:0};
+function today(d){d=d||new Date();return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();}
+function yesterday(){const d=new Date();d.setDate(d.getDate()-1);return today(d);}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(Object.assign({schema:1},prog)));}catch(e){}}
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(!d||d.schema!==1)return;prog.unlocked=Math.max(1,Math.min(COUNT,d.unlocked|0));
+ for(const k in d.stars||{}){const n=+k,v=d.stars[k]|0;if(n>=1&&n<=COUNT&&v>=1&&v<=3)prog.stars[n]=v;}for(const k in d.best||{}){const n=+k,v=d.best[k]|0;if(n>=1&&n<=COUNT&&v>0)prog.best[n]=v;}
+ if(d.daily)prog.daily={streak:Math.max(0,d.daily.streak|0),last:d.daily.last|0,best:Math.max(0,d.daily.best|0)};prog.skin=Math.max(0,Math.min(SKINS.length-1,d.skin|0));}catch(e){}}
+const totalStars=()=>Object.values(prog.stars).reduce((a,b)=>a+b,0);
+/* ---------- game state ---------- */
+let L=null,S=null;
+const BASE=6.6; // player speed, tiles per second
+const idx=(x,y)=>y*L.W+x;
+function gateOpen(g){return Math.floor((S.clock/1000+g.phase)/5)%2===0;}
+function blocked(i){const g=S.gateAt.get(i);return g?!gateOpen(g):false;}
+function step(x,y,d,who){const s=M.step(L,x,y,d,{dock:who==='eyes'||who==='leave',closed:i=>blocked(i)||(who!=='player'&&S.shed&&S.shed.i===i)});if(!s)return null;
+ if(who==='player'&&(L.G[s[1]][s[0]]==='D'||L.G[s[1]][s[0]]==='H'))return null;return s;}
+function distField(tx,ty,who){const W=L.W,H=L.H,D=new Int16Array(W*H).fill(-1);const q=[idx(tx,ty)];D[q[0]]=0;let qi=0;
+ while(qi<q.length){const u=q[qi++],ux=u%W,uy=(u/W)|0;
+  for(let d=0;d<4;d++){const [dx,dy]=DIRS[d];let vx=ux-dx,vy=uy-dy;if(vx<0||vx>=W){if(uy!==L.tunnel)continue;vx=(vx+W)%W;}if(vy<0||vy>=H)continue;const v=idx(vx,vy);if(D[v]>=0)continue;
+   const s=step(vx,vy,d,who);if(s&&s[0]===ux&&s[1]===uy){D[v]=D[u]+1;q.push(v);}}}
+ return D;}
+function startLevel(kind,id){const daily=kind==='daily';L=M.build(id,daily);const P=L.params;
+ S={kind,id,n:P.n,score:0,lives:3,lost:0,clock:0,seeds:new Set(L.seeds),flowers:new Set(L.flowers),total:L.seeds.size,eaten:0,robotsEaten:0,fruitGot:false,
+  gateAt:new Map(L.gates.map(g=>[g.i,g])),p:null,robots:[],scaredUntil:0,chain:0,freezeUntil:0,bootsUntil:0,magnetUntil:0,shield:false,
+  power:null,powerNext:18000,fruit:null,fruitDone:[false,false],shed:null,shedNext:P.shed?20000:1e12,hidden:0,popups:[],state:'intro',readyUntil:0,over:false,paused:false,lastSpotted:0,msg:'',msgUntil:0,ever:{},startedAt:0};
+ resetActors();show('game');layout();$('msg').textContent='';renderHud();showIntro();}
+function resetActors(){const P=L.params;S.p={x:L.start.x,y:L.start.y,dir:3,want:3,t:0,moving:false,face:3,anim:0};
+ S.robots=[];for(let i=0;i<P.robots;i++){S.robots.push({i,x:L.dock.x-2+(i%5),y:L.dock.y,dir:0,t:0,mode:'home',releaseAt:S.clock+1200+i*1600,zone:i%L.zones.length,role:0,target:null,alertUntil:0,eyes:false,col:ROBOT_COLORS[i%8]});}
+ S.scaredUntil=0;S.readyUntil=S.clock+1600;}
+/* ---------- movement helpers ---------- */
+function pos(a){const [dx,dy]=DIRS[a.dir];let x=a.x+dx*a.t,y=a.y+dy*a.t;return [x,y];}
+function onMud(a){return L.mud.has(idx(a.x,a.y));}
+function playerSpeed(){let s=BASE;if(S.clock<S.bootsUntil)s*=1.45;if(onMud(S.p))s*=0.55;return s;}
+function robotSpeed(r){const P=L.params;if(r.eyes)return BASE*1.7;let s=BASE*(r.mode==='chase'?P.chase:P.patrol);if(S.clock<S.scaredUntil&&!r.eyes)s=BASE*0.5;
+ if(r.y===L.tunnel&&(r.x<2||r.x>L.W-3))s*=0.5;if(onMud(r))s*=0.55;if(r.mode==='home'||r.mode==='leave')s=BASE*0.5;return s;}
+function advance(a,dist,decide,arrive){let guard=0;
+ while(dist>0&&guard++<6){if(!a.moving){if(!decide(a))return;a.moving=true;}const need=1-a.t;if(dist<need){a.t+=dist;return;}
+  dist-=need;const [dx,dy]=DIRS[a.dir];a.x+=dx;a.y+=dy;if(a.x<0)a.x=L.W-1;if(a.x>=L.W)a.x=0;a.t=0;a.moving=false;arrive(a);}}
+/* ---------- player ---------- */
+function playerDecide(p){if(p.want<0)return false;if(step(p.x,p.y,p.want,'player')){p.dir=p.want;p.face=p.dir;return true;}if(step(p.x,p.y,p.dir,'player'))return true;return false;}
+function playerArrive(p){const i=idx(p.x,p.y);
+ if(L.tele.has(i)&&!p.justTele){const j=L.tele.get(i);p.x=j%L.W;p.y=(j/L.W)|0;p.justTele=true;}else p.justTele=false;
+ eat(idx(p.x,p.y));
+ if(S.shed&&S.shed.i===idx(p.x,p.y)&&!S.shed.used){S.shed.used=true;S.hidden=S.clock+8000;S.ever.shed=true;p.want=-1;p.moving=false;for(const r of S.robots)if(r.mode==='chase'){r.mode='patrol';r.alertUntil=0;}}
+ if(S.power&&S.power.i===idx(p.x,p.y))takePower();
+ if(S.fruit&&S.fruit.i===idx(p.x,p.y)){S.fruitGot=true;const pts=100*(1+Math.floor(S.n/10));S.score+=pts;popup(p.x,p.y,'+'+pts);S.fruit=null;}}
+function eat(i){if(S.seeds.delete(i)){S.score+=10;S.eaten++;if(S.seeds.size===0&&S.flowers.size===0)win();checkFruit();}
+ if(S.flowers.delete(i)){S.score+=50;S.scaredUntil=S.clock+L.params.scared*1000;S.chain=0;say(T().flower,1500);
+  for(const r of S.robots)if(!r.eyes&&r.mode!=='home'){r.dir=(r.dir+2)%4;r.t=r.moving?1-r.t:0;if(r.moving){const [dx,dy]=DIRS[(r.dir+2)%4];r.x+=dx;r.y+=dy;if(r.x<0)r.x=L.W-1;if(r.x>=L.W)r.x=0;}}
+  if(S.seeds.size===0&&S.flowers.size===0)win();}}
+function checkFruit(){const f=S.eaten/S.total;for(const [k,th] of [[0,0.3],[1,0.7]])if(!S.fruitDone[k]&&f>=th){S.fruitDone[k]=true;S.fruit={i:idx(L.start.x,L.start.y),until:S.clock+10000,kind:(S.n+k)%4};}}
+function takePower(){const k=S.power.kind;S.power=null;S.powerNext=S.clock+22000;
+ if(k==='boots')S.bootsUntil=S.clock+6000;if(k==='freeze')S.freezeUntil=S.clock+4000;if(k==='shield')S.shield=true;if(k==='magnet')S.magnetUntil=S.clock+8000;S.score+=100;popup(S.p.x,S.p.y,{boots:'👟',freeze:'❄️',shield:'🛡️',magnet:'🧲'}[k]);}
+/* ---------- robots ---------- */
+function nearestPath(x,y){x=Math.max(1,Math.min(L.W-2,Math.round(x)));y=Math.max(1,Math.min(L.H-2,Math.round(y)));let best=null,bd=1e9;
+ for(let yy=1;yy<L.H-1;yy++)for(let xx=1;xx<L.W-1;xx++){const t=L.G[yy][xx];if(t!=='.')continue;const d=Math.abs(xx-x)+Math.abs(yy-y);if(d<bd){bd=d;best=[xx,yy];}}return best;}
+function robotTarget(r){const p=S.p;
+ if(r.eyes)return [L.dock.x,L.dock.y];if(r.mode==='home'||r.mode==='leave')return [L.door.x,L.door.y-1];
+ if(r.mode==='chase'){const [dx,dy]=DIRS[p.dir];
+  if(r.role===0)return [p.x,p.y];
+  if(r.role===1)return nearestPath(p.x+dx*4,p.y+dy*4)||[p.x,p.y];
+  const lead=S.robots.find(o=>o.mode==='chase'&&o.role===0&&!o.eyes)||r;return nearestPath(2*p.x-lead.x+dx*2,2*p.y-lead.y+dy*2)||[p.x,p.y];}
+ if(!r.target||r.target[0]===r.x&&r.target[1]===r.y||Math.random()<0.02){const z=L.zones[r.zone].tiles;const k=z[Math.floor(Math.random()*z.length)];r.target=[k%L.W,(k/L.W)|0];}
+ return r.target;}
+function robotDecide(r){if(S.clock<S.freezeUntil||S.clock<S.readyUntil)return false;
+ if(r.mode==='home'){if(S.clock<r.releaseAt)return false;r.mode='leave';}
+ const who=r.eyes?'eyes':(r.mode==='leave'?'leave':'robot');
+ const scared=S.clock<S.scaredUntil&&!r.eyes&&r.mode!=='leave';
+ const opts=[];for(let d=0;d<4;d++){if(d===(r.dir+2)%4&&r.moving!==null)continue;if(step(r.x,r.y,d,who))opts.push(d);}
+ if(!opts.length){const back=(r.dir+2)%4;if(step(r.x,r.y,back,who))opts.push(back);else return false;}
+ let choice=opts[0];
+ if(scared){const D=distField(S.p.x,S.p.y,'robot');let best=-1;for(const d of opts){const s=step(r.x,r.y,d,who);const v=D[idx(s[0],s[1])];const sc=(v<0?99:v)+Math.random()*1.5;if(sc>best){best=sc;choice=d;}}}
+ else{const tg=robotTarget(r);const D=distField(tg[0],tg[1],who);let best=1e9;for(const d of opts){const s=step(r.x,r.y,d,who);const v=D[idx(s[0],s[1])];const sc=(v<0?999:v)+Math.random()*0.3;if(sc<best){best=sc;choice=d;}}}
+ r.dir=choice;return true;}
+function robotArrive(r){if(r.mode==='leave'&&L.G[r.y][r.x]==='.'){r.mode='patrol';}
+ if(r.eyes&&r.x===L.dock.x&&r.y===L.dock.y){r.eyes=false;r.mode='home';r.releaseAt=S.clock+1500;}}
+function pathDist(a,b){const D=distField(b.x,b.y,'player');const v=D[idx(a.x,a.y)];return v<0?99:v;}
+function updateAlerts(){const P=L.params,p=S.p;if(S.clock<S.hidden)return;
+ const chasing=S.robots.filter(r=>r.mode==='chase'&&!r.eyes);
+ const D=distField(p.x,p.y,'robot');const dist=r=>{const v=D[idx(r.x,r.y)];return v<0?99:v;};
+ for(const r of chasing){if(dist(r)>14){if(!r.lostAt)r.lostAt=S.clock;if(S.clock-r.lostAt>2500){r.mode='patrol';r.target=null;r.lostAt=0;}}else r.lostAt=0;}
+ const active=S.robots.filter(r=>r.mode==='chase'&&!r.eyes);
+ if(active.length>=P.maxPack)return;
+ const pz=L.zoneOf[idx(p.x,p.y)];
+ for(const r of S.robots){if(r.mode!=='patrol'||r.eyes)continue;const d=dist(r);
+  if(d<=P.alert||(pz===r.zone&&d<=P.alert+5)){
+   // the robot that spots you calls its nearest friends: 2-3 robots chase and try to corner you
+   const pack=[r,...S.robots.filter(o=>o!==r&&o.mode==='patrol'&&!o.eyes&&dist(o)<=18).sort((a,b)=>dist(a)-dist(b))].slice(0,P.maxPack-active.length);
+   pack.forEach((o,k)=>{o.mode='chase';o.role=k;o.lostAt=0;});if(S.clock-S.lastSpotted>6000){say(T().spotted,1600);S.lastSpotted=S.clock;}break;}}}
+/* ---------- shed / power-ups ---------- */
+function freeTiles(minDist){const out=[];const D=distField(S.p.x,S.p.y,'player');for(let y=1;y<L.H-1;y++)for(let x=1;x<L.W-1;x++){const i=idx(x,y);if(L.G[y][x]!=='.'||L.tele.has(i)||L.arrows.has(i)||S.gateAt.has(i))continue;
+ if(S.robots.some(r=>r.x===x&&r.y===y))continue;const d=D[i];if(d<0||d<minDist)continue;out.push(i);}return out;}
+function updateSpecials(){const P=L.params;
+ if(P.shed){if(!S.shed&&S.clock>=S.shedNext){const c=freeTiles(7);if(c.length){S.shed={i:c[Math.floor(Math.random()*c.length)],until:S.clock+30000,used:false};say(T().shedUp,2500);}else S.shedNext=S.clock+3000;}
+  if(S.shed){const inside=idx(S.p.x,S.p.y)===S.shed.i;
+   if((S.shed.used&&(!inside||S.clock>=S.hidden))||(!S.shed.used&&S.clock>=S.shed.until)){S.shed=null;S.hidden=0;S.shedNext=S.clock+100000+Math.random()*40000;say(T().shedGone,2500);S.p.safeUntil=Math.max(S.p.safeUntil||0,S.clock+1200);}}}
+ if(P.powers.length){if(!S.power&&S.clock>=S.powerNext){const c=freeTiles(5);if(c.length)S.power={i:c[Math.floor(Math.random()*c.length)],kind:P.powers[Math.floor(Math.random()*P.powers.length)],until:S.clock+12000};S.powerNext=S.clock+22000;}
+  if(S.power&&S.clock>=S.power.until){S.power=null;S.powerNext=S.clock+15000;}}
+ if(S.fruit&&S.clock>=S.fruit.until)S.fruit=null;
+ if(S.clock<S.magnetUntil){for(const i of [...S.seeds]){const x=i%L.W,y=(i/L.W)|0;if(Math.abs(x-S.p.x)+Math.abs(y-S.p.y)<=2)eat(i);}}}
+/* ---------- main update ---------- */
+function update(dt){if(S.over)return;S.clock+=dt;const p=S.p;
+ if(S.clock<S.readyUntil)return;
+ const hiddenNow=S.clock<S.hidden&&S.shed&&idx(p.x,p.y)===S.shed.i;
+ advance(p,playerSpeed()*dt/1000,playerDecide,playerArrive);p.anim+=dt;
+ if(S.over)return;
+ for(const r of S.robots){if(r.mode==='home'&&S.clock<r.releaseAt)continue;advance(r,robotSpeed(r)*dt/1000,robotDecide,robotArrive);}
+ if(Math.floor(S.clock/250)!==Math.floor((S.clock-dt)/250))updateAlerts();
+ updateSpecials();
+ // collisions
+ const [px,py]=pos(p);
+ for(const r of S.robots){if(r.eyes||r.mode==='home')continue;const [rx,ry]=pos(r);if(Math.abs(rx-px)+Math.abs(ry-py)>0.7)continue;
+  if(S.clock<S.scaredUntil&&r.mode!=='leave'){S.chain++;const pts=200*Math.pow(2,Math.min(3,S.chain-1));S.score+=pts;S.robotsEaten++;popup(r.x,r.y,'+'+pts);r.eyes=true;r.mode='patrol';continue;}
+  if(hiddenNow||S.clock<(p.safeUntil||0))continue;
+  if(S.shield){S.shield=false;p.safeUntil=S.clock+1500;r.eyes=true;popup(p.x,p.y,'🛡️');continue;}
+  caught();return;}
+ for(const pp of S.popups)pp.age+=dt;S.popups=S.popups.filter(pp=>pp.age<1100);}
+function caught(){S.lives--;S.lost++;renderHud();if(navigator.vibrate)try{navigator.vibrate(120);}catch(e){}
+ if(S.lives<=0){S.over=true;openDialog('lose');return;}
+ say(fmt(T().caught,{n:S.lives}),2000);resetActors();S.hidden=0;}
+function win(){if(S.over)return;S.over=true;const P=L.params,secs=Math.round(S.clock/1000);
+ const goal3=P.challenge==='robots'?S.robotsEaten>=P.eatGoal:P.challenge==='fruit'?S.fruitGot:secs<=par();
+ const stars=1+(S.lost===0?1:0)+(goal3?1:0);S.result={stars,goal3};
+ const before=totalStars();
+ if(S.kind==='level'){prog.stars[S.id]=Math.max(prog.stars[S.id]||0,stars);S.newBest=S.score>(prog.best[S.id]||0);if(S.newBest)prog.best[S.id]=S.score;prog.unlocked=Math.min(COUNT,Math.max(prog.unlocked,S.id+1));}
+ else{const d=prog.daily;if(d.last!==today()){d.streak=d.last===yesterday()?d.streak+1:1;d.last=today();d.best=Math.max(d.best,d.streak);}}
+ S.unlocked=SKINS.some(s=>s.need>before&&s.need<=totalStars());save();openDialog('win');}
+function par(){return Math.round(L.seeds.size/BASE*1.9+20);}
+/* ---------- text helpers ---------- */
+function say(m,ms){S.msg=m;S.msgUntil=performance.now()+(ms||2000);$('msg').textContent=m;}
+function popup(x,y,text){S.popups.push({x,y,text,age:0});}
+/* ---------- rendering ---------- */
+const cv=$('cv'),ctx=cv.getContext('2d');let TS=20,OX=0,OY=0,DPR=1;
+function layout(){if(!L)return;const st=$('stage'),W=st.clientWidth,H=st.clientHeight;DPR=Math.min(2,window.devicePixelRatio||1);cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);cv.style.width=W+'px';cv.style.height=H+'px';
+ TS=Math.floor(Math.min(W/L.W,H/L.H));OX=Math.floor((W-TS*L.W)/2);OY=Math.floor((H-TS*L.H)/2);}
+window.addEventListener('resize',layout);if(window.ResizeObserver)new ResizeObserver(layout).observe($('stage'));
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+const THEME=[['#f6f1dc','#4f9a55','#3c7d43'],['#eef5e6','#3f8a6a','#2f6d53'],['#f7ecef','#b0577a','#8a3f5f'],['#e9f2f2','#3f7f8a','#2f5f6a'],['#f5f0e2','#9a7a3f','#7a5f2f']];
+function draw(now){if(!L||!S)return;const W=cv.width/DPR,H=cv.height/DPR;ctx.setTransform(DPR,0,0,DPR,0,0);const th=THEME[Math.floor((S.n-1)/20)%5],s=TS;
+ ctx.fillStyle=th[0];ctx.fillRect(0,0,W,H);
+ const X=x=>OX+x*s,Y=y=>OY+y*s;
+ // hedges
+ for(let y=0;y<L.H;y++)for(let x=0;x<L.W;x++){if(L.G[y][x]!=='#')continue;const wall=(xx,yy)=>xx<0||yy<0||xx>=L.W||yy>=L.H||L.G[yy][xx]==='#';
+  ctx.fillStyle=th[2];ctx.fillRect(X(x),Y(y),s,s);ctx.fillStyle=th[1];const m=s*0.16;
+  const l=wall(x-1,y)?0:m,r=wall(x+1,y)?0:m,u=wall(x,y-1)?0:m,d=wall(x,y+1)?0:m;rr(X(x)+l,Y(y)+u,s-l-r,s-u-d,Math.min(s*0.25,(l||r||u||d)?s*0.25:0));ctx.fill();}
+ // dock door
+ {const x=X(L.door.x),y=Y(L.door.y);ctx.fillStyle='#e8c56a';ctx.fillRect(x,y+s*0.4,s,s*0.2);}
+ for(let x=L.dock.x-2;x<=L.dock.x+2;x++){ctx.fillStyle='rgba(0,0,0,.08)';ctx.fillRect(X(x),Y(L.dock.y),s,s);}
+ // mud, arrows, gates, teleports
+ for(const i of L.mud){const x=i%L.W,y=(i/L.W)|0;ctx.fillStyle='rgba(122,86,48,.45)';ctx.beginPath();ctx.ellipse(X(x)+s/2,Y(y)+s/2,s*0.46,s*0.36,0,0,7);ctx.fill();}
+ for(const [i,d] of L.arrows){const x=i%L.W,y=(i/L.W)|0;ctx.save();ctx.translate(X(x)+s/2,Y(y)+s/2);ctx.rotate(d*Math.PI/2);ctx.fillStyle='rgba(31,109,80,.55)';ctx.beginPath();ctx.moveTo(0,-s*0.42);ctx.lineTo(s*0.3,-s*0.05);ctx.lineTo(-s*0.3,-s*0.05);ctx.closePath();ctx.fill();ctx.fillRect(-s*0.1,-s*0.08,s*0.2,s*0.42);ctx.restore();}
+ for(const g of L.gates){const open=gateOpen(g),warn=!open||Math.floor((S.clock/1000+g.phase)%5)>=4;ctx.strokeStyle=open?'rgba(140,95,45,.35)':'#8c5f2d';ctx.lineWidth=Math.max(2,s*0.12);
+  const v=L.G[g.y-1][g.x]==='#';for(let k=0;k<3;k++){ctx.beginPath();if(v){ctx.moveTo(X(g.x)+s*(0.2+k*0.3),Y(g.y)+s*0.1);ctx.lineTo(X(g.x)+s*(0.2+k*0.3),Y(g.y)+s*0.9);}else{ctx.moveTo(X(g.x)+s*0.1,Y(g.y)+s*(0.2+k*0.3));ctx.lineTo(X(g.x)+s*0.9,Y(g.y)+s*(0.2+k*0.3));}ctx.stroke();}
+  if(open&&warn){ctx.fillStyle='rgba(255,170,60,'+(0.25+0.25*Math.sin(now/90))+')';ctx.fillRect(X(g.x),Y(g.y),s,s);}}
+ const tp=[...L.tele.keys()];tp.forEach(i=>{const x=i%L.W,y=(i/L.W)|0;const pair=Math.min(i,L.tele.get(i));const col=['#8a5bd6','#1f9aa0'][tp.filter(j=>j<L.tele.get(j)).indexOf(pair)%2]||'#8a5bd6';
+  ctx.strokeStyle=col;ctx.lineWidth=Math.max(2,s*0.1);for(let k=0;k<2;k++){ctx.beginPath();ctx.arc(X(x)+s/2,Y(y)+s/2,s*(0.18+k*0.16),now/300+k,now/300+k+4.5);ctx.stroke();}});
+ // seeds and sunflowers
+ ctx.fillStyle='#c98a12';for(const i of S.seeds){const x=i%L.W,y=(i/L.W)|0;ctx.beginPath();ctx.arc(X(x)+s/2,Y(y)+s/2,Math.max(1.6,s*0.1),0,7);ctx.fill();}
+ for(const i of S.flowers){const x=i%L.W,y=(i/L.W)|0,cx=X(x)+s/2,cy=Y(y)+s/2,k=1+0.12*Math.sin(now/180);ctx.fillStyle='#f6c90e';for(let a=0;a<8;a++){ctx.beginPath();ctx.ellipse(cx+Math.cos(a*Math.PI/4)*s*0.24*k,cy+Math.sin(a*Math.PI/4)*s*0.24*k,s*0.13*k,s*0.07*k,a*Math.PI/4,0,7);ctx.fill();}ctx.fillStyle='#7a4a12';ctx.beginPath();ctx.arc(cx,cy,s*0.14*k,0,7);ctx.fill();}
+ const icon=(i,txt,bob)=>{const x=i%L.W,y=(i/L.W)|0;ctx.font=`${Math.round(s*0.8)}px system-ui`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(txt,X(x)+s/2,Y(y)+s/2+(bob?Math.sin(now/200)*s*0.06:0));};
+ if(S.power)icon(S.power.i,{boots:'👟',freeze:'❄️',shield:'🛡️',magnet:'🧲'}[S.power.kind],true);
+ if(S.fruit)icon(S.fruit.i,['🍓','🍊','🍇','🍉'][S.fruit.kind],true);
+ drawShed(X,Y,s,now);
+ // robots
+ const scaredT=S.scaredUntil-S.clock;
+ for(const r of S.robots){const [rx,ry]=pos(r),u=X(rx),v=Y(ry);if(r.eyes){drawEyes(u,v,s,r.dir,'#fff');continue;}
+  const scared=scaredT>0&&r.mode!=='leave'&&r.mode!=='home',blink=scared&&scaredT<1800&&Math.floor(now/180)%2;
+  ctx.fillStyle=scared?(blink?'#f4f4f4':'#4a6fd1'):r.col;rr(u+s*0.12,v+s*0.16,s*0.76,s*0.72,s*0.2);ctx.fill();
+  ctx.strokeStyle='rgba(0,0,0,.35)';ctx.lineWidth=Math.max(1,s*0.06);ctx.beginPath();ctx.moveTo(u+s*0.5,v+s*0.16);ctx.lineTo(u+s*0.5,v+s*0.02);ctx.stroke();ctx.fillStyle='#f3c74a';ctx.beginPath();ctx.arc(u+s*0.5,v+s*0.03,s*0.06,0,7);ctx.fill();
+  if(scared){ctx.fillStyle='#fff';ctx.fillRect(u+s*0.3,v+s*0.4,s*0.1,s*0.1);ctx.fillRect(u+s*0.6,v+s*0.4,s*0.1,s*0.1);ctx.strokeStyle='#fff';ctx.lineWidth=Math.max(1,s*0.05);ctx.beginPath();for(let k=0;k<5;k++)ctx.lineTo(u+s*(0.28+k*0.11),v+s*(k%2?0.62:0.7));ctx.stroke();}
+  else{drawEyes(u,v,s,r.dir,r.mode==='chase'?'#ffd0c8':'#fff',r.mode==='chase');}
+  if(S.clock<S.freezeUntil){ctx.fillStyle='rgba(180,225,255,.55)';rr(u+s*0.08,v+s*0.1,s*0.84,s*0.82,s*0.2);ctx.fill();}}
+ // ladybug
+ const p=S.p;if(p){const hid=S.clock<S.hidden&&S.shed&&idx(p.x,p.y)===S.shed.i;const [px,py]=pos(p);
+  if(!hid&&!(S.clock<(p.safeUntil||0)&&Math.floor(now/110)%2)){const cx=X(px)+s/2,cy=Y(py)+s/2;ctx.save();ctx.translate(cx,cy);ctx.rotate([0,Math.PI/2,Math.PI,-Math.PI/2][p.face]);
+   const sk=SKINS[prog.skin].c,col=sk==='rainbow'?`hsl(${(now/8)%360},80%,55%)`:sk;const wig=p.moving?Math.sin(p.anim/60)*s*0.05:0;
+   ctx.strokeStyle='#222';ctx.lineWidth=Math.max(1,s*0.05);for(const sd of [-1,1])for(const k of [-0.15,0.05,0.25]){ctx.beginPath();ctx.moveTo(sd*s*0.3,k*s);ctx.lineTo(sd*s*0.45,k*s+(sd>0?wig:-wig));ctx.stroke();}
+   ctx.fillStyle=col;ctx.beginPath();ctx.ellipse(0,s*0.05,s*0.36,s*0.4,0,0,7);ctx.fill();ctx.fillStyle='#222';ctx.beginPath();ctx.arc(0,-s*0.32,s*0.18,0,7);ctx.fill();
+   ctx.strokeStyle='#222';ctx.beginPath();ctx.moveTo(0,-s*0.2);ctx.lineTo(0,s*0.44);ctx.stroke();for(const [a,b] of [[-0.17,-0.02],[0.17,-0.02],[-0.15,0.24],[0.15,0.24]]){ctx.beginPath();ctx.arc(a*s,b*s,s*0.07,0,7);ctx.fill();}
+   ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(-s*0.07,-s*0.38,s*0.04,0,7);ctx.arc(s*0.07,-s*0.38,s*0.04,0,7);ctx.fill();
+   if(S.shield){ctx.strokeStyle='rgba(80,160,255,.8)';ctx.lineWidth=Math.max(2,s*0.08);ctx.beginPath();ctx.arc(0,0,s*0.56,0,7);ctx.stroke();}
+   if(S.clock<S.bootsUntil){ctx.fillStyle='rgba(255,200,60,.35)';ctx.beginPath();ctx.arc(0,s*0.5,s*0.3,0,7);ctx.fill();}ctx.restore();}}
+ // night garden
+ if(L.params.dark&&p){const [px,py]=pos(p);const cx=X(px)+s/2,cy=Y(py)+s/2;const g=ctx.createRadialGradient(cx,cy,s*2.2,cx,cy,s*5.2);g.addColorStop(0,'rgba(10,20,30,0)');g.addColorStop(1,'rgba(10,20,30,.93)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  drawShed(X,Y,s,now);for(const i of S.flowers){const x=i%L.W,y=(i/L.W)|0;ctx.fillStyle='rgba(246,201,14,.7)';ctx.beginPath();ctx.arc(X(x)+s/2,Y(y)+s/2,s*0.18,0,7);ctx.fill();}
+  for(const r of S.robots){if(r.eyes)continue;const [rx,ry]=pos(r);ctx.fillStyle='rgba(255,90,70,.9)';ctx.beginPath();ctx.arc(X(rx)+s*0.38,Y(ry)+s*0.48,s*0.06,0,7);ctx.arc(X(rx)+s*0.62,Y(ry)+s*0.48,s*0.06,0,7);ctx.fill();}}
+ // popups
+ for(const pp of S.popups){ctx.globalAlpha=1-pp.age/1100;ctx.fillStyle='#1f5540';ctx.font=`800 ${Math.round(s*0.7)}px system-ui`;ctx.textAlign='center';ctx.fillText(pp.text,X(pp.x)+s/2,Y(pp.y)-pp.age/40);ctx.globalAlpha=1;}
+ // ready / hidden banners
+ const banner=(t)=>{ctx.font=`800 ${Math.max(16,Math.round(s*1.1))}px system-ui`;ctx.textAlign='center';ctx.textBaseline='middle';const w=ctx.measureText(t).width+30;ctx.fillStyle='rgba(255,255,255,.92)';rr(W/2-w/2,H/2-s*0.9,w,s*1.8,12);ctx.fill();ctx.fillStyle='#1f5540';ctx.fillText(t,W/2,H/2);};
+ if(S.state==='play'&&S.clock<S.readyUntil)banner(S.readyUntil-S.clock>500?T().ready:T().go);
+ if(S.clock<S.hidden&&S.shed&&S.p&&idx(S.p.x,S.p.y)===S.shed.i){ctx.font=`700 ${Math.max(14,Math.round(s*0.8))}px system-ui`;ctx.textAlign='center';const t=fmt(T().hidden,{n:Math.ceil((S.hidden-S.clock)/1000)});const w=ctx.measureText(t).width+24;ctx.fillStyle='rgba(31,109,80,.92)';rr(W/2-w/2,8,w,34,10);ctx.fill();ctx.fillStyle='#fff';ctx.textBaseline='middle';ctx.fillText(t,W/2,25);}
+ if(S.paused){ctx.fillStyle='rgba(15,45,35,.55)';ctx.fillRect(0,0,W,H);banner(T().pause);}}
+function drawShed(X,Y,s,now){ if(S.shed){const x=S.shed.i%L.W,y=(S.shed.i/L.W)|0,u=X(x),v=Y(y);const glow=0.35+0.25*Math.sin(now/220);ctx.fillStyle=`rgba(255,240,150,${glow})`;ctx.beginPath();ctx.arc(u+s/2,v+s/2,s*0.9,0,7);ctx.fill();
+  ctx.fillStyle='#b5562f';ctx.beginPath();ctx.moveTo(u+s*0.05,v+s*0.48);ctx.lineTo(u+s*0.5,v+s*0.08);ctx.lineTo(u+s*0.95,v+s*0.48);ctx.closePath();ctx.fill();ctx.fillStyle='#f1dfb4';ctx.fillRect(u+s*0.17,v+s*0.46,s*0.66,s*0.48);ctx.fillStyle='#6b4a2a';ctx.fillRect(u+s*0.4,v+s*0.62,s*0.2,s*0.32);
+  if(S.clock<S.hidden){const left=(S.hidden-S.clock)/8000;ctx.strokeStyle='#1f6d50';ctx.lineWidth=Math.max(3,s*0.12);ctx.beginPath();ctx.arc(u+s/2,v+s/2,s*0.75,-Math.PI/2,-Math.PI/2+left*Math.PI*2);ctx.stroke();}}
+}
+function drawEyes(u,v,s,dir,white,angry){const [dx,dy]=DIRS[dir];ctx.fillStyle=white;ctx.beginPath();ctx.arc(u+s*0.36,v+s*0.46,s*0.11,0,7);ctx.arc(u+s*0.64,v+s*0.46,s*0.11,0,7);ctx.fill();
+ ctx.fillStyle=angry?'#c0021b':'#1d2b3a';ctx.beginPath();ctx.arc(u+s*0.36+dx*s*0.04,v+s*0.46+dy*s*0.04,s*0.05,0,7);ctx.arc(u+s*0.64+dx*s*0.04,v+s*0.46+dy*s*0.04,s*0.05,0,7);ctx.fill();}
+/* ---------- HUD, screens, dialogs ---------- */
+function renderHud(){if(!S)return;const t=T();$('lvlTitle').textContent=S.kind==='daily'?'🌅 '+t.dailyT:fmt(t.level,{n:S.id});$('scoreBox').textContent=S.score.toLocaleString();
+ $('lives').textContent='🐞'.repeat(Math.max(0,S.lives));$('seedsLeft').textContent='🌱 '+t.left+': '+(S.seeds.size+S.flowers.size);$('backBtn').textContent=t.back;$('pauseBtn').textContent=S.paused?'▶':'❚❚';
+ const fx=[];if(S.clock<S.bootsUntil)fx.push('👟');if(S.clock<S.freezeUntil)fx.push('❄️');if(S.shield)fx.push('🛡️');if(S.clock<S.magnetUntil)fx.push('🧲');if(S.clock<S.scaredUntil)fx.push('🌻');$('effects').textContent=fx.join(' ');
+ if(performance.now()>S.msgUntil&&S.msg){S.msg='';$('msg').textContent='';}}
+function goalsText(){const t=T(),P=L.params;return [t.g1,t.g2,P.challenge==='robots'?fmt(t.gRobots,{n:P.eatGoal}):P.challenge==='fruit'?t.gFruit:fmt(t.gTime,{n:par()})];}
+const FEATURE_AT=[['tunnel',4],['boots',6],['mud',10],['shed',12],['freeze',13],['oneway',16],['tele',20],['shield',25],['gates',30],['magnet',35],['dark',40]];
+function showIntro(){const t=T(),P=L.params;S.state='intro';const g=goalsText();
+ $('introTitle').textContent=S.kind==='daily'?'🌅 '+t.dailyT:fmt(t.level,{n:S.id});
+ let news='';if(S.kind==='level'){const f=FEATURE_AT.find(([,lv])=>lv===S.id);if(f)news=`<p class="new"><b>${t.newThing}:</b> ${t.feat[f[0]]}</p>`;else if(P.dark)news=`<p class="new">${t.feat.dark}</p>`;else{const prev=M.params(S.id-1);if(S.id>1&&P.robots>prev.robots)news=`<p class="new">🤖 ${t.feat.more}</p>`;}}
+ const best=S.kind==='level'?(prog.stars[S.id]||0):0;
+ $('introBody').innerHTML=news+`<h3>${t.goals}</h3><ol class="goals">${g.map((x,k)=>`<li class="${k<best?'done':''}">${k<best?'★':'☆'} ${x}</li>`).join('')}</ol><p class="hint">${t.swipe}</p>`;
+ $('introGo').textContent='▶ '+t.start;$('intro').hidden=false;}
+function openDialog(kind){const t=T();if(kind==='lose'){$('loseTitle').textContent=t.lostAll;$('loseText').textContent=t.lostText;$('loseRetry').textContent='⟲ '+t.tryAgain;$('loseHome').textContent=t.home;$('lose').hidden=false;return;}
+ const r=S.result,g=goalsText();$('winStars').innerHTML=[1,2,3].map(k=>`<span class="${k<=r.stars?'on':''}" style="animation-delay:${k*0.25}s">★</span>`).join('');
+ $('winTitle').textContent=t.won;$('winScore').textContent=t.score+': '+S.score.toLocaleString()+(S.newBest?' — '+t.newBest:'');
+ const got=[true,S.lost===0,r.goal3];$('winGoals').innerHTML=g.map((x,k)=>`<li class="${got[k]?'done':''}">${got[k]?'★':'☆'} ${x}</li>`).join('');
+ $('winExtra').textContent=S.unlocked?'🐞 '+t.unlockSkin:(S.kind==='daily'?'🔥 '+fmt(t.streak,{n:prog.daily.streak}):'');
+ $('winNext').hidden=!(S.kind==='level'&&S.id<COUNT);$('winNext').textContent=t.next;$('winHome').textContent=t.home;$('win').hidden=false;}
+function show(w){$('home').hidden=w!=='home';$('game').hidden=w!=='game';document.body.classList.toggle('playing',w==='game');if(w==='home')renderHome();window.scrollTo(0,0);}
+function renderHome(){const t=T();document.documentElement.lang=lang==='zh'?'zh-Hans':lang==='zt'?'zh-Hant':lang;document.title='MindGarden — '+t.title;
+ $('title').textContent='🐞 '+t.title;$('subtitle').textContent=t.sub;$('langLabel').textContent='🌐 '+t.language;$('lang').value=lang;
+ $('playBtn').textContent='▶ '+fmt(t.play,{n:prog.unlocked});
+ const done=prog.daily.last===today();$('dailyTitle').textContent='🌅 '+t.daily;$('dailyBtn').textContent=done?t.dailyDone:'▶ '+t.dailyPlay;$('dailyBtn').disabled=done;
+ const st=(prog.daily.last===today()||prog.daily.last===yesterday())?prog.daily.streak:0;$('streak').textContent=st?'🔥 '+fmt(t.streak,{n:st}):t.noStreak;
+ const cleared=Object.keys(prog.stars).length,ts=totalStars();$('progTitle').textContent=fmt(t.progress,{n:cleared});$('progBar').style.width=cleared+'%';
+ $('progStars').textContent=`★ ${ts} / 300 ${t.stars} · ${t.best}: ${Object.values(prog.best).reduce((a,b)=>a+b,0).toLocaleString()}`;
+ $('replayLabel').textContent=t.replay;const opts=[`<option value="">${t.choose}</option>`];for(let i=1;i<=COUNT;i++)if(prog.stars[i])opts.push(`<option value="${i}">${fmt(t.level,{n:i})} ${'★'.repeat(prog.stars[i])}</option>`);$('replay').innerHTML=opts.join('');$('replayBox').hidden=!cleared;
+ $('skinTitle').textContent=t.skins;$('skins').innerHTML=SKINS.map((k,i)=>{const lock=ts<k.need;const bg=k.c==='rainbow'?'conic-gradient(#e74c3c,#f1c40f,#2ecc71,#3498db,#9b59b6,#e74c3c)':k.c;
+  return `<button type="button" class="skin${i===prog.skin?' on':''}" data-skin="${i}" ${lock?'disabled':''} aria-label="skin ${i+1}"><i style="background:${bg}"></i>${lock?fmt(t.skinLocked,{n:k.need}):''}</button>`;}).join('');
+ $('howTitle').textContent=t.how;$('howText').textContent=t.howText;$('notice').textContent=t.notice;
+ $('legend').innerHTML=t.legend.map(([k,label])=>`<div class="lg"><span class="ic">${{seed:'•',flower:'🌻',robot:'🤖',shed:'🏠',boots:'👟',freeze:'❄️',shield:'🛡️',magnet:'🧲'}[k]}</span><span>${label}</span></div>`).join('');}
+/* ---------- loop ---------- */
+let last=0;function loop(t){requestAnimationFrame(loop);if(!S||$('game').hidden){last=t;return;}const dt=Math.min(50,t-(last||t));last=t;if(S.state==='play'&&!S.paused&&!S.over)update(dt);draw(t);if(Math.floor(t/200)!==Math.floor((t-dt)/200))renderHud();}
+requestAnimationFrame(loop);
+/* ---------- input ---------- */
+function want(d){if(!S||S.state!=='play')return;const p=S.p;if(d<0){p.want=-1;return;}p.want=d;
+ if(p.moving&&d===(p.dir+2)%4&&d>=0){const [dx,dy]=DIRS[p.dir];p.x+=dx;p.y+=dy;if(p.x<0)p.x=L.W-1;if(p.x>=L.W)p.x=0;p.t=1-p.t;p.dir=d;p.face=d;}}
+const KEYS={ArrowUp:0,ArrowRight:1,ArrowDown:2,ArrowLeft:3,w:0,d:1,s:2,a:3,W:0,D:1,S:2,A:3};
+document.addEventListener('keydown',e=>{if(!S||$('game').hidden||e.target.tagName==='SELECT')return;if(e.key in KEYS){e.preventDefault();want(KEYS[e.key]);}else if(e.key===' '){e.preventDefault();togglePause();}});
+let sw=null;cv.addEventListener('pointerdown',e=>{sw={x:e.clientX,y:e.clientY};try{cv.setPointerCapture(e.pointerId);}catch(_){}});
+cv.addEventListener('pointermove',e=>{if(!sw)return;const dx=e.clientX-sw.x,dy=e.clientY-sw.y;if(Math.max(Math.abs(dx),Math.abs(dy))<18)return;want(Math.abs(dx)>Math.abs(dy)?(dx>0?1:3):(dy>0?2:0));sw={x:e.clientX,y:e.clientY};});
+cv.addEventListener('pointerup',()=>{sw=null;});cv.addEventListener('pointercancel',()=>{sw=null;});
+for(const [id,d] of [['bUp',0],['bRight',1],['bDown',2],['bLeft',3]])$(id).addEventListener('pointerdown',e=>{e.preventDefault();want(d);});
+function togglePause(){if(!S||S.over||S.state!=='play')return;S.paused=!S.paused;renderHud();}
+$('pauseBtn').addEventListener('click',togglePause);
+$('backBtn').addEventListener('click',()=>{S=null;L=null;closeAll();show('home');});
+$('introGo').addEventListener('click',()=>{$('intro').hidden=true;S.state='play';S.readyUntil=S.clock+1600;});
+function closeAll(){for(const id of ['intro','win','lose'])$(id).hidden=true;}
+$('winNext').addEventListener('click',()=>{closeAll();startLevel('level',S.id+1);});
+$('winHome').addEventListener('click',()=>{closeAll();S=null;show('home');});
+$('loseRetry').addEventListener('click',()=>{closeAll();startLevel(S.kind,S.id);});
+$('loseHome').addEventListener('click',()=>{closeAll();S=null;show('home');});
+$('playBtn').addEventListener('click',()=>startLevel('level',prog.unlocked));
+$('dailyBtn').addEventListener('click',()=>startLevel('daily',today()));
+$('replay').addEventListener('change',e=>{if(e.target.value)startLevel('level',+e.target.value);});
+$('skins').addEventListener('click',e=>{const b=e.target.closest('[data-skin]');if(!b||b.disabled)return;prog.skin=+b.dataset.skin;save();renderHome();});
+$('lang').addEventListener('change',e=>{lang=e.target.value;writeLang(lang);renderHome();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&S&&S.state==='play'&&!S.over){S.paused=true;renderHud();}});
+load();show('home');
+window.MG_SEED={get S(){return S},get L(){return L},startLevel,update:(n,dt)=>{for(let i=0;i<n&&S&&!S.over;i++)update(dt||16);},want,distField:(x,y,w)=>distField(x,y,w||'player'),step:(x,y,d)=>step(x,y,d,'player'),prog:()=>prog,go:()=>{$('intro').hidden=true;S.state='play';S.readyUntil=S.clock;}};
+if('serviceWorker' in navigator&&location.protocol==='https:')window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
+})();
+</script>
+</body></html>

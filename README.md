@@ -2,13 +2,13 @@
 
 **A little exercise for your brain, every day.**
 
-MindGarden is a free, open-source collection of **14 ad-free browser games** designed for curious minds of all ages, especially older adults. Play in English, Bahasa Melayu, Simplified Chinese or Traditional Chinese. **No account, no installation, no audio and no advertising.**
+MindGarden is a free, open-source collection of **15 ad-free browser games** designed for curious minds of all ages, especially older adults. Play in English, Bahasa Melayu, Simplified Chinese or Traditional Chinese. **No account, no installation, no audio and no advertising.**
 
 ## ▶ Play
 
 **Play link:** Add the actual verified GitHub Pages link before launch using `python configure-pages.py https://ACCOUNT.github.io/REPO/`.
 
-You can also open `index.html` in a supported browser. Standalone pages include `city.html`, `mahjong.html`, `tower.html`, `chess.html`, and `xiangqi.html`. When served over HTTPS, the optional PWA can cache the games for offline use.
+You can also open `index.html` in a supported browser. Standalone pages include `city.html`, `mahjong.html`, `tower.html`, `seedrush.html`, `chess.html`, and `xiangqi.html`. When served over HTTPS, the optional PWA can cache the games for offline use.
 
 ## Explore the games
 
@@ -19,18 +19,9 @@ You can also open `index.html` in a supported browser. Standalone pages include 
 | Number Steps | Chinese Chess (象棋) |
 | Sharp Eyes | Smart City 3D |
 | Sentence Detective / Chinese Character Hunt | Tower Escape |
-| Idiom Lab | Air Traffic Coordinator |
+| Idiom Lab | Sky Coordinator |
 | Logic Squares | Gem Garden |
-
-## Screenshots
-
-![Smart City (development screenshot)](screenshots/city.png)
-
-![Mahjong Garden (development screenshot)](screenshots/mahjong.png)
-
-![Western Chess (development screenshot)](screenshots/chess.png)
-
-Screenshots are from earlier development builds; current gameplay and interface may differ slightly.
+| | Seed Rush |
 
 ## Accessibility and privacy
 
