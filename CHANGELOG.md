@@ -1,5 +1,34 @@
 # MindGarden changelog
 
+## v3.24.0 — Smart City Phase 3: reasons to come back
+**Simpler screen, map first**
+- The map now comes first on phones, with Undo and Next Day right below it.
+- Everything else sits in four tabs: 🛠️ Build · 🎯 Missions · 📊 Reports · 🏛️ Mayor. A dot on Missions shows when something needs you.
+- On wide screens the map stays on the left while you use the tabs on the right. The stats row scrolls sideways on phones, and the compass moved to the bottom corner.
+
+**City levels and landmarks**
+- Four levels by population: Village → Growing town (120) → Regional city (360) → Metropolitan city (900). Each level unlocks new buildings, with a celebration that lists what's new.
+- The Missions tab shows your level, a progress bar and the next unlocks. Locked buildings appear greyed out with the level they need.
+- Three new one-of-a-kind landmarks, each with its own 3D model, extra visitors, happiness and daily income: 🕰️ Clock Tower (Growing town), 🗼 Sky Tower (Regional city) and 🌆 Twin Towers (Metropolitan city).
+- **Existing cities keep every building unlocked.** Levels lock buildings only in new cities (after "Reset city"). Daily missions never ask for a locked building.
+
+**Daily Mayor's report card**
+- Each Next Day gives a grade from A to F based on happiness, safety, health, water, power, traffic and missions handled, with an encouraging note, your best area and the area that needs work.
+- A "Help me fix it" button picks a building that helps. A good-mayor streak counts days in a row graded A or B.
+- The Reports tab keeps your last 7 report cards; tap one to see it again.
+
+**Scenario maps** (Missions tab)
+- 🏝️ Island Town (20 days): grow to 480 residents, open a seaport, keep happiness at 65%.
+- 🌊 River City (25 days, floods are common): 650 residents, safety and health at 70%, 2 wetland reserves.
+- ⛈️ After the Storm (15 days): restore water and power to 80% and happiness to 65%.
+- Earn 1–3 stars depending on how quickly you finish. Scenarios have their own saves, and "Return to my city" takes you back to your own city exactly as you left it.
+
+**Postcards and city name**
+- 📷 on the map saves a framed postcard with your city's name, day, population, level and latest grade, or opens the share sheet on phones.
+- Name your city in the Mayor tab.
+
+All 7 Smart City regression tests and the Phase 2 browser checks still pass.
+
 ## v3.23.0 — Smart City Phase 2: gameplay that matters
 **Emergencies on the map**
 - Fires, crime, vandalism, road accidents and dengue calls now appear on the map: flames and smoke for fires, flashing beacons for police calls, a red marker for medical calls.

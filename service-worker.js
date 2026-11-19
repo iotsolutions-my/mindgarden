@@ -1,6 +1,6 @@
-/* MindGarden v3.23.0 — self-contained PWA cache; usable without installation. */
+/* MindGarden v3.24.0 — self-contained PWA cache; usable without installation. */
 'use strict';
-const CACHE_NAME='mindgarden-v3.23.0-pwa';
+const CACHE_NAME='mindgarden-v3.24.0-pwa';
 const SHELL=['./','./index.html','./city.html','./mahjong.html','./tower.html','./chess.html','./xiangqi.html','./seedrush.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./version.json','./favicon.ico','./social-preview.png'];
 self.addEventListener('install',event=>event.waitUntil(
   caches.open(CACHE_NAME).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting())

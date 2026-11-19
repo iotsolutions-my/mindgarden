@@ -1,5 +1,5 @@
 {
-  "version": "3.23.0",
-  "build": "3.23.0",
-  "notes": "Smart City Phase 2: on-map emergencies with response vehicles, coverage view, 4 missions a day, resident voices, demand bars, residents upgrading homes."
+  "version": "3.24.0",
+  "build": "3.24.0",
+  "notes": "Smart City Phase 3: tabs with the map first, city levels and landmarks, daily report cards, scenario maps, postcards."
 }
