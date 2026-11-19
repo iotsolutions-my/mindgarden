@@ -1,5 +1,14 @@
 # MindGarden changelog
 
+## v3.29.1 — Smart City fix: the postcard can be copied
+- Fixed: the 📷 postcard button opened the Windows share window and never copied the picture, so pasting into WhatsApp or Paint gave nothing.
+- The button now opens a preview of the postcard with these buttons:
+  - 📋 Copy puts the picture on the clipboard, ready to paste into WhatsApp, Paint or an email.
+  - 💾 Save picture saves it to the Downloads folder.
+  - 📤 Share appears only on devices that support sharing, such as phones.
+  - Close.
+- If a browser cannot copy pictures, the preview says so and suggests Save picture. All text is in all 4 languages.
+
 ## v3.29.0 — Smart City: Malaysian festivals at national scale, local food and heritage
 **National celebrations now involve most of the city**
 - Major festivals are celebrated by most Malaysians at open houses, in their neighbourhoods and at places of worship, so they now draw most of the city instead of a few hundred people:
