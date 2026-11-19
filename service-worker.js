@@ -1,7 +1,7 @@
-/* MindGarden v3.12.0 — self-contained PWA cache; usable without installation. */
+/* MindGarden v3.20.1 — self-contained PWA cache; usable without installation. */
 'use strict';
-const CACHE_NAME='mindgarden-v3.12.0-pwa';
-const SHELL=['./','./index.html','./city.html','./mahjong.html','./tower.html','./chess.html','./xiangqi.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./version.json','./favicon.ico','./social-preview.png'];
+const CACHE_NAME='mindgarden-v3.20.1-pwa';
+const SHELL=['./','./index.html','./city.html','./mahjong.html','./tower.html','./chess.html','./xiangqi.html','./seedrush.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./version.json','./favicon.ico','./social-preview.png'];
 self.addEventListener('install',event=>event.waitUntil(
   caches.open(CACHE_NAME).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting())
 ));
@@ -23,7 +23,7 @@ self.addEventListener('fetch',event=>{
    }).catch(async()=>{
      const saved=await caches.match(req);
      if(saved)return saved;
-     const fallback=path.endsWith('city.html')?'./city.html':path.endsWith('mahjong.html')?'./mahjong.html':path.endsWith('tower.html')?'./tower.html':path.endsWith('chess.html')?'./chess.html':path.endsWith('xiangqi.html')?'./xiangqi.html':'./index.html';
+     const fallback=path.endsWith('city.html')?'./city.html':path.endsWith('mahjong.html')?'./mahjong.html':path.endsWith('tower.html')?'./tower.html':path.endsWith('chess.html')?'./chess.html':path.endsWith('xiangqi.html')?'./xiangqi.html':path.endsWith('seedrush.html')?'./seedrush.html':'./index.html';
      return (await caches.match(fallback))||Response.error();
    }));return;
  }

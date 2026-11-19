@@ -1,5 +1,5 @@
 {
-  "version": "3.12.0",
-  "build": "3.12.0",
-  "notes": "Public launch readiness: social previews, metadata, localisation, accessibility, README and asset validation."
+  "version": "3.20.1",
+  "build": "3.20.1",
+  "notes": "Category home menu, new Sentence Detective passages, Logic Squares fix, Seed Rush counter label."
 }
