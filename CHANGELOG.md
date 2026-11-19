@@ -1,5 +1,23 @@
 # MindGarden changelog
 
+## v3.28.0 — Smart City: quicker building and a plot card instead of Inspect
+**Quick tools**
+- The quick row now has 8 large buttons with icons and prices: Road, Bulldozer, Sea (free), River, Water pond / reservoir, Park, Wetland reserve and Bridge. No more scrolling through the building list for water and parks.
+- Labels follow the chosen language, and buttons not yet unlocked show the level they need.
+
+**Tap a building to see what it is (Inspect removed)**
+- Tapping any existing building, road or water tile, with any tool selected, opens a card on the map showing what it is, its location, road connection and what it does.
+- The card offers:
+  - ⬆️ Upgrade buttons with the price (House → Apartment block or Condominium, Apartment → Condominium, Shop → Shopping mall, Factory → Clean factory). Locked upgrades show the level they need.
+  - 🗺️ Show coverage for police, fire, health, transport and community buildings.
+  - 🚜 Remove with the refund amount (larger refunds ask to confirm).
+- Your selected tool stays selected, so you can keep building straight after. Tapping an empty plot builds as before.
+- Holding an upgrade tool (for example Shopping mall on a shop) still upgrades in one tap.
+- The Inspect button is gone; resident speech bubbles hide while the card is open.
+
+**Phone layout**
+- The cash card on the map is narrower on phones so it no longer covers the map buttons.
+
 ## v3.27.0 — Smart City: smoother traffic and growing shops
 **Traffic**
 - Fixed: some cars and emergency vehicles looked like they were spinning on the spot. They had very short routes (1–2 road tiles) and turned around every half-second.
