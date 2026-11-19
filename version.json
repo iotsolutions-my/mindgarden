@@ -1,5 +1,5 @@
 {
-  "version": "3.28.0",
-  "build": "3.28.0",
-  "notes": "Smart City: quick water and park tools; tap any building for details, upgrades and removal (Inspect removed)."
+  "version": "3.28.1",
+  "build": "3.28.1",
+  "notes": "Smart City fix: a new day starts with clear missions; Undo no longer crosses into the previous day."
 }

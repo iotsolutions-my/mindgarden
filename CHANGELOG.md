@@ -1,5 +1,11 @@
 # MindGarden changelog
 
+## v3.28.1 — Smart City fix: clean mission list each day
+- Fixed: a new day could show ✓ ticks on missions not yet played. Cause: pressing Undo after Next Day took the city back to the previous day while keeping the new day's mission records, so the same day number came round twice.
+- Undo now works only within the current day ("Nothing to undo" after Next Day).
+- Ticks show only for missions already handled today, and saves already affected repair themselves when loaded.
+- The "Today:" line now matches the real number of missions (for example "8 missions · 3 city incidents · 2 building goals · 3 community events") instead of the old fixed "4 missions".
+
 ## v3.28.0 — Smart City: quicker building and a plot card instead of Inspect
 **Quick tools**
 - The quick row now has 8 large buttons with icons and prices: Road, Bulldozer, Sea (free), River, Water pond / reservoir, Park, Wetland reserve and Bridge. No more scrolling through the building list for water and parks.
