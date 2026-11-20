@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#164c3c"><meta name="google" content="notranslate"><meta name="mindgarden-build" content="3.20.2">
+<meta name="theme-color" content="#164c3c"><meta name="google" content="notranslate"><meta name="mindgarden-build" content="3.20.3">
 <title>MindGarden — Seed Rush</title><meta name="description" content="A garden maze chase: 100 levels, clever robots that team up, power-ups, a hideout shed and a daily challenge. English, Bahasa Melayu and Chinese. No ads.">
 <meta property="og:type" content="website"><meta property="og:site_name" content="MindGarden"><meta property="og:title" content="MindGarden — Seed Rush"><meta property="og:description" content="A garden maze chase: 100 levels, clever robots that team up, power-ups, a hideout shed and a daily challenge. English, Bahasa Melayu and Chinese. No ads.">
 <meta property="og:image" content="./social-preview.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
@@ -29,7 +29,7 @@ details summary{font-weight:750;cursor:pointer;min-height:44px;display:flex;alig
 .legend{display:grid;gap:8px;margin-top:6px}.lg{display:flex;align-items:center;gap:12px;line-height:1.35}.lg .ic{width:40px;height:40px;flex:none;display:grid;place-items:center;background:#eef5ec;border-radius:10px;font-size:1.4rem;color:#c98a12}
 .notice{color:#4f6a5b;font-size:.95rem;text-align:center;margin-top:16px;line-height:1.5}
 /* game */
-#game{position:fixed;inset:0;display:flex;flex-direction:column;background:#f3f7f1;height:100vh;height:100dvh}
+#game{position:fixed;inset:0;touch-action:none;user-select:none;-webkit-user-select:none;display:flex;flex-direction:column;background:#f3f7f1;height:100vh;height:100dvh}
 .topbar{display:flex;align-items:center;gap:8px;padding:8px 10px;background:linear-gradient(120deg,#164c3c,#2f7b5c);color:#fff}
 .topbar button{min-height:44px;border:0;border-radius:12px;background:#ffffff26;color:#fff;font-weight:700;padding:6px 12px}
 .topbar .t{flex:1;font-weight:800;font-size:1.05rem;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.score{font-weight:800;font-size:1.15rem;font-variant-numeric:tabular-nums;min-width:64px;text-align:right}
@@ -191,10 +191,10 @@ en:{title:'Seed Rush',sub:'Gather every seed in the garden maze — and outsmart
  level:'Level {n}',dailyT:'Daily maze',score:'Score',back:'← Home',left:'Seeds left',pause:'Pause',
  goals:'Goals',g1:'Clear the garden',g2:'Lose no lives',gRobots:'Catch {n} robot(s) with a sunflower',gFruit:'Catch the bonus fruit',gTime:'Finish within {n} s',start:'Start',
  newThing:'New',feat:{tunnel:'Tunnels on the edge take you to the other side.',boots:'Speed boots 👟 make you fast for a while.',shed:'A garden shed 🏠 sometimes appears. Hide inside for 8 seconds — robots cannot find you!',mud:'Mud 🟫 slows everyone down.',freeze:'Snowflake ❄️ freezes all robots.',oneway:'One-way paths ➜ can only be crossed in the arrow direction.',tele:'Teleport pads 🌀 carry you across the maze.',shield:'Shield 🛡️ protects you from one robot.',gates:'Wooden gates open and close by themselves.',magnet:'Magnet 🧲 pulls nearby seeds to you.',dark:'Night garden 🌙 — you only see what is near you.',more:'More robots tonight!'},
- ready:'Ready…',go:'Go!',swipe:'Tap where you want to go, or keep your finger on the maze and the ladybird follows it.',spotted:'Spotted! Robots are coming.',flower:'Sunflower! Catch the robots!',hidden:'Hidden in the shed… {n}',shedUp:'A garden shed 🏠 appeared — hide inside if robots chase you!',shedGone:'The shed is gone — it will appear somewhere else later.',
+ ready:'Ready…',go:'Go!',swipe:'Swipe anywhere on the screen to turn, or tap a spot on the maze to go there.',spotted:'Spotted! Robots are coming.',flower:'Sunflower! Catch the robots!',hidden:'Hidden in the shed… {n}',shedUp:'A garden shed 🏠 appeared — hide inside if robots chase you!',shedGone:'The shed is gone — it will appear somewhere else later.',
  caught:'Caught! {n} lives left.',lostAll:'Out of lives',lostText:'So close! Try this level again — you keep learning the robots’ routes.',tryAgain:'Try again',
  won:'Garden cleared!',next:'Next level ▶',home:'Home',newBest:'New best score!',unlockSkin:'New ladybug colour unlocked!',
- how:'How to play',howText:'Tap the place you want to go and the ladybird walks there by itself, or keep your finger on the maze and it follows your finger. Arrow keys and buttons also work. Eat every seed to clear the level. Each robot guards its own part of the garden; if you come close, it calls friends and they try to corner you. Eat a sunflower and, for a few seconds, robots run away — catch them for big points. Power-ups appear now and then. From level 12 a garden shed may appear: hide in it for a few seconds, then it vanishes and shows up elsewhere later.',
+ how:'How to play',howText:'Swipe anywhere on the screen (even below the maze, so your thumb does not hide it) to turn; you can swipe a little before a corner. Or tap a spot on the maze and the ladybird walks there by itself. Arrow keys and buttons also work. Eat every seed to clear the level. Each robot guards its own part of the garden; if you come close, it calls friends and they try to corner you. Eat a sunflower and, for a few seconds, robots run away — catch them for big points. Power-ups appear now and then. From level 12 a garden shed may appear: hide in it for a few seconds, then it vanishes and shows up elsewhere later.',
  legend:[['seed','Seed — eat them all'],['flower','Sunflower — robots run away; catch them'],['robot','Robot — guards its area, chases with friends'],['shed','Garden shed — hide for 8 seconds'],['boots','Speed boots'],['freeze','Snowflake — freezes robots'],['shield','Shield — survive one catch'],['magnet','Magnet — pulls seeds to you']],
  notice:'No ads, no sound. Progress is saved on this device. Keyboard: arrows/WASD, Space to pause.'},
 ms:{title:'Kejar Benih',sub:'Kutip semua benih di labirin taman — dan perdaya robot.',language:'Bahasa',play:'Main tahap {n}',
@@ -203,10 +203,10 @@ ms:{title:'Kejar Benih',sub:'Kutip semua benih di labirin taman — dan perdaya 
  level:'Tahap {n}',dailyT:'Labirin harian',score:'Skor',back:'← Utama',left:'Benih tinggal',pause:'Jeda',
  goals:'Matlamat',g1:'Kosongkan taman',g2:'Tiada nyawa hilang',gRobots:'Tangkap {n} robot dengan bunga matahari',gFruit:'Tangkap buah bonus',gTime:'Selesai dalam {n} saat',start:'Mula',
  newThing:'Baharu',feat:{tunnel:'Terowong di tepi membawa anda ke sebelah lain.',boots:'Kasut laju 👟 membuat anda pantas seketika.',shed:'Bangsal taman 🏠 kadang-kadang muncul. Sembunyi di dalam selama 8 saat — robot tidak dapat cari anda!',mud:'Lumpur 🟫 memperlahankan semua.',freeze:'Kepingan salji ❄️ membekukan semua robot.',oneway:'Laluan sehala ➜ hanya boleh dilalui mengikut arah anak panah.',tele:'Pad teleport 🌀 membawa anda merentas labirin.',shield:'Perisai 🛡️ melindungi anda daripada satu robot.',gates:'Pintu kayu terbuka dan tertutup sendiri.',magnet:'Magnet 🧲 menarik benih berdekatan.',dark:'Taman malam 🌙 — anda hanya nampak kawasan dekat.',more:'Lebih banyak robot!'},
- ready:'Bersedia…',go:'Mula!',swipe:'Ketik ke mana anda mahu pergi, atau letak jari pada labirin dan kumbang akan mengikutnya.',spotted:'Dikesan! Robot datang.',flower:'Bunga matahari! Tangkap robot!',hidden:'Bersembunyi di bangsal… {n}',shedUp:'Bangsal taman 🏠 muncul — sembunyi jika dikejar robot!',shedGone:'Bangsal hilang — ia akan muncul di tempat lain nanti.',
+ ready:'Bersedia…',go:'Mula!',swipe:'Leret di mana-mana pada skrin untuk membelok, atau ketik satu tempat pada labirin untuk ke sana.',spotted:'Dikesan! Robot datang.',flower:'Bunga matahari! Tangkap robot!',hidden:'Bersembunyi di bangsal… {n}',shedUp:'Bangsal taman 🏠 muncul — sembunyi jika dikejar robot!',shedGone:'Bangsal hilang — ia akan muncul di tempat lain nanti.',
  caught:'Ditangkap! Tinggal {n} nyawa.',lostAll:'Nyawa habis',lostText:'Hampir berjaya! Cuba lagi — anda makin kenal laluan robot.',tryAgain:'Cuba lagi',
  won:'Taman dikosongkan!',next:'Tahap seterusnya ▶',home:'Utama',newBest:'Skor terbaik baharu!',unlockSkin:'Warna kumbang baharu dibuka!',
- how:'Cara bermain',howText:'Ketik tempat yang anda mahu tuju dan kumbang akan berjalan sendiri ke sana, atau letak jari pada labirin dan ia mengikut jari anda. Kekunci dan butang anak panah juga boleh digunakan. Makan semua benih untuk menyelesaikan tahap. Setiap robot menjaga kawasannya; jika anda dekat, ia memanggil kawan untuk mengepung anda. Makan bunga matahari dan robot akan lari seketika — tangkap untuk mata besar. Kuasa tambahan muncul sekali-sekala. Mulai tahap 12, bangsal taman mungkin muncul: sembunyi di dalam seketika, kemudian ia hilang dan muncul di tempat lain.',
+ how:'Cara bermain',howText:'Leret di mana-mana pada skrin (juga di bawah labirin supaya ibu jari tidak menutupnya) untuk membelok; anda boleh leret sedikit sebelum selekoh. Atau ketik satu tempat pada labirin dan kumbang berjalan sendiri ke sana. Kekunci dan butang anak panah juga boleh digunakan. Makan semua benih untuk menyelesaikan tahap. Setiap robot menjaga kawasannya; jika anda dekat, ia memanggil kawan untuk mengepung anda. Makan bunga matahari dan robot akan lari seketika — tangkap untuk mata besar. Kuasa tambahan muncul sekali-sekala. Mulai tahap 12, bangsal taman mungkin muncul: sembunyi di dalam seketika, kemudian ia hilang dan muncul di tempat lain.',
  legend:[['seed','Benih — makan semuanya'],['flower','Bunga matahari — robot lari; tangkap mereka'],['robot','Robot — menjaga kawasan, mengejar bersama kawan'],['shed','Bangsal taman — sembunyi 8 saat'],['boots','Kasut laju'],['freeze','Kepingan salji — membekukan robot'],['shield','Perisai — selamat sekali ditangkap'],['magnet','Magnet — menarik benih']],
  notice:'Tiada iklan, tiada bunyi. Kemajuan disimpan dalam peranti ini. Papan kekunci: anak panah/WASD, Space untuk jeda.'},
 zh:{title:'种子大冒险',sub:'在花园迷宫里收集所有种子，还要智胜机器人。',language:'语言',play:'开始第{n}关',
@@ -215,10 +215,10 @@ zh:{title:'种子大冒险',sub:'在花园迷宫里收集所有种子，还要�
  level:'第{n}关',dailyT:'每日迷宫',score:'分数',back:'← 主页',left:'剩余种子',pause:'暂停',
  goals:'目标',g1:'清空花园',g2:'不失去生命',gRobots:'用向日葵抓到 {n} 个机器人',gFruit:'吃到奖励水果',gTime:'{n} 秒内完成',start:'开始',
  newThing:'新内容',feat:{tunnel:'边上的隧道可以通到另一边。',boots:'加速鞋 👟 让你暂时变快。',shed:'花园小屋 🏠 偶尔出现，躲进去 8 秒，机器人找不到你！',mud:'泥地 🟫 会让大家变慢。',freeze:'雪花 ❄️ 冻住所有机器人。',oneway:'单行道 ➜ 只能按箭头方向通过。',tele:'传送点 🌀 把你送到迷宫另一边。',shield:'护盾 🛡️ 可以挡住一次机器人。',gates:'木门会自动开关。',magnet:'磁铁 🧲 把附近的种子吸过来。',dark:'夜晚花园 🌙 只能看到身边的地方。',more:'机器人变多了！'},
- ready:'准备…',go:'开始！',swipe:'点一下想去的地方，或把手指按在迷宫上，瓢虫会跟着走。',spotted:'被发现了！机器人来了。',flower:'向日葵！快抓机器人！',hidden:'躲在小屋里… {n}',shedUp:'花园小屋 🏠 出现了——被追时可以躲进去！',shedGone:'小屋消失了，稍后会在别处出现。',
+ ready:'准备…',go:'开始！',swipe:'在屏幕任何地方滑动来转向，或点一下迷宫上的位置走过去。',spotted:'被发现了！机器人来了。',flower:'向日葵！快抓机器人！',hidden:'躲在小屋里… {n}',shedUp:'花园小屋 🏠 出现了——被追时可以躲进去！',shedGone:'小屋消失了，稍后会在别处出现。',
  caught:'被抓到了！还剩 {n} 条命。',lostAll:'生命用完了',lostText:'差一点！再试一次，你会越来越熟悉机器人的路线。',tryAgain:'再试一次',
  won:'花园清空了！',next:'下一关 ▶',home:'主页',newBest:'新的最高分！',unlockSkin:'解锁了新的瓢虫颜色！',
- how:'玩法说明',howText:'点一下想去的地方，瓢虫会自己走过去；也可以把手指按在迷宫上，瓢虫会跟着手指走。方向键和方向按钮也可以用。吃完所有种子就过关。每个机器人守着自己的区域；你一靠近，它会叫上同伴一起包围你。吃到向日葵后，机器人会逃跑几秒——抓住它们得高分。不时会出现道具。从第12关起，花园小屋可能出现：躲进去几秒钟，之后它会消失，并在别处再出现。',
+ how:'玩法说明',howText:'在屏幕任何地方滑动来转向（也可以在迷宫下方滑动，手指就不会挡住迷宫），可以在转角前提早滑动；或点一下迷宫上的位置，瓢虫会自己走过去。方向键和方向按钮也可以用。吃完所有种子就过关。每个机器人守着自己的区域；你一靠近，它会叫上同伴一起包围你。吃到向日葵后，机器人会逃跑几秒——抓住它们得高分。不时会出现道具。从第12关起，花园小屋可能出现：躲进去几秒钟，之后它会消失，并在别处再出现。',
  legend:[['seed','种子——全部吃掉'],['flower','向日葵——机器人逃跑，可以抓它们'],['robot','机器人——守护自己的区域，会和同伴一起追'],['shed','花园小屋——可躲 8 秒'],['boots','加速鞋'],['freeze','雪花——冻住机器人'],['shield','护盾——被抓一次也没事'],['magnet','磁铁——吸来种子']],
  notice:'无广告、无声音。进度保存在本设备。键盘：方向键/WASD，空格键暂停。'},
 zt:{title:'種子大冒險',sub:'在花園迷宮裡收集所有種子，還要智勝機器人。',language:'語言',play:'開始第{n}關',
@@ -227,10 +227,10 @@ zt:{title:'種子大冒險',sub:'在花園迷宮裡收集所有種子，還要�
  level:'第{n}關',dailyT:'每日迷宮',score:'分數',back:'← 主頁',left:'剩餘種子',pause:'暫停',
  goals:'目標',g1:'清空花園',g2:'不失去生命',gRobots:'用向日葵抓到 {n} 個機器人',gFruit:'吃到獎勵水果',gTime:'{n} 秒內完成',start:'開始',
  newThing:'新內容',feat:{tunnel:'邊上的隧道可以通到另一邊。',boots:'加速鞋 👟 讓你暫時變快。',shed:'花園小屋 🏠 偶爾出現，躲進去 8 秒，機器人找不到你！',mud:'泥地 🟫 會讓大家變慢。',freeze:'雪花 ❄️ 凍住所有機器人。',oneway:'單行道 ➜ 只能按箭頭方向通過。',tele:'傳送點 🌀 把你送到迷宮另一邊。',shield:'護盾 🛡️ 可以擋住一次機器人。',gates:'木門會自動開關。',magnet:'磁鐵 🧲 把附近的種子吸過來。',dark:'夜晚花園 🌙 只能看到身邊的地方。',more:'機器人變多了！'},
- ready:'準備…',go:'開始！',swipe:'點一下想去的地方，或把手指按在迷宮上，瓢蟲會跟著走。',spotted:'被發現了！機器人來了。',flower:'向日葵！快抓機器人！',hidden:'躲在小屋裡… {n}',shedUp:'花園小屋 🏠 出現了——被追時可以躲進去！',shedGone:'小屋消失了，稍後會在別處出現。',
+ ready:'準備…',go:'開始！',swipe:'在螢幕任何地方滑動來轉向，或點一下迷宮上的位置走過去。',spotted:'被發現了！機器人來了。',flower:'向日葵！快抓機器人！',hidden:'躲在小屋裡… {n}',shedUp:'花園小屋 🏠 出現了——被追時可以躲進去！',shedGone:'小屋消失了，稍後會在別處出現。',
  caught:'被抓到了！還剩 {n} 條命。',lostAll:'生命用完了',lostText:'差一點！再試一次，你會越來越熟悉機器人的路線。',tryAgain:'再試一次',
  won:'花園清空了！',next:'下一關 ▶',home:'主頁',newBest:'新的最高分！',unlockSkin:'解鎖了新的瓢蟲顏色！',
- how:'玩法說明',howText:'點一下想去的地方，瓢蟲會自己走過去；也可以把手指按在迷宮上，瓢蟲會跟著手指走。方向鍵和方向按鈕也可以用。吃完所有種子就過關。每個機器人守著自己的區域；你一靠近，它會叫上同伴一起包圍你。吃到向日葵後，機器人會逃跑幾秒——抓住它們得高分。不時會出現道具。從第12關起，花園小屋可能出現：躲進去幾秒鐘，之後它會消失，並在別處再出現。',
+ how:'玩法說明',howText:'在螢幕任何地方滑動來轉向（也可以在迷宮下方滑動，手指就不會擋住迷宮），可以在轉角前提早滑動；或點一下迷宮上的位置，瓢蟲會自己走過去。方向鍵和方向按鈕也可以用。吃完所有種子就過關。每個機器人守著自己的區域；你一靠近，它會叫上同伴一起包圍你。吃到向日葵後，機器人會逃跑幾秒——抓住它們得高分。不時會出現道具。從第12關起，花園小屋可能出現：躲進去幾秒鐘，之後它會消失，並在別處再出現。',
  legend:[['seed','種子——全部吃掉'],['flower','向日葵——機器人逃跑，可以抓牠們'],['robot','機器人——守護自己的區域，會和同伴一起追'],['shed','花園小屋——可躲 8 秒'],['boots','加速鞋'],['freeze','雪花——凍住機器人'],['shield','護盾——被抓一次也沒事'],['magnet','磁鐵——吸來種子']],
  notice:'無廣告、無聲音。進度儲存在本裝置。鍵盤：方向鍵/WASD，空白鍵暫停。'}};
 const $=id=>document.getElementById(id),fmt=(s,o)=>s.replace(/\{(\w+)\}/g,(_,k)=>o[k]);
@@ -274,7 +274,9 @@ function resetActors(){const P=L.params;S.p={x:L.start.x,y:L.start.y,dir:3,want:
 function pos(a){const [dx,dy]=DIRS[a.dir];let x=a.x+dx*a.t,y=a.y+dy*a.t;return [x,y];}
 function onMud(a){return L.mud.has(idx(a.x,a.y));}
 function playerSpeed(){let s=BASE;if(S.clock<S.bootsUntil)s*=1.45;if(onMud(S.p))s*=0.55;return s;}
-function robotSpeed(r){const P=L.params;if(r.eyes)return BASE*1.7;let s=BASE*(r.mode==='chase'?P.chase:P.patrol);if(S.clock<S.scaredUntil&&!r.eyes)s=BASE*0.5;
+function robotSpeed(r){return robotSpeedBase(r)*(TOUCH&&!r.eyes?0.88:1);}
+let TOUCH=false;
+function robotSpeedBase(r){const P=L.params;if(r.eyes)return BASE*1.7;let s=BASE*(r.mode==='chase'?P.chase:P.patrol);if(S.clock<S.scaredUntil&&!r.eyes)s=BASE*0.5;
  if(r.y===L.tunnel&&(r.x<2||r.x>L.W-3))s*=0.5;if(onMud(r))s*=0.55;if(r.mode==='home'||r.mode==='leave')s=BASE*0.5;return s;}
 function advance(a,dist,decide,arrive){let guard=0;
  while(dist>0&&guard++<6){if(!a.moving){if(!decide(a))return;a.moving=true;}const need=1-a.t;if(dist<need){a.t+=dist;return;}
@@ -282,7 +284,7 @@ function advance(a,dist,decide,arrive){let guard=0;
 /* ---------- player ---------- */
 // Tap-to-go: walk the shortest path to the tapped tile, re-planned at every tile (gates open and close).
 function goalField(p){const gx=p.goal%L.W,gy=(p.goal/L.W)|0;return distField(gx,gy,'player');}
-function steerToGoal(p){const here=idx(p.x,p.y);if(here===p.goal){p.goal=-1;p.want=-1;return;}
+function steerToGoal(p){const here=idx(p.x,p.y);if(here===p.goal){p.goal=-1;p.want=p.dir;return;}
  const D=goalField(p);let best=-1,bd=1e9;for(let d=0;d<4;d++){const s=step(p.x,p.y,d,'player');if(!s)continue;const v=D[idx(s[0],s[1])];if(v>=0&&v<bd){bd=v;best=d;}}
  p.want=best;}
 function reachFrom(x0,y0){const R=new Uint8Array(L.W*L.H),q=[idx(x0,y0)];R[q[0]]=1;for(let qi=0;qi<q.length;qi++){const u=q[qi],ux=u%L.W,uy=(u/L.W)|0;
@@ -292,7 +294,7 @@ function setGoalAt(fx,fy){if(!S||S.state!=='play'||S.over)return;const p=S.p;con
  let best=-1,bd=1e9;const cx=Math.floor(fx),cy=Math.floor(fy);
  for(let y=Math.max(0,cy-3);y<=Math.min(L.H-1,cy+3);y++)for(let x=Math.max(0,cx-3);x<=Math.min(L.W-1,cx+3);x++){if(!R[idx(x,y)])continue;const d=(x+.5-fx)**2+(y+.5-fy)**2;if(d<bd){bd=d;best=idx(x,y);}}
  if(best<0)return;p.goal=best;S.goalShown=S.clock;
- if(best===idx(p.x,p.y)&&!p.moving){p.goal=-1;p.want=-1;return;}
+ if(best===idx(p.x,p.y)&&!p.moving){p.goal=-1;return;}
  // turn round at once if the goal lies behind
  const D=goalField(p);if(p.moving){const [dx,dy]=DIRS[p.dir];let nx=p.x+dx,ny=p.y+dy;if(nx<0)nx=L.W-1;if(nx>=L.W)nx=0;
   const ahead=D[idx(nx,ny)],back=D[idx(p.x,p.y)];if(back>=0&&(ahead<0||ahead>back))want((p.dir+2)%4);}
@@ -369,7 +371,7 @@ function update(dt){if(S.over)return;S.clock+=dt;const p=S.p;
  updateSpecials();
  // collisions
  const [px,py]=pos(p);
- for(const r of S.robots){if(r.eyes||r.mode==='home')continue;const [rx,ry]=pos(r);if(Math.abs(rx-px)+Math.abs(ry-py)>0.7)continue;
+ for(const r of S.robots){if(r.eyes||r.mode==='home')continue;const [rx,ry]=pos(r);if(Math.abs(rx-px)+Math.abs(ry-py)>0.56)continue;
   if(S.clock<S.scaredUntil&&r.mode!=='leave'){S.chain++;const pts=200*Math.pow(2,Math.min(3,S.chain-1));S.score+=pts;S.robotsEaten++;popup(r.x,r.y,'+'+pts);r.eyes=true;r.mode='patrol';continue;}
   if(hiddenNow||S.clock<(p.safeUntil||0))continue;
   if(S.shield){S.shield=false;p.safeUntil=S.clock+1500;r.eyes=true;popup(p.x,p.y,'🛡️');continue;}
@@ -495,14 +497,21 @@ let last=0;function loop(t){requestAnimationFrame(loop);if(!S||$('game').hidden)
 requestAnimationFrame(loop);
 /* ---------- input ---------- */
 function want(d){if(!S||S.state!=='play')return;const p=S.p;if(d<0){p.want=-1;return;}p.want=d;
+ if(p.moving&&d!==p.dir&&d!==(p.dir+2)%4&&p.t<0.38){const nx=step(p.x,p.y,p.dir,'player');
+  // only when the corner ahead cannot take this turn: then the player meant the corner just passed
+  if(step(p.x,p.y,d,'player')&&nx&&!L.tele.has(idx(nx[0],nx[1]))&&!step(nx[0],nx[1],d,'player')){p.t=0;p.moving=false;p.dir=d;p.face=d;return;}}
  if(p.moving&&d===(p.dir+2)%4&&d>=0){const [dx,dy]=DIRS[p.dir];p.x+=dx;p.y+=dy;if(p.x<0)p.x=L.W-1;if(p.x>=L.W)p.x=0;p.t=1-p.t;p.dir=d;p.face=d;}}
 const KEYS={ArrowUp:0,ArrowRight:1,ArrowDown:2,ArrowLeft:3,w:0,d:1,s:2,a:3,W:0,D:1,S:2,A:3};
 document.addEventListener('keydown',e=>{if(!S||$('game').hidden||e.target.tagName==='SELECT')return;if(e.key in KEYS){e.preventDefault();if(S.p)S.p.goal=-1;want(KEYS[e.key]);}else if(e.key===' '){e.preventDefault();togglePause();}});
-let held=null;const tileOf=e=>{const r=cv.getBoundingClientRect();return [(e.clientX-r.left-OX)/TS,(e.clientY-r.top-OY)/TS];};
-cv.addEventListener('pointerdown',e=>{e.preventDefault();held={id:e.pointerId,last:-1};try{cv.setPointerCapture(e.pointerId);}catch(_){}const [fx,fy]=tileOf(e);setGoalAt(fx,fy);});
-cv.addEventListener('pointermove',e=>{if(!held||held.id!==e.pointerId)return;const [fx,fy]=tileOf(e),k=Math.floor(fy)*1000+Math.floor(fx);if(k===held.last)return;held.last=k;setGoalAt(fx,fy);});
-cv.addEventListener('pointerup',()=>{held=null;});cv.addEventListener('pointercancel',()=>{held=null;});
-for(const [id,d] of [['bUp',0],['bRight',1],['bDown',2],['bLeft',3]])$(id).addEventListener('pointerdown',e=>{e.preventDefault();if(S&&S.p)S.p.goal=-1;want(d);});
+const tileOf=e=>{const r=cv.getBoundingClientRect();return [(e.clientX-r.left-OX)/TS,(e.clientY-r.top-OY)/TS];};
+let g=null;const SWIPE=14;
+$('game').addEventListener('pointerdown',e=>{if(e.target.closest('button,a,select,.modal,#intro,#win,#lose'))return;if(e.pointerType==='touch')TOUCH=true;
+ g={id:e.pointerId,x:e.clientX,y:e.clientY,x0:e.clientX,y0:e.clientY,swiped:false,onMaze:e.target===cv};if(e.target===cv)e.preventDefault();try{e.target.setPointerCapture(e.pointerId);}catch(_){}});
+$('game').addEventListener('pointermove',e=>{if(!g||g.id!==e.pointerId)return;const dx=e.clientX-g.x,dy=e.clientY-g.y;if(Math.max(Math.abs(dx),Math.abs(dy))<SWIPE)return;
+ if(S&&S.p)S.p.goal=-1;want(Math.abs(dx)>Math.abs(dy)?(dx>0?1:3):(dy>0?2:0));g.swiped=true;g.x=e.clientX;g.y=e.clientY;});
+const endG=e=>{if(!g||g.id!==e.pointerId)return;const tap=!g.swiped&&Math.hypot(e.clientX-g.x0,e.clientY-g.y0)<SWIPE&&g.onMaze;g=null;if(tap&&e.type==='pointerup'){const [fx,fy]=tileOf(e);setGoalAt(fx,fy);}};
+$('game').addEventListener('pointerup',endG);$('game').addEventListener('pointercancel',endG);
+for(const [id,d] of [['bUp',0],['bRight',1],['bDown',2],['bLeft',3]])$(id).addEventListener('pointerdown',e=>{e.preventDefault();if(e.pointerType==='touch')TOUCH=true;if(S&&S.p)S.p.goal=-1;want(d);});
 function togglePause(){if(!S||S.over||S.state!=='play')return;S.paused=!S.paused;renderHud();}
 $('pauseBtn').addEventListener('click',togglePause);
 $('backBtn').addEventListener('click',()=>{S=null;L=null;closeAll();show('home');});
@@ -519,7 +528,7 @@ $('skins').addEventListener('click',e=>{const b=e.target.closest('[data-skin]');
 $('lang').addEventListener('change',e=>{lang=e.target.value;writeLang(lang);renderHome();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&S&&S.state==='play'&&!S.over){S.paused=true;renderHud();}});
 load();show('home');
-window.MG_SEED={get S(){return S},get L(){return L},startLevel,update:(n,dt)=>{for(let i=0;i<n&&S&&!S.over;i++)update(dt||16);},want,distField:(x,y,w)=>distField(x,y,w||'player'),step:(x,y,d)=>step(x,y,d,'player'),prog:()=>prog,go:()=>{$('intro').hidden=true;S.state='play';S.readyUntil=S.clock;}};
+window.MG_SEED={get S(){return S},get touch(){return TOUCH},get L(){return L},startLevel,update:(n,dt)=>{for(let i=0;i<n&&S&&!S.over;i++)update(dt||16);},want,distField:(x,y,w)=>distField(x,y,w||'player'),step:(x,y,d)=>step(x,y,d,'player'),prog:()=>prog,go:()=>{$('intro').hidden=true;S.state='play';S.readyUntil=S.clock;}};
 if('serviceWorker' in navigator&&location.protocol==='https:')window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
 })();
 </script>

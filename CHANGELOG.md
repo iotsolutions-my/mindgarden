@@ -1,5 +1,12 @@
 # MindGarden changelog
 
+## v3.30.4 — Seed Rush: more responsive phone controls
+- Swipe anywhere on the screen to turn, even below the maze, so your thumb does not cover the ladybird. Turns happen while your finger is still moving.
+- Corner assist: a slightly late swipe still turns at the corner you just passed, and an early swipe waits for the next corner.
+- Tapping a spot still sends the ladybird there. It now keeps running afterwards instead of stopping.
+- On touch screens the robots are 12% slower, and they must come a little closer before they catch you.
+- Seed Rush build 3.20.3.
+
 ## v3.30.3 — Seed Rush: tap or hold to move on phones
 - Seed Rush is now easy to steer on a phone. Tap any spot on the maze and the ladybird walks there by itself along the shortest route, then stops. A pulsing red ring shows where it is heading.
 - Keep your finger on the maze and the ladybird follows it as you move.
