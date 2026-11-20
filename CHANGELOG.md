@@ -1,5 +1,20 @@
 # MindGarden changelog
 
+## v3.32.0 — Smart City: clouds, bigger pedestrians, close-ups in Watch mode
+**Clouds**
+- A few voxel clouds now drift slowly across the sky, with soft see-through shadows moving over the ground below.
+- Bigger maps get more clouds (8 to 36), always scattered rather than covering the whole sky.
+- On rainy days extra grey clouds roll in and the wind picks up. At night the cloud shadows fade.
+- Clouds fade out as you zoom in, and are gone completely at close zoom, so they never hide what you are building.
+- Clouds stop drifting while the game is paused, and they appear in postcards.
+
+**Pedestrians**
+- People are about 70% bigger, so they can be seen walking at normal zoom.
+- More clothing colours.
+
+**Watch mode**
+- Every third stop is a close-up on someone walking along the street.
+
 ## v3.30.4 — Seed Rush: more responsive phone controls
 - Swipe anywhere on the screen to turn, even below the maze, so your thumb does not cover the ladybird. Turns happen while your finger is still moving.
 - Corner assist: a slightly late swipe still turns at the corner you just passed, and an early swipe waits for the next corner.
